@@ -24,11 +24,11 @@ class HiveAggregator:
 
   ## Initialize
   def __init__(self):
-    Monitor(cherrypy.engine, self.update, frequency=1).subscribe()
     self.reload_config()
     self.zmq_host()
     self.couchdb_connect()
     self.firebase_connect()
+    Monitor(cherrypy.engine, self.update, frequency=self.UPDATE_INTERVAL).subscribe()
     
   ## Update
   def update(self):
@@ -48,7 +48,7 @@ class HiveAggregator:
       print('--> ' + str(error))
     print('[Storing Data to Remote Database]')
     try:
-      result = self.firebase.post(self.FIREBASE_PATH + '/' + log['Node'], log)
+      result = self.firebase.post('/' + self.FIREBASE_USER + '/' + self.AGGREGATOR_ID + '/' + log['Node'], log)
       print('--> ' + str(result))
     except Exception as error:
       print('--> ' + str(error))
@@ -66,9 +66,8 @@ class HiveAggregator:
     try:
       self.CONFIG_FILE = sys.argv[1]
     except Exception as error:
-      print('--> ' + str(error))
+      print('--> Defaulting to Custom Configuration: aggregator.conf')
       self.CONFIG_FILE = 'aggregator.conf'
-    print('--> ' + self.CONFIG_FILE)
     with open(self.CONFIG_FILE) as config:
       settings = ast.literal_eval(config.read())
       for key in settings:
@@ -118,14 +117,20 @@ class HiveAggregator:
   ## Render Index
   @cherrypy.expose
   def index(self):
-    with open('www/index.html') as html:
-      return html.read()
+    head = open('www/index.html').read()
+    body = ''
+    result = self.firebase.get(self.FIREBASE_USER, None)
+    for aggregator in result.keys():
+      for node in result[aggregator].keys():
+        for sample in result[aggregator][node].keys():
+          body += str(result[aggregator][node][sample])
+    return head + body
     
 # Main
 if __name__ == '__main__':
   aggregator = HiveAggregator()
   currdir = os.path.dirname(os.path.abspath(__file__))
-  cherrypy.server.socket_host = '0.0.0.0'
-  cherrypy.server.socket_port = 8080
+  cherrypy.server.socket_host = aggregator.BIND_ADDR
+  cherrypy.server.socket_port = aggregator.PORT
   conf = {'/www': {'tools.staticdir.on':True, 'tools.staticdir.dir':os.path.join(currdir,'www')}}
   cherrypy.quickstart(aggregator, '/', config=conf)

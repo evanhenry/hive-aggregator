@@ -35,6 +35,8 @@ class HiveNode:
     self.reload_config()
     self.zmq_connect()
     self.arduino_connect()
+    self.START_TIME = time.time()
+    Monitor(cherrypy.engine, self.update, frequency=self.CHERRYPY_INTERVAL).subscribe()
 
   ### MAIN LOOP - Update to Aggregator ###
   def update(self):
@@ -175,14 +177,16 @@ class HiveNode:
   ## Render Index
   @cherrypy.expose
   def index(self):
-    with open('www/index.html') as html:
-      return html.read()
-  
+    node = '<p>' + 'Node: ' + str(self.NODE_ID) + '</p>'
+    start_time = '<p>' + 'Start: ' + time.strftime("%H:%M", time.localtime(self.START_TIME)) + '</p>'
+    up_time = '<p>' + 'Up: ' + str(int(time.time() - self.START_TIME)) + '</p>'
+    return node + start_time + up_time
+    
 # Main
 if __name__ == '__main__':
   node = HiveNode()
   currdir = os.path.dirname(os.path.abspath(__file__))
-  cherrypy.server.socket_host = '0.0.0.0'
-  cherrypy.server.socket_port = 8081
+  cherrypy.server.socket_host = node.CHERRYPY_ADDR
+  cherrypy.server.socket_port = node.CHERRYPY_PORT
   conf = {'/www': {'tools.staticdir.on':True, 'tools.staticdir.dir':os.path.join(currdir,'www')}}
   cherrypy.quickstart(node, '/', config=conf)

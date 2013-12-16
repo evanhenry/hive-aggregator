@@ -15,6 +15,11 @@ import os
 import sys
 import pyaudio
 from ctypes import *
+import cherrypy
+from cherrypy.process.plugins import Monitor
+from cherrypy import tools
+import os
+
 
 # Error Handling
 ERROR_HANDLER_FUNC = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
@@ -27,7 +32,6 @@ class HiveNode:
 
   ## Initialize
   def __init__(self):
-    print('HiveMind')
     self.reload_config()
     self.zmq_connect()
     self.arduino_connect()
@@ -167,14 +171,18 @@ class HiveNode:
     except Exception as error:
       print('--> ' + str(error))
       return None
-    
+  
+  ## Render Index
+  @cherrypy.expose
+  def index(self):
+    with open('www/index.html') as html:
+      return html.read()
+  
 # Main
 if __name__ == '__main__':
   node = HiveNode()
-  while True:
-    try:
-      node.update()
-    except KeyboardInterrupt as error:
-      node.zmq_disconnect()
-      node.arduino_disconnect()
-      break
+  currdir = os.path.dirname(os.path.abspath(__file__))
+  cherrypy.server.socket_host = '0.0.0.0'
+  cherrypy.server.socket_port = 8081
+  conf = {'/www': {'tools.staticdir.on':True, 'tools.staticdir.dir':os.path.join(currdir,'www')}}
+  cherrypy.quickstart(node, '/', config=conf)

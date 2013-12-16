@@ -126,5 +126,6 @@ if __name__ == '__main__':
   aggregator = HiveAggregator()
   currdir = os.path.dirname(os.path.abspath(__file__))
   cherrypy.server.socket_host = '0.0.0.0'
+  cherrypy.server.socket_port = 8080
   conf = {'/www': {'tools.staticdir.on':True, 'tools.staticdir.dir':os.path.join(currdir,'www')}}
   cherrypy.quickstart(aggregator, '/', config=conf)

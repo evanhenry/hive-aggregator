@@ -12,12 +12,20 @@ import time
 import couchdb
 from firebase import firebase
 from firebase import jsonutil
+import sys
+import ast
 
-# Global
-ZMQ_SERVER = 'tcp://*:1980'
-COUCHDB_DATABASE = 'hivemind-plus'
-FIREBASE_PATH = '/test'
-FIREBASE_URL = 'https://hivemind-plus.firebaseio.com'
+# Configuration
+try:
+  CONFIG_FILE = sys.argv[1]
+except Exception as error:
+  CONFIG_FILE = 'config/aggregator.conf'
+with open(CONFIG_FILE) as config:
+  settings = ast.literal_eval(config.read())
+  ZMQ_SERVER = settings['ZMQ_SERVER']
+  COUCHDB_DATABASE = settings['COUCHDB_DATABASE']
+  FIREBASE_PATH = settings['FIREBASE_PATH']
+  FIREBASE_URL = settings['FIREBASE_URL']
 
 # HiveAggregator
 class HiveAggregator:
@@ -64,7 +72,7 @@ class HiveAggregator:
       print('--> ' + str(error))
     print('[Storing Data to Remote Database]')
     try:
-      result = self.firebase.post(FIREBASE_PATH, log)
+      result = self.firebase.post(FIREBASE_PATH + '/' + log['Node'], log)
       print('--> ' + str(result))
     except Exception as error:
       print('--> ' + str(error))

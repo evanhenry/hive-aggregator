@@ -12,15 +12,23 @@ import ast
 import json
 import time
 import os
+import sys
 
-# Global
-ZMQ_SERVER = 'tcp://localhost:1980'
-ZMQ_TIMEOUT = 1000
-ARDUINO_DEV = '/dev/ttyACM0'
-ARDUINO_BAUD = 9600
-ARDUINO_INTERVAL = 1
-NODE_ID = 'test' #? should be automatically populated
+# Configuration
+try:
+  CONFIG_FILE = sys.argv[1]
+except Exception as error:
+  CONFIG_FILE = 'config/node.conf'
+with open(CONFIG_FILE) as config:
+  settings = ast.literal_eval(config.read())
+  ZMQ_SERVER = settings['ZMQ_SERVER']
+  ZMQ_TIMEOUT = settings['ZMQ_TIMEOUT']
+  ARDUINO_DEV = settings['ARDUINO_DEV']
+  ARDUINO_BAUD = settings['ARDUINO_BAUD']
+  ARDUINO_INTERVAL = settings['ARDUINO_INTERVAL']
+  NODE_ID = settings['NODE_ID']
 
+# Node
 class HiveNode:
 
   ## Initialize
@@ -29,7 +37,8 @@ class HiveNode:
     self.context = zmq.Context()
     self.zmq_connect()
     self.arduino_connect()
-      
+
+  ## Connect to Aggregator
   def zmq_connect(self):
     print('[Initializing ZMQ]')
     try:
@@ -40,17 +49,18 @@ class HiveNode:
     except Exception as error:
       print('--> ' + str(error))
 
+  # Connect to Arduino
   def arduino_connect(self):
     print('[Initializing Arduino]')
     try:
-      self.arduino = serial.Serial(ARDUINO_DEV, ARDUINO_BAUD, timeout=20)
+      self.arduino = serial.Serial(ARDUINO_DEV, ARDUINO_BAUD, timeout=ZMQ_TIMEOUT)
     except Exception as error:
       print('--> ' + str(error))
       
   ## Update to Aggregator
   def update(self):
     print('\n')
-    log = {'Time':time.time()}
+    log = {'Time':time.time(), 'Node':NODE_ID}
     print('[Reading Arduino Sensors]')
     try:
       log.update(self.arduino.read())

@@ -14,46 +14,22 @@ from firebase import firebase
 from firebase import jsonutil
 import sys
 import ast
-
-# Configuration
-try:
-  CONFIG_FILE = sys.argv[1]
-except Exception as error:
-  CONFIG_FILE = 'config/aggregator.conf'
-with open(CONFIG_FILE) as config:
-  settings = ast.literal_eval(config.read())
-  ZMQ_SERVER = settings['ZMQ_SERVER']
-  COUCHDB_DATABASE = settings['COUCHDB_DATABASE']
-  FIREBASE_PATH = settings['FIREBASE_PATH']
-  FIREBASE_URL = settings['FIREBASE_URL']
+import cherrypy
+from cherrypy.process.plugins import Monitor
+from cherrypy import tools
+import os
 
 # HiveAggregator
 class HiveAggregator:
 
   ## Initialize
   def __init__(self):
-    print('[Initializing ZMQ]')
-    try:
-      self.context = zmq.Context()
-      self.socket = self.context.socket(zmq.REP)
-      self.socket.bind(ZMQ_SERVER)
-    except Exception as error:
-      print('-->' + str(error))
-    print('[Initializing CouchDB]')
-    try:
-      server = couchdb.Server()
-      try:
-        self.couch = server[COUCHDB_DATABASE]
-      except Exception as error:
-        self.couch = server.create(COUCHDB_DATABASE)
-    except Exception as error:
-      print('--> ' + str(error))
-    print('[Initializing Firebase]')  
-    try:    
-      self.firebase = firebase.FirebaseApplication(FIREBASE_URL, None)
-    except Exception as error:
-      print('-->' + str(error))  
-
+    Monitor(cherrypy.engine, self.update, frequency=1).subscribe()
+    self.reload_config()
+    self.zmq_host()
+    self.couchdb_connect()
+    self.firebase_connect()
+    
   ## Update
   def update(self):
     print('\n')
@@ -72,7 +48,7 @@ class HiveAggregator:
       print('--> ' + str(error))
     print('[Storing Data to Remote Database]')
     try:
-      result = self.firebase.post(FIREBASE_PATH + '/' + log['Node'], log)
+      result = self.firebase.post(self.FIREBASE_PATH + '/' + log['Node'], log)
       print('--> ' + str(result))
     except Exception as error:
       print('--> ' + str(error))
@@ -83,12 +59,72 @@ class HiveAggregator:
       print('--> ' + str(response))
     except Exception as error:
       print('--> ' + str(error))
- 
+
+  ## Load Config File
+  def reload_config(self):
+    print('[Reloading Config File]')
+    try:
+      self.CONFIG_FILE = sys.argv[1]
+    except Exception as error:
+      print('--> ' + str(error))
+      self.CONFIG_FILE = 'aggregator.conf'
+    print('--> ' + self.CONFIG_FILE)
+    with open(self.CONFIG_FILE) as config:
+      settings = ast.literal_eval(config.read())
+      for key in settings:
+        try:
+          getattr(self, key)
+        except AttributeError as error:
+          setattr(self, key, settings[key])
+
+  ## Host ZMQ Server
+  def zmq_host(self):
+    print('[Initializing ZMQ]')
+    try:
+      self.context = zmq.Context()
+      self.socket = self.context.socket(zmq.REP)
+      self.socket.bind(self.ZMQ_SERVER)
+    except Exception as error:
+      print('-->' + str(error))
+
+  ## Connect to couchdb
+  def couchdb_connect(self):
+    print('[Initializing CouchDB]')
+    try:
+      server = couchdb.Server()
+      try:
+        self.couch = server[self.COUCHDB_DATABASE]
+      except Exception as error:
+        self.couch = server.create(self.COUCHDB_DATABASE)
+    except Exception as error:
+      print('--> ' + str(error))
+
+  ## Connect to Firebase IO
+  def firebase_connect(self):
+    print('[Initializing Firebase]')  
+    try:    
+      self.firebase = firebase.FirebaseApplication(self.FIREBASE_URL, None)
+    except Exception as error:
+      print('-->' + str(error))
+
+  ## Disconnect from ZMQ
+  def zmq_disconnect(self):
+    print('[Halting ZMQ]')
+    try:
+      self.socket.close()
+    except Exception as error:
+      print('--> ' + str(error))
+
+  ## Render Index
+  @cherrypy.expose
+  def index(self):
+    with open('www/index.html') as html:
+      return html.read()
+    
 # Main
 if __name__ == '__main__':
   aggregator = HiveAggregator()
-  while True:
-    try:
-      aggregator.update()
-    except KeyboardInterrupt as error:
-      break
+  currdir = os.path.dirname(os.path.abspath(__file__))
+  cherrypy.server.socket_host = '0.0.0.0'
+  conf = {'/www': {'tools.staticdir.on':True, 'tools.staticdir.dir':os.path.join(currdir,'www')}}
+  cherrypy.quickstart(aggregator, '/', config=conf)

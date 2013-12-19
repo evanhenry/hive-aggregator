@@ -42,10 +42,12 @@ class HiveNode:
   def update(self):
     print('\n')
     log = {'Time':time.time(), 'Node':self.NODE_ID}
-    
+
     print('[Reading Arduino Sensors]')
     try:
-      log.update(self.arduino.read())
+      string = self.arduino.read()
+      data = ast.literal_eval(string)
+      log.update(data)
       print('-->' + str(log))
     except Exception as error:
       print('--> ' + str(error))
@@ -59,11 +61,11 @@ class HiveNode:
     
     print('[Sending Message to Aggregator]')
     try:
-      result = self.socket.send(json.dumps(log))
+      dump = json.dumps(log)
+      result = self.socket.send(dump)
       print('--> ' + str(result))
-    except zmq.core.error.ZMQError as error:
+    except Exception as error:
       print('--> ' + str(error))
-      self.zmq_refresh_socket()
       
     print('[Receiving Response from Aggregator]')
     try:
@@ -75,10 +77,9 @@ class HiveNode:
         else:
           print('--> ' + 'Timeout: ' + self.ZMQ_TIMEOUT + 'ms')
       else:
-         print('--> ' + 'Aggregator not found')
+         print('--> ' + 'No messages from Aggregator found')
     except Exception as error:
       print('--> ' + str(error))
-      self.zmq_refresh_poll()
       
   ## Load Config File
   def reload_config(self):
@@ -114,26 +115,7 @@ class HiveNode:
     print('[Disconnecting from Aggregator]')
     try:
       self.socket.close()
-      self.poller.close()
-    except Exception as error:
-      print('--> ' + str(error))
-      
-  ## Refresh ZMQ Socket
-  def zmq_refresh_socket(self):
-    print('[Refreshing Socket to Aggregator]')
-    try:
-      self.socket.close()
-      self.socket = self.context.socket(zmq.REQ)
-      self.socket.connect(self.ZMQ_SERVER)
-    except Exception as error:
-      print('--> ' + str(error))
-
-  ## Refresh ZMQ Poller
-  def zmq_refresh_poll(self):
-    print('[Refreshing Aggregator Polling]')
-    try:
-      self.poller = zmq.Poller()
-      self.poller.register(self.socket, zmq.POLLIN)
+      self.poller.unregister()
     except Exception as error:
       print('--> ' + str(error))
     
@@ -160,8 +142,14 @@ class HiveNode:
       asound = cdll.LoadLibrary('libasound.so')
       asound.snd_lib_error_set_handler(C_ERROR_HANDLER) # Set error handler
       mic = pyaudio.PyAudio()
-      stream = mic.open(format=FORMAT,channels=CHANNELS,rate=RATE,input=True,frames_per_buffer=CHUNK)
-      data = stream.read(CHUNK)
+      stream = mic.open(
+        format=self.FORMAT,
+        channels=self.CHANNELS,
+        rate=self.RATE,
+        input=True,
+        frames_per_buffer=self.CHUNK
+      )
+      data = stream.read(self.CHUNK)
       wave_array = np.fromstring(data, dtype='int16')
       wave_fft = np.fft.fft(wave_array)
       wave_freqs = np.fft.fftfreq(len(wave_fft))

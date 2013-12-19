@@ -1,1 +1,0 @@
-var myDataRef = new Firebase('https://hivemind-plus.firebaseio.com/');

@@ -35,7 +35,8 @@ class HiveAggregator:
     print('\n')
     print('[Receiving Data from Node]')
     try:
-      log = json.loads(self.socket.recv())
+      packet = self.socket.recv()
+      log = json.loads(packet)
       for key in log:
         print('--> ' + str(key) + ': ' + str(log[key]))
     except Exception as error:
@@ -117,14 +118,29 @@ class HiveAggregator:
   ## Render Index
   @cherrypy.expose
   def index(self):
-    head = open('www/index.html').read()
-    body = ''
-    result = self.firebase.get(self.FIREBASE_USER, None)
-    for aggregator in result.keys():
-      for node in result[aggregator].keys():
-        for sample in result[aggregator][node].keys():
-          body += str(result[aggregator][node][sample])
-    return head + body
+    print('[Loading Index.html]')
+    html = open('www/index.html').read()
+    print('[Mapping Query]')
+    current_time = time.time()
+    GRAPH_INTERVAL = 100000
+    keys = ['Time', 'Internal_C', 'External_C']
+    values = dict(zip(keys,[[], [], []]))
+    map_nodes = "function(doc) { if (doc.Time >= " + str(current_time - GRAPH_INTERVAL) + ") emit(doc); }"
+    matches = self.couch.query(map_nodes)
+    for row in matches:
+      for key in keys:
+        try:
+          values[key].append([row.key['Time'], row.key[key]])
+        except Exception:
+          pass
+    print('[Writing Time to TSV-File]')
+    with open('www/Time.tsv','w') as tsv_file:
+      tsv_file.write('date' + '\t' + 'close' + '\n')
+      for point in sorted(values['Time']):
+        x = time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(point[0]))
+        y = str(point[1])
+        tsv_file.write(x + '\t' + y + '\n')
+    return html
     
 # Main
 if __name__ == '__main__':
@@ -132,5 +148,9 @@ if __name__ == '__main__':
   currdir = os.path.dirname(os.path.abspath(__file__))
   cherrypy.server.socket_host = aggregator.BIND_ADDR
   cherrypy.server.socket_port = aggregator.PORT
-  conf = {'/www': {'tools.staticdir.on':True, 'tools.staticdir.dir':os.path.join(currdir,'www')}}
+  conf = {
+    '/': {'tools.staticdir.on':True, 'tools.staticdir.dir':os.path.join(currdir,'www')},
+    'd3.v3.js': {'tools.staticfile.on': True, 'tools.staticfile.filename': os.path.join(currdir,'www')+'d3.v3.js'},
+    'data.tsv': {'tools.staticfile.on': True, 'tools.staticfile.filename': os.path.join(currdir,'www')+'data.tsv'}
+  }
   cherrypy.quickstart(aggregator, '/', config=conf)

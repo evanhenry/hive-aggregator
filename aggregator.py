@@ -24,45 +24,7 @@ class HiveAggregator:
 
   ## Initialize
   def __init__(self):
-    self.reload_config()
-    self.zmq_host()
-    self.couchdb_connect()
-    self.firebase_connect()
-    Monitor(cherrypy.engine, self.update, frequency=self.UPDATE_INTERVAL).subscribe()
     
-  ## Update
-  def update(self):
-    print('\n')
-    print('[Receiving Data from Node]')
-    try:
-      packet = self.socket.recv()
-      log = json.loads(packet)
-      for key in log:
-        print('--> ' + str(key) + ': ' + str(log[key]))
-    except Exception as error:
-      print('--> ' + str(error))
-    print('[Storing Data to Local Database]')
-    try:
-      result = self.couch.save(log)
-      print('--> ' + str(result))
-    except Exception as error:
-      print('--> ' + str(error))
-    print('[Storing Data to Remote Database]')
-    try:
-      result = self.firebase.post('/' + self.FIREBASE_USER + '/' + self.AGGREGATOR_ID + '/' + log['Node'], log)
-      print('--> ' + str(result))
-    except Exception as error:
-      print('--> ' + str(error))
-    print('[Sending Response to Node]')
-    try:
-      response = json.dumps({'status':'ok'})
-      result = self.socket.send(response)
-      print('--> ' + str(response))
-    except Exception as error:
-      print('--> ' + str(error))
-
-  ## Load Config File
-  def reload_config(self):
     print('[Reloading Config File]')
     try:
       self.CONFIG_FILE = sys.argv[1]
@@ -76,9 +38,7 @@ class HiveAggregator:
           getattr(self, key)
         except AttributeError as error:
           setattr(self, key, settings[key])
-
-  ## Host ZMQ Server
-  def zmq_host(self):
+          
     print('[Initializing ZMQ]')
     try:
       self.context = zmq.Context()
@@ -86,9 +46,7 @@ class HiveAggregator:
       self.socket.bind(self.ZMQ_SERVER)
     except Exception as error:
       print('-->' + str(error))
-
-  ## Connect to couchdb
-  def couchdb_connect(self):
+      
     print('[Initializing CouchDB]')
     try:
       server = couchdb.Server()
@@ -98,45 +56,88 @@ class HiveAggregator:
         self.couch = server.create(self.COUCHDB_DATABASE)
     except Exception as error:
       print('--> ' + str(error))
-
-  ## Connect to Firebase IO
-  def firebase_connect(self):
+      
     print('[Initializing Firebase]')  
     try:    
       self.firebase = firebase.FirebaseApplication(self.FIREBASE_URL, None)
     except Exception as error:
       print('-->' + str(error))
-
-  ## Disconnect from ZMQ
-  def zmq_disconnect(self):
-    print('[Halting ZMQ]')
+      
+    print('[Enabling Update Monitor]')
     try:
-      self.socket.close()
+      Monitor(cherrypy.engine, self.update, frequency=self.UPDATE_INTERVAL).subscribe()
+    except Exception as error:
+      print('-->' + str(error))
+    
+  ## Update
+  def update(self):
+    
+    print('\n')
+    
+    print('[Receiving Data from Node]')
+    try:
+      packet = self.socket.recv()
+      log = json.loads(packet)
+      for key in log:
+        print('--> ' + str(key) + ': ' + str(log[key]))
     except Exception as error:
       print('--> ' + str(error))
-
+      
+    print('[Storing Data to Local Database]')
+    try:
+      result = self.couch.save(log)
+      print('--> ' + '_id' + ' : ' + str(log['_id']))
+      print('--> ' + '_rev' + ' : ' + str(log['_rev']))
+      local = 'ok'
+    except Exception as error:
+      print('--> ' + str(error))
+      local = 'bad'
+      
+    print('[Storing Data to Remote Database]')
+    try:
+      result = self.firebase.post('/' + self.FIREBASE_USER + '/' + self.AGGREGATOR_ID + '/' + log['node'], log)
+      for key in result:
+        print('--> ' + key + ' : ' + str(result[key]))
+      remote = 'ok'
+    except Exception as error:
+      print('--> ' + str(error))
+      remote = 'bad'
+      
+    print('[Sending Response to Node]')
+    try:
+      response = {'remote_status':remote, 'local_status':local}
+      dump = json.dumps(response)
+      self.socket.send(dump)
+      for key in response:
+        print('--> ' + key + ' : ' + str(response[key]))
+    except Exception as error:
+      print('--> ' + str(error))
+    
   ## Render Index
   @cherrypy.expose
   def index(self):
+    
     print('[Loading Index.html]')
     html = open('www/index.html').read()
+    
     print('[Mapping Query]')
     current_time = time.time()
     GRAPH_INTERVAL = 100000
-    keys = ['Time', 'Internal_C', 'External_C']
+    keys = ['time', 'internal_C', 'external_C']
     values = dict(zip(keys,[[], [], []]))
-    map_nodes = "function(doc) { if (doc.Time >= " + str(current_time - GRAPH_INTERVAL) + ") emit(doc); }"
+    map_nodes = "function(doc) { if (doc.time >= " + str(current_time - self.GRAPH_INTERVAL) + ") emit(doc); }"
     matches = self.couch.query(map_nodes)
     for row in matches:
       for key in keys:
         try:
-          values[key].append([row.key['Time'], row.key[key]])
+          values[key].append([row.key['time'], row.key[key]])
         except Exception:
           pass
+        
     print('[Writing Time to TSV-File]')
-    with open('www/Time.tsv','w') as tsv_file:
+    with open('www/time.tsv','w') as tsv_file:
       tsv_file.write('date' + '\t' + 'close' + '\n')
-      for point in sorted(values['Time']):
+      for point in sorted(values['time']):
         x = time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(point[0]))
         y = str(point[1])
         tsv_file.write(x + '\t' + y + '\n')

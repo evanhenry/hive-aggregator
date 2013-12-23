@@ -24,8 +24,9 @@ class HiveAggregator:
 
   ## Initialize
   def __init__(self):
-    
-    print('[Reloading Config File]')
+
+    ### Load Configuration
+    print('[Loading Config File]')
     try:
       self.CONFIG_FILE = sys.argv[1]
     except Exception as error:
@@ -38,7 +39,8 @@ class HiveAggregator:
           getattr(self, key)
         except AttributeError as error:
           setattr(self, key, settings[key])
-          
+
+    ### ZMQ Server
     print('[Initializing ZMQ]')
     try:
       self.context = zmq.Context()
@@ -46,7 +48,8 @@ class HiveAggregator:
       self.socket.bind(self.ZMQ_SERVER)
     except Exception as error:
       print('-->' + str(error))
-      
+
+    ### CouchDB
     print('[Initializing CouchDB]')
     try:
       server = couchdb.Server()
@@ -56,13 +59,15 @@ class HiveAggregator:
         self.couch = server.create(self.COUCHDB_DATABASE)
     except Exception as error:
       print('--> ' + str(error))
-      
+
+    ### Firebase
     print('[Initializing Firebase]')  
     try:    
       self.firebase = firebase.FirebaseApplication(self.FIREBASE_URL, None)
     except Exception as error:
       print('-->' + str(error))
-      
+
+    ### Schedulers
     print('[Enabling Update Monitor]')
     try:
       Monitor(cherrypy.engine, self.update, frequency=self.UPDATE_INTERVAL).subscribe()
@@ -72,8 +77,7 @@ class HiveAggregator:
   ## Update
   def update(self):
     
-    print('\n')
-    
+    ### Receive Data
     print('[Receiving Data from Node]')
     try:
       packet = self.socket.recv()
@@ -83,6 +87,7 @@ class HiveAggregator:
     except Exception as error:
       print('--> ' + str(error))
       
+    ### Store to Remote
     print('[Storing Data to Local Database]')
     try:
       result = self.couch.save(log)
@@ -93,6 +98,7 @@ class HiveAggregator:
       print('--> ' + str(error))
       local = 'bad'
       
+    ### Store to Local
     print('[Storing Data to Remote Database]')
     try:
       result = self.firebase.post('/' + self.FIREBASE_USER + '/' + self.AGGREGATOR_ID + '/' + log['node'], log)
@@ -102,7 +108,8 @@ class HiveAggregator:
     except Exception as error:
       print('--> ' + str(error))
       remote = 'bad'
-      
+
+    ### Send Response
     print('[Sending Response to Node]')
     try:
       response = {'remote_status':remote, 'local_status':local}
@@ -116,31 +123,75 @@ class HiveAggregator:
   ## Render Index
   @cherrypy.expose
   def index(self):
-    
+
+    ### Load HTML
     print('[Loading Index.html]')
     html = open('www/index.html').read()
-    
+
+    ### Map from CouchDB
     print('[Mapping Query]')
     current_time = time.time()
     GRAPH_INTERVAL = 100000
-    keys = ['time', 'internal_C', 'external_C']
-    values = dict(zip(keys,[[], [], []]))
+    keys = ['time']
+    nodes = {}
     map_nodes = "function(doc) { if (doc.time >= " + str(current_time - self.GRAPH_INTERVAL) + ") emit(doc); }"
     matches = self.couch.query(map_nodes)
+    times = []
+    for row in matches:
+      nodes[row.key['node']] = dict(zip(keys,[{}])) # make a slot for each node
+      times.append(row.key['time'])
     for row in matches:
       for key in keys:
         try:
-          values[key].append([row.key['time'], row.key[key]])
-        except Exception:
-          pass
-        
-    print('[Writing Time to TSV-File]')
-    with open('www/time.tsv','w') as tsv_file:
-      tsv_file.write('date' + '\t' + 'close' + '\n')
-      for point in sorted(values['time']):
-        x = time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(point[0]))
-        y = str(point[1])
-        tsv_file.write(x + '\t' + y + '\n')
+          node = row.key['node']
+          t = row.key['time']
+          nodes[node][key][t] = row.key[key]
+        except Exception as error:
+          print('--> ' + str(error))
+    times = sorted(times)
+
+    ### Generate Text Files
+    print('[Writing TSV Files]')
+    for key in keys:
+      print('--> Compiling for ' + key + '...')
+      with open('www/' + key + '.tsv','w') as tsv_file:
+        # Write headers
+        tsv_file.write('date')
+        for node in nodes:
+          tsv_file.write('\t' + node)
+        tsv_file.write('\n')
+        # Convert seconds to date-string
+        stimes = []
+        for t in times:
+          stimes.append(time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(t)))
+        # Build Sparse Matrix
+        matrix = []  
+        for node in nodes:
+          values = []
+          for t in times:
+            try:
+              values.append(nodes[node][key][t])
+            except Exception as error:
+              values.append(None)
+          matrix.append(values)
+        # Fill Matrix (no interpolation, just match adjacent values)
+        for node in matrix:
+          for i in range(len(node)):
+            if node[i]:
+              pass
+            else:
+              for j in range(i,len(node)):
+                if node[j]:
+                  node[i] = node[j]
+                  break
+                else:
+                  node[i] = node[i-1]
+        # Write Matrix to CSV
+        for t in range(len(stimes)):
+          tsv_file.write(stimes[t])
+          for node in matrix:
+            tsv_file.write('\t' + str(node[t]))
+          tsv_file.write('\n')
     return html
     
 # Main

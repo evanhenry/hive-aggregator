@@ -66,7 +66,7 @@ class HiveNode:
   def update(self):
     
     print('\n')
-    log = {'time':time.time(), 'node':self.NODE_ID}
+    log = {'time':int(time.time()), 'node':self.NODE_ID}
     
     print('[Reading Arduino Sensors]')
     try:

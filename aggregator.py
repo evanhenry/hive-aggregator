@@ -101,7 +101,7 @@ class HiveAggregator:
     ### Store to Local
     print('[Storing Data to Remote Database]')
     try:
-      result = self.firebase.post('/' + self.FIREBASE_USER + '/' + self.AGGREGATOR_ID + '/' + log['node'], log)
+      result = self.firebase.post('/' + self.FIREBASE_USER + '/' + self.AGGREGATOR_ID, log)
       for key in result:
         print('--> ' + key + ' : ' + str(result[key]))
       remote = 'ok'

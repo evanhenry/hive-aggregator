@@ -3,20 +3,21 @@
 HiveMind-Plus Aggregator
 Developed by Trevor Stanhope
 
+ZeroMQ socket server allows asynchronous retrieval of samples.
+CherryPy webserver automates ZeroMQ retrieve requests on an interval.
+
 TODO:
-- Use MongoDB instead of CouchDB
-- Use Flask instead of CherryPy
+- Use MongoDB instead of CouchDB for storing
+- Implement graphing
 - Validate received data
-- use JSON settings file
 """
 
 # Libraries
 import zmq
-import serial
 import json
-import time
 import ast
 import cherrypy
+import os
 from pymongo import MongoClient
 from cherrypy.process.plugins import Monitor
 from cherrypy import tools
@@ -42,7 +43,7 @@ class HiveAggregator:
                     print(key + ' : ' + str(settings[key]))
                     setattr(self, key, settings[key])
 
-        ### ZMQ Server
+        ### ZMQ
         print('[Initializing ZMQ]')
         try:
             self.context = zmq.Context()
@@ -66,18 +67,18 @@ class HiveAggregator:
         except Exception as error:
             print('--> ERROR: ' + str(error))        
 
-        ### Schedulers
+        ### CherryPy Monitors
         print('[Enabling Update Monitor]')
         try:
             Monitor(cherrypy.engine, self.update, frequency=self.CHERRYPY_INTERVAL).subscribe()
         except Exception as error:
             print('--> ERROR: ' + str(error))
-
+    
     ## Update
     def update(self):
         print('\n')
 
-        ### Receive Data
+        ### Receive Sample
         print('[Receiving Sample from Node]')
         try:
             packet = self.socket.recv()
@@ -86,14 +87,22 @@ class HiveAggregator:
         except Exception as error:
             print('--> ERROR: ' + str(error))
 
+        ### Store to Firebase
+        print('[Storing to Firebase]')
+        try:
+            firebase_id = self.firebase.post('/samples', sample)
+            print('--> FIREBASE ID: ' + str(firebase_id))
+        except Exception as error:
+            print('--> ERROR: ' + str(error))
+
         ### Store to Mongo
         print('[Storing to Mongo]')
         try:
             collection = self.mongo_db[sample['node']]
-            sample_id = collection.insert(sample)
-            print('--> SAMPLE ID: ' + str(sample_id))
+            mongo_id = collection.insert(sample)
+            print('--> MONGO ID: ' + str(mongo_id))
         except Exception as error:
-            print('--> ERROR: ' + str(error))  
+            print('--> ERROR: ' + str(error))
 
         ### Send Response
         print('[Sending Response to Node]')
@@ -107,11 +116,16 @@ class HiveAggregator:
     ## Render Index
     @cherrypy.expose
     def index(self):
-        return ''
+        html = open('static/index.html').read()
+        return html
     
 # Main
 if __name__ == '__main__':
     aggregator = HiveAggregator()
     cherrypy.server.socket_host = aggregator.CHERRYPY_ADDR
     cherrypy.server.socket_port = aggregator.CHERRYPY_PORT
-    cherrypy.quickstart(aggregator, '/')
+    currdir = os.path.dirname(os.path.abspath(__file__))
+    conf = {
+        '/': {'tools.staticdir.on':True, 'tools.staticdir.dir':os.path.join(currdir,'static')}
+    }
+    cherrypy.quickstart(aggregator, '/', config=conf)

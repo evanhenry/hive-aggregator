@@ -1,0 +1,12 @@
+{
+"AGGREGATOR_ID": "field23",
+"ZMQ_SERVER": "tcp://*:1980",
+"FIREBASE_USER": "trevor_stanhope",
+"FIREBASE_URL": "https://hivemind-plus.firebaseio.com",
+"CHERRYPY_INTERVAL": 0.1,
+"CHERRYPY_PORT": 8080,
+"CHERRYPY_ADDR": "0.0.0.0",
+"MONGO_ADDR": "127.0.0.1",
+"MONGO_PORT": 27017,
+"MONGO_DB": "hivemind"
+}

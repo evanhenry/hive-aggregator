@@ -2,8 +2,6 @@
 "USER_ID": "trevstanhope",
 "AGGREGATOR_ID": "MAA",
 "ZMQ_SERVER": "tcp://*:1980",
-"FIREBASE_USER": "trevor_stanhope",
-"FIREBASE_URL": "https://hivemind.firebaseio.com",
 "CHERRYPY_UPDATE_INTERVAL": 60,
 "CHERRYPY_LISTEN_INTERVAL": 0.1,
 "CHERRYPY_PORT": 8080,

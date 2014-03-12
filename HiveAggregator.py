@@ -20,7 +20,6 @@ from pymongo import MongoClient
 from bson import json_util
 from cherrypy.process.plugins import Monitor
 from cherrypy import tools
-from firebase import firebase
 
 # Constants
 CONFIG_FILE = 'settings.json'
@@ -48,13 +47,6 @@ class HiveAggregator:
             self.context = zmq.Context()
             self.socket = self.context.socket(zmq.REP)
             self.socket.bind(self.ZMQ_SERVER)
-        except Exception as error:
-            print('--> ERROR: ' + str(error))
-
-        ### Firebase
-        print('[Initializing Firebase]')  
-        try:    
-            self.firebase = firebase.FirebaseApplication(self.FIREBASE_URL, None)
         except Exception as error:
             print('--> ERROR: ' + str(error))
 
@@ -86,16 +78,6 @@ class HiveAggregator:
             sample['time'] = datetime.now() # add datetime object for when sample was received
             sample['date'] = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
             print('--> SAMPLE: ' + str(sample))
-        except Exception as error:
-            print('--> ERROR: ' + str(error))
-
-        ### Store to Firebase 
-        print('[Storing to Firebase]')
-        try:
-            firebase_sample_id = self.firebase.post('/samples', sample) # add sample
-            firebase_sample_key = self.firebase.post('/hives/' + sample['hive_id'] + '/samples', firebase_sample_id) # associate sample with hive
-            print('--> FIREBASE_SAMPLE_ID: ' + str(firebase_sample_id))
-            print('--> FIREBASE_SAMPLE_KEY: ' + str(firebase_sample_key))
         except Exception as error:
             print('--> ERROR: ' + str(error))
 

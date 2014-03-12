@@ -143,7 +143,7 @@ class HiveAggregator:
             
             ## Write to file
             print('[Writing to CSV]')
-            with open('static/' + estimator + '.csv', 'w') as datafile:
+            with open('data/' + estimator + '.csv', 'w') as datafile:
                 datafile.write(','.join(headers) + '\n')
                 for data_point in sorted(data_list):
                     datafile.write(','.join(data_point) + '\n')

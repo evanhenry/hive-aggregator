@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <head>
-    <title>HiveMind</title>
+    <title>HiveAggregator</title>
+    <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href='index.css'></link>
     <link rel="shortcut icon" href='favicon.ico'></link>
     <script src="d3.v3.js" charset="utf-8"></script>
@@ -8,171 +9,126 @@
 </head>
 <body>
     <center>
+        <!-- Page Structure -->
     </center>
     <script>
         (function() {
-            var csvfile = "/data/temperature.csv";
-            var margin = {top: 20, right: 80, bottom: 30, left: 50},
+            var margin = {top: 0, right: 40, bottom: 50, left: 40},
                 width = $(window).width() - margin.left - margin.right,
                 height = $(window).height() - margin.top - margin.bottom;
-            var parseDate = d3.time.format("%Y-%m-%d-%H-%M").parse; // CSV is only to minutes
-            var x = d3.time.scale()
-                .range([0, width]);
-            var y = d3.scale.linear()
-                .range([height, 0]);
-            var color = d3.scale.category10();
-            var xAxis = d3.svg.axis()
-                .scale(x)
-                .orient("bottom");
-            var yAxis = d3.svg.axis()
-                .scale(y)
-                .orient("left");
-            var line = d3.svg.line()
-                .interpolate("basis")
-                .x(function(d) { return x(d.date); })
-                .y(function(d) { return y(d.temperature); });
-            var svg = d3.select("center").append("svg")
+
+            // setup x 
+            var xValue = function(d) { return d.temperature;}, // data -> value
+                xScale = d3.scale.linear().range([0, width]), // value -> display
+                xMap = function(d) { return xScale(xValue(d));}, // data -> display
+                xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+
+            // setup y
+            var yValue = function(d) { return d.humidity;}, // data -> value
+                yScale = d3.scale.linear().range([height, 0]), // value -> display
+                yMap = function(d) { return yScale(yValue(d));}, // data -> display
+                yAxis = d3.svg.axis().scale(yScale).orient("left");
+
+            // setup fill color
+            var cValue = function(d) { return d.hive_id;},
+                color = d3.scale.category10();
+            
+            // Setup tooltip
+            var dValue = function(d) { return d.time;}
+
+            // add the graph canvas to the body of the webpage
+            var svg = d3.select("body").append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-            d3.csv(csvfile, function(error, data) {
-              color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
-              data.forEach(function(d) {
-                d.date = parseDate(d.date);
-              });
-              var hives = color.domain().map(function(name) {
-                return {
-                  name: name,
-                  values: data.map(function(d) {
-                    return {date: d.date, temperature: +d[name]};
-                  })
-                };
-              });
-              x.domain(d3.extent(data, function(d) { return d.date; }));
-              y.domain([
-                d3.min(hives, function(c) { return d3.min(c.values, function(v) { return v.temperature; }); }),
-                d3.max(hives, function(c) { return d3.max(c.values, function(v) { return v.temperature; }); })
-              ]);
-              svg.append("g")
-                  .attr("class", "x axis")
-                  .attr("transform", "translate(0," + height + ")")
-                  .call(xAxis);
-              svg.append("g")
-                  .attr("class", "y axis")
-                  .call(yAxis)
-                  .append("text")
-                  .attr("transform", "rotate(-90)")
-                  .attr("y", 6)
-                  .attr("dy", ".71em")
-                  .style("text-anchor", "end")
-                  .text("Temperature (ºC)");
-              var hive = svg.selectAll(".hive")
-                  .data(hives)
-                  .enter().append("g")
-                  .attr("class", "hive");
-              hive.append("path")
-                  .attr("class", "line")
-                  .attr("d", function(d) { return line(d.values); })
-                  .style("stroke", function(d) { return color(d.name); });
-              hive.append("text")
-                  .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
-                  .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.temperature) + ")"; })
-                  .attr("x", 3)
-                  .attr("dy", ".35em")
-                  .text(function(d) { return d.name; });
-            });
-        })();
-        
-        (function() {
-            var csvfile = "/data/humidity.csv";
-            var margin = {top: 20, right: 80, bottom: 30, left: 50},
-                width = $(window).width() - margin.left - margin.right,
-                height = $(window).height() - margin.top - margin.bottom;
 
-            var parseDate = d3.time.format("%Y-%m-%d-%H-%M").parse;
+            // add the tooltip area to the webpage
+            var tooltip = d3.select("body").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0);
 
-            var x = d3.time.scale()
-                .range([0, width]);
+            // load data
+            d3.csv("/data/data.csv", function(error, data) {
 
-            var y = d3.scale.linear()
-                .range([height, 0]);
+                // change string (from CSV) into number format
+                data.forEach(function(d) {
+                    d.temperature = +d.temperature;
+                    d.humidity = +d.humidity;
+                });
 
-            var color = d3.scale.category10();
+                // don't want dots overlapping axis, so add in buffer to data domain
+                xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
+                yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
 
-            var xAxis = d3.svg.axis()
-                .scale(x)
-                .orient("bottom");
+                // x-axis
+                svg.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(xAxis)
+                    .append("text")
+                    .attr("class", "label")
+                    .attr("x", width)
+                    .attr("y", -6)
+                    .style("text-anchor", "end")
+                    .text("Temperature");
 
-            var yAxis = d3.svg.axis()
-                .scale(y)
-                .orient("left");
+                // y-axis
+                svg.append("g")
+                    .attr("class", "y axis")
+                    .call(yAxis)
+                    .append("text")
+                    .attr("class", "label")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 6)
+                    .attr("dy", ".71em")
+                    .style("text-anchor", "end")
+                    .text("Humidity");
 
-            var line = d3.svg.line()
-                .interpolate("basis")
-                .x(function(d) { return x(d.date); })
-                .y(function(d) { return y(d.temperature); });
+                // draw dots
+                svg.selectAll(".dot")
+                    .data(data)
+                    .enter().append("circle")
+                    .attr("class", "dot")
+                    .attr("r", 3.5)
+                    .attr("cx", xMap)
+                    .attr("cy", yMap)
+                    .style("fill", function(d) { return color(cValue(d));}) 
+                    .on("mouseover", function(d) {
+                        tooltip.transition()
+                            .duration(200)
+                           .style("opacity", .9);
+                        tooltip.html(d.hive_id + " - " + dValue(d))
+                           .style("left", (d3.event.pageX + 5) + "px")
+                           .style("top", (d3.event.pageY - 28) + "px");
+                    })
+                    .on("mouseout", function(d) {
+                        tooltip.transition()
+                           .duration(500)
+                           .style("opacity", 0);
+                    });
 
-            var svg = d3.select("center").append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-              .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                // draw legend
+                var legend = svg.selectAll(".legend")
+                    .data(color.domain())
+                    .enter().append("g")
+                    .attr("class", "legend")
+                    .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
-            d3.csv(csvfile, function(error, data) {
-              color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
+                // draw legend colored rectangles
+                legend.append("rect")
+                    .attr("x", width - 18)
+                    .attr("width", 18)
+                    .attr("height", 18)
+                    .style("fill", color);
 
-              data.forEach(function(d) {
-                d.date = parseDate(d.date);
-              });
-
-              var hives = color.domain().map(function(name) {
-                return {
-                  name: name,
-                  values: data.map(function(d) {
-                    return {date: d.date, temperature: +d[name]};
-                  })
-                };
-              });
-
-              x.domain(d3.extent(data, function(d) { return d.date; }));
-
-              y.domain([
-                d3.min(hives, function(c) { return d3.min(c.values, function(v) { return v.temperature; }); }),
-                d3.max(hives, function(c) { return d3.max(c.values, function(v) { return v.temperature; }); })
-              ]);
-
-              svg.append("g")
-                  .attr("class", "x axis")
-                  .attr("transform", "translate(0," + height + ")")
-                  .call(xAxis);
-
-              svg.append("g")
-                  .attr("class", "y axis")
-                  .call(yAxis)
-                .append("text")
-                  .attr("transform", "rotate(-90)")
-                  .attr("y", 6)
-                  .attr("dy", ".71em")
-                  .style("text-anchor", "end")
-                  .text("Humidity (%)");
-
-              var hive = svg.selectAll(".hive")
-                  .data(hives)
-                  .enter().append("g")
-                  .attr("class", "hive");
-
-              hive.append("path")
-                  .attr("class", "line")
-                  .attr("d", function(d) { return line(d.values); })
-                  .style("stroke", function(d) { return color(d.name); });
-
-              hive.append("text")
-                  .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
-                  .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.temperature) + ")"; })
-                  .attr("x", 3)
-                  .attr("dy", ".35em")
-                  .text(function(d) { return d.name; });
+                // draw legend text
+                legend.append("text")
+                    .attr("x", width - 24)
+                    .attr("y", 9)
+                    .attr("dy", ".35em")
+                    .style("text-anchor", "end")
+                    .text(function(d) { return d;})
             });
         })();
     </script>

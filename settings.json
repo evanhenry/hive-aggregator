@@ -8,5 +8,6 @@
 "CHERRYPY_ADDR": "0.0.0.0",
 "MONGO_ADDR": "127.0.0.1",
 "MONGO_PORT": 27017,
-"MONGO_DB": "hivemind"
+"MONGO_DB": "HiveAggregator",
+"POST_URL": "http://127.0.0.1:5000/new"
 }

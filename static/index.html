@@ -12,29 +12,38 @@
         <!-- Page Structure -->
     </center>
     <script>
+        // Non-Temporal Multi-Hive Scatter Plot (e.g. humidity vs temp)
         (function() {
+            var csvfile = "/data/data.csv";
+            var xParameter = "temperature";
+            var yParameter = "humidity";
+            var cParameter = "hive_id";
+            var dParameter = "time";
+            var xLabel = "Temperature (C)";
+            var yLabel = "Humidity (%)";
+            
             var margin = {top: 0, right: 40, bottom: 50, left: 40},
                 width = $(window).width() - margin.left - margin.right,
                 height = $(window).height() - margin.top - margin.bottom;
 
             // setup x 
-            var xValue = function(d) { return d.temperature;}, // data -> value
+            var xValue = function(d) { return d[xParameter];}, // data -> value
                 xScale = d3.scale.linear().range([0, width]), // value -> display
                 xMap = function(d) { return xScale(xValue(d));}, // data -> display
                 xAxis = d3.svg.axis().scale(xScale).orient("bottom");
 
             // setup y
-            var yValue = function(d) { return d.humidity;}, // data -> value
+            var yValue = function(d) { return d[yParameter];}, // data -> value
                 yScale = d3.scale.linear().range([height, 0]), // value -> display
                 yMap = function(d) { return yScale(yValue(d));}, // data -> display
                 yAxis = d3.svg.axis().scale(yScale).orient("left");
 
             // setup fill color
-            var cValue = function(d) { return d.hive_id;},
+            var cValue = function(d) { return d[cParameter];},
                 color = d3.scale.category10();
             
             // Setup tooltip
-            var dValue = function(d) { return d.time;}
+            var dValue = function(d) { return d[dParameter];}
 
             // add the graph canvas to the body of the webpage
             var svg = d3.select("body").append("svg")
@@ -49,12 +58,12 @@
                 .style("opacity", 0);
 
             // load data
-            d3.csv("/data/data.csv", function(error, data) {
+            d3.csv(csvfile, function(error, data) {
 
                 // change string (from CSV) into number format
                 data.forEach(function(d) {
-                    d.temperature = +d.temperature;
-                    d.humidity = +d.humidity;
+                    d[xParameter] = +d[xParameter];
+                    d[yParameter] = +d[yParameter];
                 });
 
                 // don't want dots overlapping axis, so add in buffer to data domain
@@ -71,7 +80,7 @@
                     .attr("x", width)
                     .attr("y", -6)
                     .style("text-anchor", "end")
-                    .text("Temperature");
+                    .text(xLabel);
 
                 // y-axis
                 svg.append("g")
@@ -83,7 +92,7 @@
                     .attr("y", 6)
                     .attr("dy", ".71em")
                     .style("text-anchor", "end")
-                    .text("Humidity");
+                    .text(yLabel);
 
                 // draw dots
                 svg.selectAll(".dot")

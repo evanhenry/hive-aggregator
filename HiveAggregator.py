@@ -1,25 +1,24 @@
 #!/usr/bin/env python
 """
-HiveMind-Plus Aggregator
+HiveAggregator
 Developed by Trevor Stanhope
+
+HiveAggregator is a minimal CherryPy instance
 
 TODO:
 - Scatter plot, not line graph
-- convert to Flask?
-- Validate received data
-- POST to HiveServer
+
 """
 
 # Libraries
-import zmq
 import json
 import ast
 import cherrypy
 import os
 import urllib2
 import sys
+import numpy
 from datetime import datetime, timedelta
-from pymongo import MongoClient
 from cherrypy.process.plugins import Monitor
 from cherrypy import tools
 
@@ -29,7 +28,7 @@ try:
 except Exception as err:
     CONFIG_FILE = 'settings.json'
 
-# HiveAggregator
+# HiveAggregator CherryPy server
 class HiveAggregator:
 
     ## Initialize
@@ -45,24 +44,21 @@ class HiveAggregator:
                 except AttributeError as error:
                     print(key + ' : ' + str(settings[key]))
                     setattr(self, key, settings[key])
-
-        ### ZMQ
-        print('[Initializing ZMQ]')
+        
+        ### Asynch Host
+        print('[Initializing Asynch Host]')
         try:
-            self.context = zmq.Context()
-            self.socket = self.context.socket(zmq.REP)
-            self.socket.bind(self.ZMQ_SERVER)
+            self.host = Asynch(self)
+        except Exception as error:
+            print('--> ERROR: ' + str(error))   
+        
+        ### Learner
+        print('[Enabling Learner]')
+        try:
+            self.learner = Learner(self)
         except Exception as error:
             print('--> ERROR: ' + str(error))
-
-        ### Mongo
-        print('[Initializing Mongo]')
-        try:    
-            self.mongo_client = MongoClient(self.MONGO_ADDR, self.MONGO_PORT)
-            self.mongo_db = self.mongo_client[self.MONGO_DB]
-        except Exception as error:
-            print('--> ERROR: ' + str(error))        
-
+        
         ### CherryPy Monitors
         print('[Enabling Monitors]')
         try:
@@ -79,34 +75,6 @@ class HiveAggregator:
             return sample
         except Exception as error:
             print('--> ERROR: ' + str(error))
-            
-    ## Check Sample
-    def check(self, sample):
-        sample['aggregator_id'] = self.AGGREGATOR_ID
-        return sample
-    
-    ## Post to Server
-    def post(self, sample):
-        print('[Posting Sample to Server]')
-        try:
-            data = json.dumps(sample)
-            req = urllib2.Request(self.POST_URL)
-            req.add_header('Content-Type','application/json')
-            response = urllib2.urlopen(req, data)
-            return response
-        except Exception as error:
-            print('--> ERROR: ' + str(error))
-            
-    ## Store to Mongo
-    def store(self, sample):
-        print('[Storing to Mongo]')
-        try:
-            sample['time'] = datetime.now()
-            hive = self.mongo_db[sample['hive_id']]
-            mongo_id = hive.insert(sample)
-            return mongo_id
-        except Exception as error:
-            print('--> ERROR: ' + str(error))
     
     ### Send Response
     def send(self):
@@ -117,16 +85,69 @@ class HiveAggregator:
             self.socket.send(dump)
         except Exception as error:
             print('--> ERROR: ' + str(error))  
-               
+            
+    ## Post to Server
+    def post(self, sample):
+        print('[Posting Sample to Server]')
+        try:
+            sample['aggregator_id'] = self.AGGREGATOR_ID
+            data = json.dumps(sample)
+            req = urllib2.Request(self.POST_URL)
+            req.add_header('Content-Type','application/json')
+            response = urllib2.urlopen(req, data)
+            return response
+        except Exception as error:
+            print('--> ERROR: ' + str(error))
+                       
     ## Listen for Next Sample
     def listen(self):
         print('\n')
-        sample = self.receive() 
-        sample = self.check(sample)
+        sample = self.host.receive() 
+        state = self.learner.classify(sample)
         response = self.post(sample)
-        mongo_id = self.store(sample)
-        self.send()
-        
+        mongo_id = self.learner.store(sample)
+        self.host.send()
+    
+    ## Render Index
+    @cherrypy.expose
+    def index(self):
+        self.learner.query_today()                    
+        html = open('static/index.html').read()
+        return html
+
+# Learner
+from pymongo import MongoClient
+class Learner(object):
+
+    ## Init
+    def __init__(self, object):
+        print('[Initializing Mongo]')
+        try:    
+            self.mongo_client = MongoClient(object.MONGO_ADDR, object.MONGO_PORT)
+            self.mongo_db = self.mongo_client[object.MONGO_DB]
+        except Exception as error:
+            print('--> ERROR: ' + str(error)) 
+    
+    ## Train with User Log
+    def train(self, log):
+        hive_id = log['hive_id']
+        collection = self.mongo_db[hive_id]
+        period = datetime.now()
+        event = {'type':'event'}
+        for sample in collection.find({'time':{'$lt':period}, 'type':'sample'}).sort('time'):
+            for param in params:
+                event[param] = sample[param]    
+        return event
+    
+    ## Classify Sample
+    def classify(self, sample):
+        hive_id = sample['hive_id']
+        collection = self.mongo_db[hive_id]
+        period = datetime.now()
+        for event in collection.find({'time':{'$lt':period}, 'type':'event'}).sort('time'):
+            pass
+        return {'none'}
+    
     ## Query Last 24 hours to CSV
     def query_today(self):
         print('[Querying Last 24 Hours]')
@@ -144,13 +165,52 @@ class HiveAggregator:
                         humidity = str(sample['humidity'])
                         time = sample['time'].strftime('%H:%M')
                         datafile.write(','.join([hive_id,time,temperature,humidity,'\n']))
+        
+    ## Store to Mongo
+    def store(self, doc):
+        print('[Storing to Mongo]')
+        try:
+            doc['time'] = datetime.now()
+            hive = self.mongo_db[doc['hive_id']]
+            doc_id = hive.insert(doc)
+            return doc_id
+        except Exception as error:
+            print('--> ERROR: ' + str(error))
+
+# Asynchronous Host
+import zmq
+class Asynch(object):
+
+    ## Init
+    def __init__(self, object):
+        ### ZMQ
+        print('[Initializing ZMQ]')
+        try:
+            self.context = zmq.Context()
+            self.socket = self.context.socket(zmq.REP)
+            self.socket.bind(object.ZMQ_SERVER)
+        except Exception as error:
+            print('--> ERROR: ' + str(error))   
+            
+    ## Receive Sample
+    def receive(self):
+        print('[Receiving Sample from Hive]')
+        try:
+            packet = self.socket.recv()
+            sample = json.loads(packet)
+            return sample
+        except Exception as error:
+            print('--> ERROR: ' + str(error))
     
-    ## Render Index
-    @cherrypy.expose
-    def index(self):
-        self.query_today()                    
-        html = open('static/index.html').read()
-        return html
+    ### Send Response
+    def send(self):
+        print('[Sending Response to Hive]')
+        try:
+            response = {'status':'okay'}
+            dump = json.dumps(response)
+            self.socket.send(dump)
+        except Exception as error:
+            print('--> ERROR: ' + str(error)) 
     
 # Main
 if __name__ == '__main__':

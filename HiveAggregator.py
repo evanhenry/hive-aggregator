@@ -155,7 +155,7 @@ class HiveAggregator:
     ## Render Index
     @cherrypy.expose
     def index(self):
-        self.learner.query_range('int_t', 'ext_t', 24, 'temp')                    
+        self.query_range('int_t', 'ext_t', 24, 'temp')                    
         html = open('static/index.html').read()
         return html
     
@@ -165,7 +165,6 @@ if __name__ == '__main__':
     cherrypy.server.socket_host = aggregator.CHERRYPY_ADDR
     cherrypy.server.socket_port = aggregator.CHERRYPY_PORT
     currdir = os.path.dirname(os.path.abspath(__file__))
-    cherrypy.config.update({ "environment": "embedded" })
     conf = {
         '/': {'tools.staticdir.on':True, 'tools.staticdir.dir':os.path.join(currdir,'static')},
         '/data': {'tools.staticdir.on':True, 'tools.staticdir.dir':os.path.join(currdir,'data')}, # NEED the '/' before the folder name

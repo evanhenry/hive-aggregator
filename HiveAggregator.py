@@ -42,7 +42,7 @@ class HiveAggregator:
                 try:
                     getattr(self, key)
                 except AttributeError as error:
-                    print(key + ' : ' + str(settings[key]))
+                    print('\t' + key + ' : ' + str(settings[key]))
                     setattr(self, key, settings[key])
         
         ### Asynch Host
@@ -50,21 +50,21 @@ class HiveAggregator:
         try:
             self.host = Asynch(self)
         except Exception as error:
-            print('--> ERROR: ' + str(error))   
+            print('\tERROR: ' + str(error))   
         
         ### Learner
         print('[Enabling Learner]')
         try:
             self.learner = Learner(self)
         except Exception as error:
-            print('--> ERROR: ' + str(error))
+            print('\tERROR: ' + str(error))
         
         ### CherryPy Monitors
         print('[Enabling Monitors]')
         try:
             Monitor(cherrypy.engine, self.listen, frequency=self.CHERRYPY_LISTEN_INTERVAL).subscribe()
         except Exception as error:
-            print('--> ERROR: ' + str(error))
+            print('\tERROR: ' + str(error))
             
     ## Receive Sample
     def receive(self):
@@ -72,9 +72,10 @@ class HiveAggregator:
         try:
             packet = self.socket.recv()
             sample = json.loads(packet)
+            print('\t' + str(sample))
             return sample
         except Exception as error:
-            print('--> ERROR: ' + str(error))
+            print('\tERROR: ' + str(error))
     
     ### Send Response
     def send(self):
@@ -82,9 +83,9 @@ class HiveAggregator:
         try:
             response = {'status':'okay'}
             dump = json.dumps(response)
-            self.socket.send(dump)
+            print('\t' + str(esponse))
         except Exception as error:
-            print('--> ERROR: ' + str(error))  
+            print('\tERROR: ' + str(error))  
             
     ## Post to Server
     def post(self, sample):
@@ -95,9 +96,10 @@ class HiveAggregator:
             req = urllib2.Request(self.POST_URL)
             req.add_header('Content-Type','application/json')
             response = urllib2.urlopen(req, data)
+            print('\t' + str(response))
             return response
         except Exception as error:
-            print('--> ERROR: ' + str(error))
+            print('\tERROR: ' + str(error))
                        
     ## Listen for Next Sample
     def listen(self):
@@ -111,9 +113,9 @@ class HiveAggregator:
     ## Render Index
     @cherrypy.expose
     def index(self):
-        self.learner.query_today()                    
+        self.learner.query_range('int_t', 'ext_t', 24, 'temp')                    
         html = open('static/index.html').read()
-        return html
+        return htmls
 
 # Learner
 from pymongo import MongoClient
@@ -125,8 +127,9 @@ class Learner(object):
         try:    
             self.mongo_client = MongoClient(object.MONGO_ADDR, object.MONGO_PORT)
             self.mongo_db = self.mongo_client[object.MONGO_DB]
+            print('\tOKAY')
         except Exception as error:
-            print('--> ERROR: ' + str(error)) 
+            print('\tERROR: ' + str(error)) 
     
     ## Train with User Log
     def train(self, log):
@@ -149,22 +152,25 @@ class Learner(object):
         return {'none'}
     
     ## Query Last 24 hours to CSV
-    def query_today(self):
+    def query_range(self, param1, param2, hours, filename):
         print('[Querying Last 24 Hours]')
-        with open('data/data.csv', 'w') as datafile:
-            datafile.write('hive_id,time,temperature,humidity\n')
-            one_day_ago = datetime.today() - timedelta(hours = 24) # get datetime of 1 day ago
+        with open('data/' + filename + '.csv', 'w') as datafile:
+            datafile.write(','.join(['hive_id','time',param1, param2,'\n']))
+            one_day_ago = datetime.today() - timedelta(hours = hours) # get datetime of 1 day ago
             for name in self.mongo_db.collection_names():
                 if name == 'system.indexes':
                     pass
                 else:
                     hive = self.mongo_db[name]
                     for sample in hive.find({'time':{'$gt':one_day_ago}}):
-                        hive_id = str(sample['hive_id'])
-                        temperature = str(sample['temperature'])
-                        humidity = str(sample['humidity'])
-                        time = sample['time'].strftime('%H:%M')
-                        datafile.write(','.join([hive_id,time,temperature,humidity,'\n']))
+                        try:
+                            hive_id = str(sample['hive_id'])
+                            val1 = str(sample[param1])
+                            val2 = str(sample[param2])
+                            time = sample['time'].strftime('%H:%M')
+                            datafile.write(','.join([hive_id,time,val1,val2,'\n']))
+                        except Exception:
+                            pass
         
     ## Store to Mongo
     def store(self, doc):
@@ -173,6 +179,7 @@ class Learner(object):
             doc['time'] = datetime.now()
             hive = self.mongo_db[doc['hive_id']]
             doc_id = hive.insert(doc)
+            print('\tOKAY: ' + str(doc_id))
             return doc_id
         except Exception as error:
             print('--> ERROR: ' + str(error))
@@ -189,8 +196,9 @@ class Asynch(object):
             self.context = zmq.Context()
             self.socket = self.context.socket(zmq.REP)
             self.socket.bind(object.ZMQ_SERVER)
+            print('\tOKAY')
         except Exception as error:
-            print('--> ERROR: ' + str(error))   
+            print('\tERROR: ' + str(error))   
             
     ## Receive Sample
     def receive(self):
@@ -198,9 +206,10 @@ class Asynch(object):
         try:
             packet = self.socket.recv()
             sample = json.loads(packet)
+            print('\tOKAY: ' + str(sample))
             return sample
         except Exception as error:
-            print('--> ERROR: ' + str(error))
+            print('\tERROR: ' + str(error))
     
     ### Send Response
     def send(self):
@@ -209,8 +218,9 @@ class Asynch(object):
             response = {'status':'okay'}
             dump = json.dumps(response)
             self.socket.send(dump)
+            print('\tOKAY: ' + str(response))
         except Exception as error:
-            print('--> ERROR: ' + str(error)) 
+            print('\tERROR: ' + str(error)) 
     
 # Main
 if __name__ == '__main__':

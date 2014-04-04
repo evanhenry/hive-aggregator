@@ -21,6 +21,8 @@ import numpy
 from datetime import datetime, timedelta
 from cherrypy.process.plugins import Monitor
 from cherrypy import tools
+from pymongo import MongoClient
+import zmq
 
 # Constants
 try:
@@ -33,7 +35,6 @@ class HiveAggregator:
 
     ## Initialize
     def __init__(self):
-
         ### Load Configuration
         print('[Loading Config File]')
         with open(CONFIG_FILE) as config:
@@ -44,89 +45,27 @@ class HiveAggregator:
                 except AttributeError as error:
                     print('\t' + key + ' : ' + str(settings[key]))
                     setattr(self, key, settings[key])
-        
-        ### Asynch Host
-        print('[Initializing Asynch Host]')
+        ### ZMQ
+        print('[Initializing ZMQ]')
         try:
-            self.host = Asynch(self)
-        except Exception as error:
-            print('\tERROR: ' + str(error))   
-        
-        ### Learner
-        print('[Enabling Learner]')
-        try:
-            self.learner = Learner(self)
+            self.context = zmq.Context()
+            self.socket = self.context.socket(zmq.REP)
+            self.socket.bind(self.ZMQ_SERVER)
+            print('\tOKAY')
         except Exception as error:
             print('\tERROR: ' + str(error))
-        
         ### CherryPy Monitors
         print('[Enabling Monitors]')
         try:
-            Monitor(cherrypy.engine, self.listen, frequency=self.CHERRYPY_LISTEN_INTERVAL).subscribe()
+            Monitor(cherrypy.engine, self.listen, frequency=self.CHERRYPY_INTERVAL).subscribe()
+            print('\tOKAY')
         except Exception as error:
-            print('\tERROR: ' + str(error))
-            
-    ## Receive Sample
-    def receive(self):
-        print('[Receiving Sample from Hive]')
-        try:
-            packet = self.socket.recv()
-            sample = json.loads(packet)
-            print('\t' + str(sample))
-            return sample
-        except Exception as error:
-            print('\tERROR: ' + str(error))
-    
-    ### Send Response
-    def send(self):
-        print('[Sending Response to Hive]')
-        try:
-            response = {'status':'okay'}
-            dump = json.dumps(response)
-            print('\t' + str(esponse))
-        except Exception as error:
-            print('\tERROR: ' + str(error))  
-            
-    ## Post to Server
-    def post(self, sample):
-        print('[Posting Sample to Server]')
-        try:
-            sample['aggregator_id'] = self.AGGREGATOR_ID
-            data = json.dumps(sample)
-            req = urllib2.Request(self.POST_URL)
-            req.add_header('Content-Type','application/json')
-            response = urllib2.urlopen(req, data)
-            print('\t' + str(response))
-            return response
-        except Exception as error:
-            print('\tERROR: ' + str(error))
-                       
-    ## Listen for Next Sample
-    def listen(self):
-        print('\n')
-        sample = self.host.receive() 
-        state = self.learner.classify(sample)
-        response = self.post(sample)
-        mongo_id = self.learner.store(sample)
-        self.host.send()
-    
-    ## Render Index
-    @cherrypy.expose
-    def index(self):
-        self.learner.query_range('int_t', 'ext_t', 24, 'temp')                    
-        html = open('static/index.html').read()
-        return htmls
-
-# Learner
-from pymongo import MongoClient
-class Learner(object):
-
-    ## Init
-    def __init__(self, object):
+            print('\tERROR: ' + str(error))     
+        ### MongoDB
         print('[Initializing Mongo]')
         try:    
-            self.mongo_client = MongoClient(object.MONGO_ADDR, object.MONGO_PORT)
-            self.mongo_db = self.mongo_client[object.MONGO_DB]
+            self.mongo_client = MongoClient(self.MONGO_ADDR, self.MONGO_PORT)
+            self.mongo_db = self.mongo_client[self.MONGO_DB]
             print('\tOKAY')
         except Exception as error:
             print('\tERROR: ' + str(error)) 
@@ -141,7 +80,7 @@ class Learner(object):
             for param in params:
                 event[param] = sample[param]    
         return event
-    
+
     ## Classify Sample
     def classify(self, sample):
         hive_id = sample['hive_id']
@@ -150,7 +89,7 @@ class Learner(object):
         for event in collection.find({'time':{'$lt':period}, 'type':'event'}).sort('time'):
             pass
         return {'none'}
-    
+
     ## Query Last 24 hours to CSV
     def query_range(self, param1, param2, hours, filename):
         print('[Querying Last 24 Hours]')
@@ -171,7 +110,6 @@ class Learner(object):
                             datafile.write(','.join([hive_id,time,val1,val2,'\n']))
                         except Exception:
                             pass
-        
     ## Store to Mongo
     def store(self, doc):
         print('[Storing to Mongo]')
@@ -183,23 +121,7 @@ class Learner(object):
             return doc_id
         except Exception as error:
             print('--> ERROR: ' + str(error))
-
-# Asynchronous Host
-import zmq
-class Asynch(object):
-
-    ## Init
-    def __init__(self, object):
-        ### ZMQ
-        print('[Initializing ZMQ]')
-        try:
-            self.context = zmq.Context()
-            self.socket = self.context.socket(zmq.REP)
-            self.socket.bind(object.ZMQ_SERVER)
-            print('\tOKAY')
-        except Exception as error:
-            print('\tERROR: ' + str(error))   
-            
+       
     ## Receive Sample
     def receive(self):
         print('[Receiving Sample from Hive]')
@@ -220,7 +142,22 @@ class Asynch(object):
             self.socket.send(dump)
             print('\tOKAY: ' + str(response))
         except Exception as error:
-            print('\tERROR: ' + str(error)) 
+            print('\tERROR: ' + str(error))   
+                       
+    ## Listen for Next Sample
+    def listen(self):
+        print('\n')
+        sample = self.receive()
+        self.send()
+        state = self.classify(sample)
+        mongo_id = self.store(sample)
+    
+    ## Render Index
+    @cherrypy.expose
+    def index(self):
+        self.learner.query_range('int_t', 'ext_t', 24, 'temp')                    
+        html = open('static/index.html').read()
+        return html
     
 # Main
 if __name__ == '__main__':
@@ -228,6 +165,7 @@ if __name__ == '__main__':
     cherrypy.server.socket_host = aggregator.CHERRYPY_ADDR
     cherrypy.server.socket_port = aggregator.CHERRYPY_PORT
     currdir = os.path.dirname(os.path.abspath(__file__))
+    cherrypy.config.update({ "environment": "embedded" })
     conf = {
         '/': {'tools.staticdir.on':True, 'tools.staticdir.dir':os.path.join(currdir,'static')},
         '/data': {'tools.staticdir.on':True, 'tools.staticdir.dir':os.path.join(currdir,'data')}, # NEED the '/' before the folder name

@@ -6,8 +6,7 @@ Developed by Trevor Stanhope
 HiveAggregator is a minimal CherryPy instance
 
 TODO:
-- Scatter plot, not line graph
-
+- Log post --> train learners
 """
 
 # Libraries
@@ -15,14 +14,15 @@ import json
 import ast
 import cherrypy
 import os
-import urllib2
 import sys
 import numpy
 from datetime import datetime, timedelta
 from cherrypy.process.plugins import Monitor
 from cherrypy import tools
 from pymongo import MongoClient
+from bson import json_util
 import zmq
+from sklearn import svm
 
 # Constants
 try:
@@ -68,48 +68,41 @@ class HiveAggregator:
             self.mongo_db = self.mongo_client[self.MONGO_DB]
             print('\tOKAY')
         except Exception as error:
-            print('\tERROR: ' + str(error)) 
+            print('\tERROR: ' + str(error))
+        ### SKLearn
+        print('[Initializing SKlearn]')
+        try:
+            self.svc_health = svm.SVC(kernel='rbf')
+            print('\tOKAY')
+        except Exception as error:
+            print('\tERROR: ' + str(error))
     
-    ## Train with User Log
+    ## Train
     def train(self, log):
-        hive_id = log['hive_id']
-        collection = self.mongo_db[hive_id]
-        period = datetime.now()
-        event = {'type':'event'}
-        for sample in collection.find({'time':{'$lt':period}, 'type':'sample'}).sort('time'):
-            for param in params:
-                event[param] = sample[param]    
-        return event
-
-    ## Classify Sample
+        pass
+    
+    ## Classify
     def classify(self, sample):
-        hive_id = sample['hive_id']
-        collection = self.mongo_db[hive_id]
-        period = datetime.now()
-        for event in collection.find({'time':{'$lt':period}, 'type':'event'}).sort('time'):
-            pass
-        return {'none'}
-
-    ## Query Last 24 hours to CSV
-    def query_range(self, param1, param2, hours, filename):
-        print('[Querying Last 24 Hours]')
-        with open('data/' + filename + '.csv', 'w') as datafile:
-            datafile.write(','.join(['hive_id','time',param1, param2,'\n']))
-            one_day_ago = datetime.today() - timedelta(hours = hours) # get datetime of 1 day ago
+        prediction = 1
+        return prediction
+        
+    ## Query Param in Range to JSON-file
+    def query_range(self, start_hours, end_hours):
+        print('[Querying Data Range]')
+        print start_hours
+        print end_hours
+        with open('data/samples.json', 'w') as jsonfile:
+            result = []
+            start = datetime.now() - timedelta(hours = start_hours) # get datetime
+            end = datetime.now() - timedelta(hours = end_hours) # get datetime
             for name in self.mongo_db.collection_names():
-                if name == 'system.indexes':
-                    pass
-                else:
-                    hive = self.mongo_db[name]
-                    for sample in hive.find({'time':{'$gt':one_day_ago}}):
-                        try:
-                            hive_id = str(sample['hive_id'])
-                            val1 = str(sample[param1])
-                            val2 = str(sample[param2])
-                            time = sample['time'].strftime('%H:%M')
-                            datafile.write(','.join([hive_id,time,val1,val2,'\n']))
-                        except Exception:
-                            pass
+                if not name == 'system.indexes':
+                    for sample in self.mongo_db[name].find({'time':{'$gt': end, '$lt':start}}):
+                        sample['time'] = datetime.strftime(sample['time'], self.TIME_FORMAT)
+                        result.append(sample)
+            dump = json_util.dumps(result, indent=4)
+            jsonfile.write(dump)
+                
     ## Store to Mongo
     def store(self, doc):
         print('[Storing to Mongo]')
@@ -148,16 +141,34 @@ class HiveAggregator:
     def listen(self):
         print('\n')
         sample = self.receive()
+        response = self.classify(sample)
         self.send()
-        state = self.classify(sample)
         mongo_id = self.store(sample)
     
     ## Render Index
     @cherrypy.expose
     def index(self):
-        self.query_range('int_t', 'ext_t', 24, 'temp')                    
         html = open('static/index.html').read()
         return html
+    
+    ## Handle Posts
+    @cherrypy.expose
+    def default(self,*args,**kwargs): 
+        print kwargs
+        if kwargs['type'] == 'log':
+            print 'log'
+        elif kwargs['type'] == 'graph':
+            if kwargs['range_select'] == 'hour':
+                self.query_range(0, 1)
+            elif kwargs['range_select'] == 'day':
+                self.query_range(0, 24)
+            elif kwargs['range_select'] == 'week':
+                self.query_range(0, 168)
+            elif kwargs['range_select'] == 'month':
+                self.query_range(0, 744)
+        else:
+            pass
+        return 't'
     
 # Main
 if __name__ == '__main__':

@@ -8,137 +8,138 @@
     <script src="jquery-1.10.2.min.js"></script>
 </head>
 <body>
-    <center>
-        <!-- Page Structure -->
-    </center>
     <script>
-        // Non-Temporal Multi-Hive Scatter Plot (e.g. humidity vs temp)
-        (function() {
-            var csvfile = "/data/temp.csv";
-            var xParameter = "temperature";
-            var yParameter = "humidity";
-            var cParameter = "hive_id";
-            var dParameter = "time";
-            var xLabel = "Temperature (C)";
-            var yLabel = "Humidity (%)";
-            
-            var margin = {top: 0, right: 40, bottom: 50, left: 40},
-                width = $(window).width() - margin.left - margin.right,
-                height = $(window).height() - margin.top - margin.bottom;
-
-            // setup x 
-            var xValue = function(d) { return d[xParameter];}, // data -> value
-                xScale = d3.scale.linear().range([0, width]), // value -> display
-                xMap = function(d) { return xScale(xValue(d));}, // data -> display
-                xAxis = d3.svg.axis().scale(xScale).orient("bottom");
-
-            // setup y
-            var yValue = function(d) { return d[yParameter];}, // data -> value
-                yScale = d3.scale.linear().range([height, 0]), // value -> display
-                yMap = function(d) { return yScale(yValue(d));}, // data -> display
-                yAxis = d3.svg.axis().scale(yScale).orient("left");
-
-            // setup fill color
-            var cValue = function(d) { return d[cParameter];},
-                color = d3.scale.category10();
-            
-            // Setup tooltip
-            var dValue = function(d) { return d[dParameter];}
-
-            // add the graph canvas to the body of the webpage
-            var svg = d3.select("body").append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-            // add the tooltip area to the webpage
-            var tooltip = d3.select("body").append("div")
-                .attr("class", "tooltip")
-                .style("opacity", 0);
-
-            // load data
-            d3.csv(csvfile, function(error, data) {
-
-                // change string (from CSV) into number format
-                data.forEach(function(d) {
-                    d[xParameter] = +d[xParameter];
-                    d[yParameter] = +d[yParameter];
+        $(document).ready(function() {
+            $('#log_submit').click(function() {
+                $.ajax({
+                    type: "POST",
+                    url: "log",
+                    data: {
+                        'type': 'log',
+                        'form': $("#log_form").serialize(),
+                        'hive_select': $("#hive_select").val()
+                    },
+                    success: function(msg) {
+                        alert("Log Submitted!");
+                    }
                 });
 
-                // don't want dots overlapping axis, so add in buffer to data domain
-                xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
-                yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
-
-                // x-axis
-                svg.append("g")
-                    .attr("class", "x axis")
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(xAxis)
-                    .append("text")
-                    .attr("class", "label")
-                    .attr("x", width)
-                    .attr("y", -6)
-                    .style("text-anchor", "end")
-                    .text(xLabel);
-
-                // y-axis
-                svg.append("g")
-                    .attr("class", "y axis")
-                    .call(yAxis)
-                    .append("text")
-                    .attr("class", "label")
-                    .attr("transform", "rotate(-90)")
-                    .attr("y", 6)
-                    .attr("dy", ".71em")
-                    .style("text-anchor", "end")
-                    .text(yLabel);
-
-                // draw dots
-                svg.selectAll(".dot")
-                    .data(data)
-                    .enter().append("circle")
-                    .attr("class", "dot")
-                    .attr("r", 3.5)
-                    .attr("cx", xMap)
-                    .attr("cy", yMap)
-                    .style("fill", function(d) { return color(cValue(d));}) 
-                    .on("mouseover", function(d) {
-                        tooltip.transition()
-                            .duration(200)
-                           .style("opacity", .9);
-                        tooltip.html(d.hive_id + " - " + dValue(d))
-                           .style("left", (d3.event.pageX + 5) + "px")
-                           .style("top", (d3.event.pageY - 28) + "px");
-                    })
-                    .on("mouseout", function(d) {
-                        tooltip.transition()
-                           .duration(500)
-                           .style("opacity", 0);
-                    });
-
-                // draw legend
-                var legend = svg.selectAll(".legend")
-                    .data(color.domain())
-                    .enter().append("g")
-                    .attr("class", "legend")
-                    .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
-
-                // draw legend colored rectangles
-                legend.append("rect")
-                    .attr("x", width - 18)
-                    .attr("width", 18)
-                    .attr("height", 18)
-                    .style("fill", color);
-
-                // draw legend text
-                legend.append("text")
-                    .attr("x", width - 24)
-                    .attr("y", 9)
-                    .attr("dy", ".35em")
-                    .style("text-anchor", "end")
-                    .text(function(d) { return d;})
             });
-        })();
+        });
+    </script>
+
+    <form id="log_form" method="post">
+        <!-- Add dynamic list-->
+        <select id="hive_select">
+            <option value="hive_1">Hive 1</option>
+        </select><br />
+        <label for="bad"> <input type="radio" checked="checked" name="health" value="bad" id="bad" /> Bad</label><br />
+        <label for="neutral"> <input type="radio" name="health" value="neutral" id="neutral" /> Neutral</label><br />
+        <label for="good"> <input type="radio" name="health" value="good" id="good" /> Good</label><br />
+        <input type="button" id="log_submit" value="Submit Log"/> 
+    </form>
+    <script>
+        $(document).ready(function() {
+            $('#graph_submit').click(function() {
+                $.ajax({
+                    type: "POST",
+                    url: "graph",
+                    data: {'type':'graph', 'range_select':$("#range_select").val()},
+                    success: function(msg) {
+                        location.reload();
+                    }
+                });
+
+            });
+        });
+    </script>
+    <form id="graph_form" method="post">
+        <select id="range_select">
+            <option value="hour">Last Hour</option>
+            <option value="day">Last Day</option>
+            <option value="week">Last Week</option>
+            <option value="month">Last Month</option>
+        </select><br />
+        <input type="button" id="graph_submit" value="Update Graphs"/> 
+    </form>
+    <script>
+        var jsonfile = "data/samples.json";
+        var zParam = "hive_id";
+        var xLabel = "Time";
+        var xParam = "time";
+        var timeFormat = "%Y-%m-%d-%H-%M-%S";
+        var yLabel = "External Temperature";
+        var yParam = "ext_t";
+        var margin = {top: 10, right: 40, bottom: 50, left: 40},
+            width = $(window).width() - margin.left - margin.right,
+            height = $(window).height() - margin.top - margin.bottom;
+        var parseDate = d3.time.format(timeFormat).parse;
+        var x = d3.time.scale()
+            .range([0, width]);
+        var y = d3.scale.linear()
+            .range([height, 0]);
+        var color = d3.scale.category10();
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left");
+        var svg = d3.select("body").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        d3.json(jsonfile, function(data) {
+            data.forEach(function(d) {
+                d.time = parseDate(d.time);
+            });
+            x.domain(d3.extent(data, function(d) { return d[xParam]; }));
+            y.domain(d3.extent(data, function(d) { return d[yParam]; })).nice();
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis)
+                .append("text")
+                .attr("class", "label")
+                .attr("x", width)
+                .attr("y", -6)
+                .style("text-anchor", "end")
+                .text(xLabel);
+            svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+                .append("text")
+                .attr("class", "label")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 6)
+                .attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .text(yLabel)
+            svg.selectAll(".dot")
+                .data(data)
+                .enter().append("circle")
+                .attr("class", "dot")
+                .attr("r", 3.5)
+                .attr("cx", function(d) { return x(d[xParam]); })
+                .attr("cy", function(d) { return y(d[yParam]); })
+                .style("fill", function(d) { return color(d[zParam]); });
+            var legend = svg.selectAll(".legend")
+                .data(color.domain())
+                .enter().append("g")
+                .attr("class", "legend")
+                .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+            legend.append("rect")
+                .attr("x", width - 18)
+                .attr("width", 18)
+                .attr("height", 18)
+                .style("fill", color);
+            legend.append("text")
+                .attr("x", width - 24)
+                .attr("y", 9)
+                .attr("dy", ".35em")
+                .style("text-anchor", "end")
+                .text(function(d) { return d; });
+        });
     </script>
 </body>

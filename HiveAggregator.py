@@ -79,12 +79,23 @@ class HiveAggregator:
     
     ## Train
     def train(self, log):
-        pass
+        print('[Training SVM]')
+        try:
+            print log
+            self.svc_health.fit()
+            print('\tOKAY')
+        except Exception as error:
+            print('\tERROR: ' + str(error))
     
     ## Classify
     def classify(self, sample):
-        prediction = 1
-        return prediction
+        print('[Classifying State]')
+        try:
+            prediction = self.svc_health.predict()
+            print('\tOKAY')
+            return prediction
+        except Exception as error:
+            print('\tERROR: ' + str(error))
         
     ## Query Param in Range to JSON-file
     def query_range(self, start_hours, end_hours):
@@ -154,21 +165,21 @@ class HiveAggregator:
     ## Handle Posts
     @cherrypy.expose
     def default(self,*args,**kwargs): 
-        print kwargs
-        if kwargs['type'] == 'log':
-            print 'log'
-        elif kwargs['type'] == 'graph':
-            if kwargs['range_select'] == 'hour':
-                self.query_range(0, 1)
-            elif kwargs['range_select'] == 'day':
-                self.query_range(0, 24)
-            elif kwargs['range_select'] == 'week':
-                self.query_range(0, 168)
-            elif kwargs['range_select'] == 'month':
-                self.query_range(0, 744)
-        else:
+        try:
+            if kwargs['type'] == 'log':
+                self.train(kwargs)
+            elif kwargs['type'] == 'graph':
+                if kwargs['range_select'] == 'hour':
+                    self.query_range(0, 1)
+                elif kwargs['range_select'] == 'day':
+                    self.query_range(0, 24)
+                elif kwargs['range_select'] == 'week':
+                    self.query_range(0, 168)
+                elif kwargs['range_select'] == 'month':
+                    self.query_range(0, 744)
+        except Exception:
             pass
-        return 't'
+        return None
     
 # Main
 if __name__ == '__main__':

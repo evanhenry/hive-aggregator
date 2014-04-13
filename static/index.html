@@ -19,7 +19,7 @@
                         'type': 'log',
                         'health': $("#log_form input[name=health]:checked").val(),
                         'mites': $("#log_form input[name=mites]:checked").val(),
-                        'hive': $("#hive_select").val(),
+                        'hive_id': $("#hive_select").val(),
                         'swarm': $('#swarm').attr('checked')
                     },
                     success: function(msg) {
@@ -39,14 +39,14 @@
         </p>
         <p>
         Health:
-            <label for="bad"> <input type="radio" checked="checked" name="health" value="bad" id="bad" /> Bad</label>
-            <label for="neutral"> <input type="radio" name="health" value="neutral" id="neutral" /> Neutral</label>
-            <label for="good"> <input type="radio" name="health" value="good" id="good" /> Good</label>
+            <label for="good"> <input type="radio" name="health" value=1 id="good" /> Good</label>
+            <label for="neutral"> <input type="radio" name="health" value=2 id="neutral" /> Neutral</label>
+            <label for="bad"> <input type="radio" checked="checked" name="health" value=3 id="bad" /> Bad</label>           
         </p>
         Mites: 
-            <label for="bad"> <input type="radio" checked="checked" name="mites" value="none" id="none" /> None</label>
-            <label for="neutral"> <input type="radio" name="mites" value="few" id="few" /> Few</label>
-            <label for="good"> <input type="radio" name="mites" value="many" id="many" /> Many</label>
+            <label for="bad"> <input type="radio" checked="checked" name="mites" value=1 id="none" /> None</label>
+            <label for="neutral"> <input type="radio" name="mites" value="few" id=2 /> Few</label>
+            <label for="good"> <input type="radio" name="mites" value="many" id=3 /> Many</label>
         </p>
         <p>
             <input type="checkbox" id="swarm" value="true" alt="false">Swarm<br>

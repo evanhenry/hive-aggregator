@@ -81,8 +81,19 @@ class HiveAggregator:
     def train(self, log):
         print('[Training SVM]')
         try:
-            print log
-            self.svc_health.fit()
+            logs = self.mongo_db[log['hive_id']].find({'type':'log'})
+            data = []
+            targets = []
+            for log in logs:
+                start = log['time']
+                end = log['time'] - timedelta(hours = 1) #! set to next log entry
+                samples = self.mongo_db[log['hive_id']].find({'type':'sample', 'time':{'$gt':end, '$lt':start}})
+                for sample in samples:
+                    params = [sample['int_t'], sample['ext_t']]
+                    state = int(log['health'])
+                    data.append(params)
+                    targets.append(state)
+            self.svc_health.fit(data, targets)
             print('\tOKAY')
         except Exception as error:
             print('\tERROR: ' + str(error))
@@ -91,26 +102,39 @@ class HiveAggregator:
     def classify(self, sample):
         print('[Classifying State]')
         try:
-            prediction = self.svc_health.predict()
-            print('\tOKAY')
+            data = [sample['int_t'], sample['ext_t']]
+            prediction = self.svc_health.predict(data)
+            print('\tOKAY: ' + str(int(prediction)))
             return prediction
         except Exception as error:
             print('\tERROR: ' + str(error))
         
-    ## Query Param in Range to JSON-file
-    def query_range(self, start_hours, end_hours):
-        print('[Querying Data Range]')
-        print start_hours
-        print end_hours
+    ## Query Samples in Range to JSON-file
+    def query_samples(self, start_hours, end_hours):
+        print('[Querying Samples in Range]')
         with open('data/samples.json', 'w') as jsonfile:
             result = []
             start = datetime.now() - timedelta(hours = start_hours) # get datetime
             end = datetime.now() - timedelta(hours = end_hours) # get datetime
             for name in self.mongo_db.collection_names():
                 if not name == 'system.indexes':
-                    for sample in self.mongo_db[name].find({'time':{'$gt': end, '$lt':start}}):
+                    for sample in self.mongo_db[name].find({'type':'sample', 'time':{'$gt': end, '$lt':start}}):
                         sample['time'] = datetime.strftime(sample['time'], self.TIME_FORMAT)
                         result.append(sample)
+            dump = json_util.dumps(result, indent=4)
+            jsonfile.write(dump)
+            
+    ## Query Logs in Range to JSON-file
+    def query_logs(self, start_hours, end_hours):
+        with open('data/logs.json', 'w') as jsonfile:
+            result = []
+            start = datetime.now() - timedelta(hours = start_hours) # get datetime
+            end = datetime.now() - timedelta(hours = end_hours) # get datetime
+            for name in self.mongo_db.collection_names():
+                if not name == 'system.indexes':
+                    for log in self.mongo_db[name].find({'type':'log', 'time':{'$gt': end, '$lt':start}}):
+                        log['time'] = datetime.strftime(log['time'], self.TIME_FORMAT)
+                        result.append(log)
             dump = json_util.dumps(result, indent=4)
             jsonfile.write(dump)
                 
@@ -132,7 +156,7 @@ class HiveAggregator:
         try:
             packet = self.socket.recv()
             sample = json.loads(packet)
-            print('\tOKAY: ' + str(sample))
+            print(packet)
             return sample
         except Exception as error:
             print('\tERROR: ' + str(error))
@@ -167,16 +191,20 @@ class HiveAggregator:
     def default(self,*args,**kwargs): 
         try:
             if kwargs['type'] == 'log':
+                print('[Received Log]')
+                print('\t' + str(kwargs))
+                self.store(kwargs)
                 self.train(kwargs)
             elif kwargs['type'] == 'graph':
+                print('[Received Graph Update]')
                 if kwargs['range_select'] == 'hour':
-                    self.query_range(0, 1)
+                    self.query_samples(0, 1)
                 elif kwargs['range_select'] == 'day':
-                    self.query_range(0, 24)
+                    self.query_samples(0, 24)
                 elif kwargs['range_select'] == 'week':
-                    self.query_range(0, 168)
+                    self.query_samples(0, 168)
                 elif kwargs['range_select'] == 'month':
-                    self.query_range(0, 744)
+                    self.query_samples(0, 744)
         except Exception:
             pass
         return None

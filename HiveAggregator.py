@@ -35,6 +35,7 @@ class HiveAggregator:
 
     ## Initialize
     def __init__(self):
+    
         ### Load Configuration
         print('[Loading Config File]')
         with open(CONFIG_FILE) as config:
@@ -45,6 +46,7 @@ class HiveAggregator:
                 except AttributeError as error:
                     print('\t' + key + ' : ' + str(settings[key]))
                     setattr(self, key, settings[key])
+                    
         ### ZMQ
         print('[Initializing ZMQ]')
         try:
@@ -54,6 +56,7 @@ class HiveAggregator:
             print('\tOKAY')
         except Exception as error:
             print('\tERROR: ' + str(error))
+            
         ### CherryPy Monitors
         print('[Enabling Monitors]')
         try:
@@ -61,6 +64,7 @@ class HiveAggregator:
             print('\tOKAY')
         except Exception as error:
             print('\tERROR: ' + str(error))     
+            
         ### MongoDB
         print('[Initializing Mongo]')
         try:    
@@ -69,6 +73,7 @@ class HiveAggregator:
             print('\tOKAY')
         except Exception as error:
             print('\tERROR: ' + str(error))
+            
         ### SKLearn
         print('[Initializing SKlearn]')
         try:
@@ -126,6 +131,7 @@ class HiveAggregator:
             
     ## Query Logs in Range to JSON-file
     def query_logs(self, start_hours, end_hours):
+        print('[Querying from Mongo]')
         with open('data/logs.json', 'w') as jsonfile:
             result = []
             start = datetime.now() - timedelta(hours = start_hours) # get datetime
@@ -156,7 +162,7 @@ class HiveAggregator:
         try:
             packet = self.socket.recv()
             sample = json.loads(packet)
-            print(packet)
+            print('\tOKAY: ' + str(sample['hive_id']))
             return sample
         except Exception as error:
             print('\tERROR: ' + str(error))

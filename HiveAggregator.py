@@ -109,7 +109,7 @@ class HiveAggregator:
         try:
             data = [sample['int_t'], sample['ext_t']]
             prediction = self.svc_health.predict(data)
-            print('\tOKAY: ' + str(int(prediction)))
+            print('\tCLASS: ' + str(int(prediction)))
             return prediction
         except Exception as error:
             print('\tERROR: ' + str(error))
@@ -151,10 +151,10 @@ class HiveAggregator:
             doc['time'] = datetime.now()
             hive = self.mongo_db[doc['hive_id']]
             doc_id = hive.insert(doc)
-            print('\tOKAY: ' + str(doc_id))
+            print('\tDOC_ID: ' + str(doc_id))
             return doc_id
         except Exception as error:
-            print('--> ERROR: ' + str(error))
+            print('\tERROR: ' + str(error))
        
     ## Receive Sample
     def receive(self):
@@ -162,7 +162,8 @@ class HiveAggregator:
         try:
             packet = self.socket.recv()
             sample = json.loads(packet)
-            print('\tOKAY: ' + str(sample['hive_id']))
+            print('\tHIVE: ' + str(sample['hive_id']))
+            print('\tCYCLES: ' + str(sample['cycles']))
             return sample
         except Exception as error:
             print('\tERROR: ' + str(error))
@@ -174,13 +175,13 @@ class HiveAggregator:
             response = {'status':'okay'}
             dump = json.dumps(response)
             self.socket.send(dump)
-            print('\tOKAY: ' + str(response))
+            print('\tRESPONSE: ' + str(response))
         except Exception as error:
             print('\tERROR: ' + str(error))   
                        
     ## Listen for Next Sample
     def listen(self):
-        print('\n')
+        print('\n' + datetime.strftime(datetime.now(), self.TIME_FORMAT))
         sample = self.receive()
         response = self.classify(sample)
         self.send()

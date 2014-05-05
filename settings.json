@@ -1,12 +1,12 @@
 {
-"USER_ID": "trevstanhope",
-"AGGREGATOR_ID": "MAA",
-"ZMQ_SERVER": "tcp://*:1980",
-"CHERRYPY_INTERVAL": 0.1,
-"CHERRYPY_PORT": 8080,
-"CHERRYPY_ADDR": "0.0.0.0",
-"MONGO_ADDR": "127.0.0.1",
-"MONGO_PORT": 27017,
-"MONGO_DB": "HiveAggregator",
-"TIME_FORMAT": "%Y-%m-%d-%H-%M-%S"
+    "USER_ID": "trevstanhope",
+    "AGGREGATOR_ID": "MAA",
+    "ZMQ_SERVER": "tcp://*:1980",
+    "CHERRYPY_INTERVAL": 0.1,
+    "CHERRYPY_PORT": 8080,
+    "CHERRYPY_ADDR": "0.0.0.0",
+    "MONGO_ADDR": "127.0.0.1",
+    "MONGO_PORT": 27017,
+    "MONGO_DB": "HiveAggregator",
+    "TIME_FORMAT": "%Y-%m-%d-%H-%M-%S"
 }

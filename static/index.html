@@ -109,12 +109,15 @@
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
         d3.json(jsonfile, function(data) {
             data.forEach(function(d) {
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain(d3.extent(data, function(d) { return d[yParam]; })).nice();
+            y.domain([0, 50]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
@@ -139,10 +142,30 @@
                 .data(data)
                 .enter().append("circle")
                 .attr("class", "dot")
-                .attr("r", 3.5)
+                .attr("r", 2.0)
                 .attr("cx", function(d) { return x(d[xParam]); })
-                .attr("cy", function(d) { return y(d[yParam]); })
-                .style("fill", function(d) { return color(d[zParam]); });
+                .attr("cy", function(d) {
+                    if (isNaN(d[yParam])) {
+                        return y(0);
+                    }
+                    else {
+                        return y(d[yParam]);
+                    }
+                })
+                .style("fill", function(d) { return color(d[zParam]); })
+                .on("mouseover", function(d) {
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html(d[xParam])
+                        .style("left", (d3.event.pageX + 5) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                })
+                .on("mouseout", function(d) {
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
             var legend = svg.selectAll(".legend")
                 .data(color.domain())
                 .enter().append("g")
@@ -189,12 +212,15 @@
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
         d3.json(jsonfile, function(data) {
             data.forEach(function(d) {
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain(d3.extent(data, function(d) { return d[yParam]; })).nice();
+            y.domain([0, 50]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
@@ -219,10 +245,30 @@
                 .data(data)
                 .enter().append("circle")
                 .attr("class", "dot")
-                .attr("r", 3.5)
+                .attr("r", 2.0)
                 .attr("cx", function(d) { return x(d[xParam]); })
-                .attr("cy", function(d) { return y(d[yParam]); })
-                .style("fill", function(d) { return color(d[zParam]); });
+                .attr("cy", function(d) {
+                    if (isNaN(d[yParam])) {
+                        return y(0);
+                    }
+                    else {
+                        return y(d[yParam]);
+                    }
+                })
+                .style("fill", function(d) { return color(d[zParam]); })
+                .on("mouseover", function(d) {
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html(d[xParam])
+                        .style("left", (d3.event.pageX + 5) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                })
+                .on("mouseout", function(d) {
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
             var legend = svg.selectAll(".legend")
                 .data(color.domain())
                 .enter().append("g")
@@ -269,12 +315,15 @@
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
         d3.json(jsonfile, function(data) {
             data.forEach(function(d) {
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain(d3.extent(data, function(d) { return d[yParam]; })).nice();
+            y.domain([0, 100]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
@@ -299,10 +348,30 @@
                 .data(data)
                 .enter().append("circle")
                 .attr("class", "dot")
-                .attr("r", 3.5)
+                .attr("r", 2.0)
                 .attr("cx", function(d) { return x(d[xParam]); })
-                .attr("cy", function(d) { return y(d[yParam]); })
-                .style("fill", function(d) { return color(d[zParam]); });
+                .attr("cy", function(d) {
+                    if (isNaN(d[yParam])) {
+                        return y(0);
+                    }
+                    else {
+                        return y(d[yParam]);
+                    }
+                })
+                .style("fill", function(d) { return color(d[zParam]); })
+                .on("mouseover", function(d) {
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html(d[xParam])
+                        .style("left", (d3.event.pageX + 5) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                })
+                .on("mouseout", function(d) {
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
             var legend = svg.selectAll(".legend")
                 .data(color.domain())
                 .enter().append("g")
@@ -349,12 +418,15 @@
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
         d3.json(jsonfile, function(data) {
             data.forEach(function(d) {
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain(d3.extent(data, function(d) { return d[yParam]; })).nice();
+            y.domain([0, 100]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
@@ -379,10 +451,30 @@
                 .data(data)
                 .enter().append("circle")
                 .attr("class", "dot")
-                .attr("r", 3.5)
+                .attr("r", 2.0)
                 .attr("cx", function(d) { return x(d[xParam]); })
-                .attr("cy", function(d) { return y(d[yParam]); })
-                .style("fill", function(d) { return color(d[zParam]); });
+                .attr("cy", function(d) {
+                    if (isNaN(d[yParam])) {
+                        return y(0);
+                    }
+                    else {
+                        return y(d[yParam]);
+                    }
+                })
+                .style("fill", function(d) { return color(d[zParam]); })
+                .on("mouseover", function(d) {
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html(d[xParam])
+                        .style("left", (d3.event.pageX + 5) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                })
+                .on("mouseout", function(d) {
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
             var legend = svg.selectAll(".legend")
                 .data(color.domain())
                 .enter().append("g")
@@ -429,12 +521,15 @@
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
         d3.json(jsonfile, function(data) {
             data.forEach(function(d) {
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain(d3.extent(data, function(d) { return d[yParam]; })).nice();
+            y.domain([0, 100]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
@@ -459,10 +554,30 @@
                 .data(data)
                 .enter().append("circle")
                 .attr("class", "dot")
-                .attr("r", 3.5)
+                .attr("r", 2.0)
                 .attr("cx", function(d) { return x(d[xParam]); })
-                .attr("cy", function(d) { return y(d[yParam]); })
-                .style("fill", function(d) { return color(d[zParam]); });
+                .attr("cy", function(d) {
+                    if (isNaN(d[yParam])) {
+                        return y(0);
+                    }
+                    else {
+                        return y(d[yParam]);
+                    }
+                })
+                .style("fill", function(d) { return color(d[zParam]); })
+                .on("mouseover", function(d) {
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html(d[xParam])
+                        .style("left", (d3.event.pageX + 5) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                })
+                .on("mouseout", function(d) {
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
             var legend = svg.selectAll(".legend")
                 .data(color.domain())
                 .enter().append("g")
@@ -509,12 +624,15 @@
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
         d3.json(jsonfile, function(data) {
             data.forEach(function(d) {
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain(d3.extent(data, function(d) { return d[yParam]; })).nice();
+            y.domain([0, 5000]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
@@ -539,10 +657,30 @@
                 .data(data)
                 .enter().append("circle")
                 .attr("class", "dot")
-                .attr("r", 3.5)
+                .attr("r", 2.0)
                 .attr("cx", function(d) { return x(d[xParam]); })
-                .attr("cy", function(d) { return y(d[yParam]); })
-                .style("fill", function(d) { return color(d[zParam]); });
+                .attr("cy", function(d) {
+                    if (isNaN(d[yParam])) {
+                        return y(0);
+                    }
+                    else {
+                        return y(d[yParam]);
+                    }
+                })
+                .style("fill", function(d) { return color(d[zParam]); })
+                .on("mouseover", function(d) {
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html(d[xParam])
+                        .style("left", (d3.event.pageX + 5) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                })
+                .on("mouseout", function(d) {
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
             var legend = svg.selectAll(".legend")
                 .data(color.domain())
                 .enter().append("g")
@@ -589,12 +727,15 @@
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
         d3.json(jsonfile, function(data) {
             data.forEach(function(d) {
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain(d3.extent(data, function(d) { return d[yParam]; })).nice();
+            y.domain([0, 20]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
@@ -619,10 +760,30 @@
                 .data(data)
                 .enter().append("circle")
                 .attr("class", "dot")
-                .attr("r", 3.5)
+                .attr("r", 2.0)
                 .attr("cx", function(d) { return x(d[xParam]); })
-                .attr("cy", function(d) { return y(d[yParam]); })
-                .style("fill", function(d) { return color(d[zParam]); });
+                .attr("cy", function(d) {
+                    if (isNaN(d[yParam])) {
+                        return y(0);
+                    }
+                    else {
+                        return y(d[yParam]);
+                    }
+                })
+                .style("fill", function(d) { return color(d[zParam]); })
+                .on("mouseover", function(d) {
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html(d[xParam])
+                        .style("left", (d3.event.pageX + 5) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                })
+                .on("mouseout", function(d) {
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
             var legend = svg.selectAll(".legend")
                 .data(color.domain())
                 .enter().append("g")
@@ -669,12 +830,15 @@
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
         d3.json(jsonfile, function(data) {
             data.forEach(function(d) {
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain(d3.extent(data, function(d) { return d[yParam]; })).nice();
+            y.domain([0, 2]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
@@ -699,10 +863,30 @@
                 .data(data)
                 .enter().append("circle")
                 .attr("class", "dot")
-                .attr("r", 3.5)
+                .attr("r", 2.0)
                 .attr("cx", function(d) { return x(d[xParam]); })
-                .attr("cy", function(d) { return y(d[yParam]); })
-                .style("fill", function(d) { return color(d[zParam]); });
+                .attr("cy", function(d) {
+                    if (isNaN(d[yParam])) {
+                        return y(0);
+                    }
+                    else {
+                        return y(d[yParam]);
+                    }
+                })
+                .style("fill", function(d) { return color(d[zParam]); })
+                .on("mouseover", function(d) {
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html(d[xParam])
+                        .style("left", (d3.event.pageX + 5) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                })
+                .on("mouseout", function(d) {
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
             var legend = svg.selectAll(".legend")
                 .data(color.domain())
                 .enter().append("g")

@@ -182,8 +182,7 @@ class HiveAggregator:
         try:
             packet = self.socket.recv()
             sample = json.loads(packet)
-            print('\tHIVE: ' + str(sample['hive_id']))
-            print('\tCYCLES: ' + str(sample))
+            print('\tOKAY: ' + str(sample))
             return sample
         except Exception as error:
             print('\tERROR: ' + str(error))

@@ -229,5 +229,1633 @@
         }, 
         "type": "sample", 
         "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 344.5, 
+        "db": 49.6, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:53:49", 
+        "_id": {
+            "$oid": "537d044db4fb3713982910a5"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 172.3, 
+        "db": 49.2, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:53:50", 
+        "_id": {
+            "$oid": "537d044eb4fb3713982910a6"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 387.6, 
+        "db": 46.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:53:51", 
+        "_id": {
+            "$oid": "537d044fb4fb3713982910a7"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 172.3, 
+        "db": 44.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:53:52", 
+        "_id": {
+            "$oid": "537d0450b4fb3713982910a8"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 43.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:53:53", 
+        "_id": {
+            "$oid": "537d0451b4fb3713982910a9"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 301.5, 
+        "db": 48.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:53:54", 
+        "_id": {
+            "$oid": "537d0452b4fb3713982910aa"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 172.3, 
+        "db": 41.7, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:53:55", 
+        "_id": {
+            "$oid": "537d0453b4fb3713982910ab"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 387.6, 
+        "db": 51.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:53:56", 
+        "_id": {
+            "$oid": "537d0454b4fb3713982910ac"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 172.3, 
+        "db": 46.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:53:57", 
+        "_id": {
+            "$oid": "537d0455b4fb3713982910ad"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 43.2, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:53:58", 
+        "_id": {
+            "$oid": "537d0456b4fb3713982910ae"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 43.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:53:59", 
+        "_id": {
+            "$oid": "537d0457b4fb3713982910af"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 172.3, 
+        "db": 49.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:00", 
+        "_id": {
+            "$oid": "537d0458b4fb3713982910b0"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 1248.9, 
+        "db": 50.3, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:02", 
+        "_id": {
+            "$oid": "537d045ab4fb3713982910b1"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 1205.9, 
+        "db": 48.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:03", 
+        "_id": {
+            "$oid": "537d045bb4fb3713982910b2"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 43.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:04", 
+        "_id": {
+            "$oid": "537d045cb4fb3713982910b3"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 44.8, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:05", 
+        "_id": {
+            "$oid": "537d045db4fb3713982910b4"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 44.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:06", 
+        "_id": {
+            "$oid": "537d045eb4fb3713982910b5"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 44.3, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:07", 
+        "_id": {
+            "$oid": "537d045fb4fb3713982910b6"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 42.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:08", 
+        "_id": {
+            "$oid": "537d0460b4fb3713982910b7"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 258.4, 
+        "db": 51.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:09", 
+        "_id": {
+            "$oid": "537d0461b4fb3713982910b8"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 42.8, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:10", 
+        "_id": {
+            "$oid": "537d0462b4fb3713982910b9"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 44.7, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:11", 
+        "_id": {
+            "$oid": "537d0463b4fb3713982910ba"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 344.5, 
+        "db": 49.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:12", 
+        "_id": {
+            "$oid": "537d0464b4fb3713982910bb"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 301.5, 
+        "db": 49.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:13", 
+        "_id": {
+            "$oid": "537d0465b4fb3713982910bc"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 1248.9, 
+        "db": 50.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:15", 
+        "_id": {
+            "$oid": "537d0467b4fb3713982910bd"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 301.5, 
+        "db": 50.0, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:16", 
+        "_id": {
+            "$oid": "537d0468b4fb3713982910be"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 215.3, 
+        "db": 50.0, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:17", 
+        "_id": {
+            "$oid": "537d0469b4fb3713982910bf"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 43.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:18", 
+        "_id": {
+            "$oid": "537d046ab4fb3713982910c0"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 301.5, 
+        "db": 52.2, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:19", 
+        "_id": {
+            "$oid": "537d046bb4fb3713982910c1"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 387.6, 
+        "db": 53.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:20", 
+        "_id": {
+            "$oid": "537d046cb4fb3713982910c2"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 344.5, 
+        "db": 50.0, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:21", 
+        "_id": {
+            "$oid": "537d046db4fb3713982910c3"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 41.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:22", 
+        "_id": {
+            "$oid": "537d046eb4fb3713982910c4"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 43.2, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:23", 
+        "_id": {
+            "$oid": "537d046fb4fb3713982910c5"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 42.8, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:24", 
+        "_id": {
+            "$oid": "537d0470b4fb3713982910c6"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 42.3, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:25", 
+        "_id": {
+            "$oid": "537d0471b4fb3713982910c7"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 44.3, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:26", 
+        "_id": {
+            "$oid": "537d0472b4fb3713982910c8"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 50.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:28", 
+        "_id": {
+            "$oid": "537d0474b4fb3713982910c9"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 258.4, 
+        "db": 45.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:29", 
+        "_id": {
+            "$oid": "537d0475b4fb3713982910ca"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 43.7, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:30", 
+        "_id": {
+            "$oid": "537d0476b4fb3713982910cb"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 387.6, 
+        "db": 50.8, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:31", 
+        "_id": {
+            "$oid": "537d0477b4fb3713982910cc"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 215.3, 
+        "db": 51.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:32", 
+        "_id": {
+            "$oid": "537d0478b4fb3713982910cd"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 42.2, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:33", 
+        "_id": {
+            "$oid": "537d0479b4fb3713982910ce"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 46.0, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:34", 
+        "_id": {
+            "$oid": "537d047ab4fb3713982910cf"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 344.5, 
+        "db": 49.7, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:35", 
+        "_id": {
+            "$oid": "537d047bb4fb3713982910d0"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 41.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:36", 
+        "_id": {
+            "$oid": "537d047cb4fb3713982910d1"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 172.3, 
+        "db": 48.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:37", 
+        "_id": {
+            "$oid": "537d047db4fb3713982910d2"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 387.6, 
+        "db": 52.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:38", 
+        "_id": {
+            "$oid": "537d047eb4fb3713982910d3"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 301.5, 
+        "db": 52.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:39", 
+        "_id": {
+            "$oid": "537d047fb4fb3713982910d4"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 301.5, 
+        "db": 50.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:40", 
+        "_id": {
+            "$oid": "537d0480b4fb3713982910d5"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 990.5, 
+        "db": 50.6, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:42", 
+        "_id": {
+            "$oid": "537d0482b4fb3713982910d6"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 44.0, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:43", 
+        "_id": {
+            "$oid": "537d0483b4fb3713982910d7"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 86.1, 
+        "db": 42.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:44", 
+        "_id": {
+            "$oid": "537d0484b4fb3713982910d8"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 42.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:45", 
+        "_id": {
+            "$oid": "537d0485b4fb3713982910d9"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 258.4, 
+        "db": 52.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:46", 
+        "_id": {
+            "$oid": "537d0486b4fb3713982910da"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 387.6, 
+        "db": 48.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:47", 
+        "_id": {
+            "$oid": "537d0487b4fb3713982910db"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 45.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:48", 
+        "_id": {
+            "$oid": "537d0488b4fb3713982910dc"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 344.5, 
+        "db": 51.2, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:49", 
+        "_id": {
+            "$oid": "537d0489b4fb3713982910dd"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 42.8, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:50", 
+        "_id": {
+            "$oid": "537d048ab4fb3713982910de"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 41.6, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:51", 
+        "_id": {
+            "$oid": "537d048bb4fb3713982910df"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 387.6, 
+        "db": 52.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:52", 
+        "_id": {
+            "$oid": "537d048cb4fb371398eda5c2"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 387.6, 
+        "db": 52.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:53", 
+        "_id": {
+            "$oid": "537d048db4fb371398eda5c3"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 258.4, 
+        "db": 48.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:55", 
+        "_id": {
+            "$oid": "537d048fb4fb371398eda5c4"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 44.6, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:56", 
+        "_id": {
+            "$oid": "537d0490b4fb371398eda5c5"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 172.3, 
+        "db": 49.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:57", 
+        "_id": {
+            "$oid": "537d0491b4fb371398eda5c6"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 43.3, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:58", 
+        "_id": {
+            "$oid": "537d0492b4fb371398eda5c7"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 344.5, 
+        "db": 51.7, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:54:59", 
+        "_id": {
+            "$oid": "537d0493b4fb371398eda5c8"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 46.2, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:00", 
+        "_id": {
+            "$oid": "537d0494b4fb371398b5131b"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 258.4, 
+        "db": 51.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:01", 
+        "_id": {
+            "$oid": "537d0495b4fb371398b5131c"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 42.6, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:02", 
+        "_id": {
+            "$oid": "537d0496b4fb371398b5131d"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 172.3, 
+        "db": 45.0, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:03", 
+        "_id": {
+            "$oid": "537d0497b4fb371398b5131e"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 44.7, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:04", 
+        "_id": {
+            "$oid": "537d0498b4fb371398b5131f"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 258.4, 
+        "db": 48.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:06", 
+        "_id": {
+            "$oid": "537d049ab4fb371398b51320"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 41.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:07", 
+        "_id": {
+            "$oid": "537d049bb4fb371398b51321"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 430.7, 
+        "db": 49.6, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:08", 
+        "_id": {
+            "$oid": "537d049cb4fb371398b51322"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 43.7, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:09", 
+        "_id": {
+            "$oid": "537d049db4fb371398b51323"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 44.8, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:10", 
+        "_id": {
+            "$oid": "537d049eb4fb371398b51324"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 344.5, 
+        "db": 48.7, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:11", 
+        "_id": {
+            "$oid": "537d049fb4fb371398b51325"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 344.5, 
+        "db": 48.6, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:12", 
+        "_id": {
+            "$oid": "537d04a0b4fb371398b51326"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 301.5, 
+        "db": 51.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:13", 
+        "_id": {
+            "$oid": "537d04a1b4fb371398b51327"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 387.6, 
+        "db": 51.8, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:14", 
+        "_id": {
+            "$oid": "537d04a2b4fb371398b51328"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 947.5, 
+        "db": 43.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:15", 
+        "_id": {
+            "$oid": "537d04a3b4fb371398b51329"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 44.0, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:16", 
+        "_id": {
+            "$oid": "537d04a4b4fb371398b5132a"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 344.5, 
+        "db": 50.7, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:18", 
+        "_id": {
+            "$oid": "537d04a6b4fb371398b5132b"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 42.8, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:19", 
+        "_id": {
+            "$oid": "537d04a7b4fb371398b5132c"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 387.6, 
+        "db": 46.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:20", 
+        "_id": {
+            "$oid": "537d04a8b4fb371398b5132d"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 387.6, 
+        "db": 50.6, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:21", 
+        "_id": {
+            "$oid": "537d04a9b4fb371398b5132e"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 43.3, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:22", 
+        "_id": {
+            "$oid": "537d04aab4fb371398b5132f"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 430.7, 
+        "db": 49.6, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:23", 
+        "_id": {
+            "$oid": "537d04abb4fb371398b51330"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 43.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:24", 
+        "_id": {
+            "$oid": "537d04acb4fb371398b51331"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 42.6, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:25", 
+        "_id": {
+            "$oid": "537d04adb4fb371398b51332"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 430.7, 
+        "db": 50.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:26", 
+        "_id": {
+            "$oid": "537d04aeb4fb371398b51333"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 258.4, 
+        "db": 53.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:27", 
+        "_id": {
+            "$oid": "537d04afb4fb371398b51334"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 387.6, 
+        "db": 53.2, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:28", 
+        "_id": {
+            "$oid": "537d04b0b4fb371398b51335"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 44.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:29", 
+        "_id": {
+            "$oid": "537d04b1b4fb371398b51336"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 86.1, 
+        "db": 43.3, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:31", 
+        "_id": {
+            "$oid": "537d04b3b4fb371398b51337"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 42.2, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:32", 
+        "_id": {
+            "$oid": "537d04b4b4fb371398b51338"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 43.2, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:33", 
+        "_id": {
+            "$oid": "537d04b5b4fb371398b51339"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 44.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:34", 
+        "_id": {
+            "$oid": "537d04b6b4fb371398b5133a"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 387.6, 
+        "db": 52.6, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:35", 
+        "_id": {
+            "$oid": "537d04b7b4fb371398b5133b"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 387.6, 
+        "db": 51.8, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:36", 
+        "_id": {
+            "$oid": "537d04b8b4fb371398b5133c"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 344.5, 
+        "db": 51.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:37", 
+        "_id": {
+            "$oid": "537d04b9b4fb371398b5133d"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 172.3, 
+        "db": 48.6, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:38", 
+        "_id": {
+            "$oid": "537d04bab4fb371398b5133e"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 129.2, 
+        "db": 45.3, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:39", 
+        "_id": {
+            "$oid": "537d04bbb4fb371398b5133f"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 41.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:40", 
+        "_id": {
+            "$oid": "537d04bcb4fb371398b51340"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 44.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:41", 
+        "_id": {
+            "$oid": "537d04bdb4fb371398b51341"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 258.4, 
+        "db": 49.6, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:42", 
+        "_id": {
+            "$oid": "537d04beb4fb371398b51342"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 45.8, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:43", 
+        "_id": {
+            "$oid": "537d04bfb4fb371398b51343"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 387.6, 
+        "db": 50.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:45", 
+        "_id": {
+            "$oid": "537d04c1b4fb371398b51344"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 215.3, 
+        "db": 50.3, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:46", 
+        "_id": {
+            "$oid": "537d04c2b4fb371398b51345"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 42.6, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:47", 
+        "_id": {
+            "$oid": "537d04c3b4fb371398b51346"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 43.0, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:48", 
+        "_id": {
+            "$oid": "537d04c4b4fb371398b51347"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 46.0, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:49", 
+        "_id": {
+            "$oid": "537d04c5b4fb371398b51348"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 44.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:50", 
+        "_id": {
+            "$oid": "537d04c6b4fb371398b51349"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 215.3, 
+        "db": 51.0, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:51", 
+        "_id": {
+            "$oid": "537d04c7b4fb371398b5134a"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 947.5, 
+        "db": 50.0, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:52", 
+        "_id": {
+            "$oid": "537d04c8b4fb371398b5134b"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 129.2, 
+        "db": 47.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:53", 
+        "_id": {
+            "$oid": "537d04c9b4fb371398b5134c"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 129.2, 
+        "db": 47.8, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:54", 
+        "_id": {
+            "$oid": "537d04cab4fb371398b5134d"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 43.6, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:55", 
+        "_id": {
+            "$oid": "537d04cbb4fb371398b5134e"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 43.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:56", 
+        "_id": {
+            "$oid": "537d04ccb4fb371398b5134f"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 258.4, 
+        "db": 51.7, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:58", 
+        "_id": {
+            "$oid": "537d04ceb4fb371398b51350"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 430.7, 
+        "db": 50.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:55:59", 
+        "_id": {
+            "$oid": "537d04cfb4fb371398b51351"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 129.2, 
+        "db": 49.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:00", 
+        "_id": {
+            "$oid": "537d04d0b4fb371398b51352"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 258.4, 
+        "db": 51.7, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:01", 
+        "_id": {
+            "$oid": "537d04d1b4fb371398b51353"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 45.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:02", 
+        "_id": {
+            "$oid": "537d04d2b4fb371398b51354"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 42.3, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:03", 
+        "_id": {
+            "$oid": "537d04d3b4fb371398b51355"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 45.7, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:04", 
+        "_id": {
+            "$oid": "537d04d4b4fb371398b51356"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 344.5, 
+        "db": 51.8, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:05", 
+        "_id": {
+            "$oid": "537d04d5b4fb371398b51357"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 42.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:06", 
+        "_id": {
+            "$oid": "537d04d6b4fb371398b51358"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 387.6, 
+        "db": 49.7, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:07", 
+        "_id": {
+            "$oid": "537d04d7b4fb371398b51359"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 42.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:08", 
+        "_id": {
+            "$oid": "537d04d8b4fb371398b5135a"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 344.5, 
+        "db": 47.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:09", 
+        "_id": {
+            "$oid": "537d04d9b4fb371398b5135b"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 50.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:10", 
+        "_id": {
+            "$oid": "537d04dab4fb371398b5135c"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 172.3, 
+        "db": 45.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:12", 
+        "_id": {
+            "$oid": "537d04dcb4fb371398b5135d"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 430.7, 
+        "db": 49.3, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:13", 
+        "_id": {
+            "$oid": "537d04ddb4fb371398b5135e"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 43.3, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:14", 
+        "_id": {
+            "$oid": "537d04deb4fb371398b5135f"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 430.7, 
+        "db": 49.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:15", 
+        "_id": {
+            "$oid": "537d04dfb4fb371398b51360"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 344.5, 
+        "db": 50.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:16", 
+        "_id": {
+            "$oid": "537d04e0b4fb371398b51361"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 38.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:17", 
+        "_id": {
+            "$oid": "537d04e1b4fb371398b51362"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 258.4, 
+        "db": 53.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:18", 
+        "_id": {
+            "$oid": "537d04e2b4fb371398b51363"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 344.5, 
+        "db": 51.8, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:19", 
+        "_id": {
+            "$oid": "537d04e3b4fb371398b51364"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 258.4, 
+        "db": 51.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:20", 
+        "_id": {
+            "$oid": "537d04e4b4fb371398b51365"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 301.5, 
+        "db": 50.3, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:21", 
+        "_id": {
+            "$oid": "537d04e5b4fb371398b51366"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 44.3, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:22", 
+        "_id": {
+            "$oid": "537d04e6b4fb371398b51367"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 40.7, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:23", 
+        "_id": {
+            "$oid": "537d04e7b4fb371398b51368"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 43.1, 
+        "db": 43.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:25", 
+        "_id": {
+            "$oid": "537d04e9b4fb371398b51369"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 0.0, 
+        "db": 44.0, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:26", 
+        "_id": {
+            "$oid": "537d04eab4fb371398b5136a"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 172.3, 
+        "db": 49.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:27", 
+        "_id": {
+            "$oid": "537d04ebb4fb371398b5136b"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 258.4, 
+        "db": 53.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 15:56:28", 
+        "_id": {
+            "$oid": "537d04ecb4fb371398b5136c"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
     }
 ]

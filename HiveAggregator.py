@@ -115,41 +115,44 @@ class HiveAggregator:
             print('\tERROR: ' + str(error))
         
     ## Query Samples in Range to JSON-file
-    def query_samples(self, start_hours, end_hours):
+    def query_samples(self, hours):
         print('[Querying Samples in Range]')
+        print('\t' + str(hours))
+        time_range = datetime.now() - timedelta(hours = hours) # get datetime
         with open('data/samples.json', 'w') as jsonfile:
             result = []
-            start = datetime.now() - timedelta(hours = start_hours) # get datetime
-            end = datetime.now() - timedelta(hours = end_hours) # get datetime
             for name in self.mongo_db.collection_names():
                 if not name == 'system.indexes':
-                    for sample in self.mongo_db[name].find({'type':'sample', 'time':{'$gt': end, '$lt':start}}):
+                    for sample in self.mongo_db[name].find({'type':'sample', 'time':{'$gt': time_range, '$lt':datetime.now()}}):
                         sample['time'] = datetime.strftime(sample['time'], self.TIME_FORMAT)
                         result.append(sample)
             dump = json_util.dumps(result, indent=4)
             jsonfile.write(dump)
             
     ## Query Logs in Range to JSON-file
-    def query_logs(self, start_hours, end_hours):
+    def query_logs(self, hours):
         print('[Querying from Mongo]')
+        print('\t' + str(hours))
+        time_range = datetime.now() - timedelta(hours = hours) # get datetime
         with open('data/logs.json', 'w') as jsonfile:
             result = []
-            start = datetime.now() - timedelta(hours = start_hours) # get datetime
-            end = datetime.now() - timedelta(hours = end_hours) # get datetime
             for name in self.mongo_db.collection_names():
                 if not name == 'system.indexes':
-                    for log in self.mongo_db[name].find({'type':'log', 'time':{'$gt': end, '$lt':start}}):
+                    for log in self.mongo_db[name].find({'type':'log', 'time':{'$gt': time_range, '$lt':datetime.now()}}):
                         log['time'] = datetime.strftime(log['time'], self.TIME_FORMAT)
                         result.append(log)
             dump = json_util.dumps(result, indent=4)
             jsonfile.write(dump)
     
     ## Dump to CSV
-    def dump_csv(self):
+    def dump_csv(self, hours):
+        print('[Dumping to CSV]')
+        print('\t' + str(hours))
+        time_range = datetime.now() - timedelta(hours = hours) # get datetime
         with open('data/samples.csv', 'w') as csvfile:
             for name in self.mongo_db.collection_names():
                     if not name == 'system.indexes':
-                        for sample in self.mongo_db[name].find({'type':'sample'}):
+                        for sample in self.mongo_db[name].find({'type':'sample', 'time':{'$gt': time_range, '$lt':datetime.now()}}):
                             sample['time'] = datetime.strftime(sample['time'], self.TIME_FORMAT)
                             sample_as_list = []
                             for param in self.PARAMS:
@@ -216,6 +219,7 @@ class HiveAggregator:
     @cherrypy.expose
     def default(self,*args,**kwargs): 
         try:
+            print kwargs
             if kwargs['type'] == 'log':
                 print('[Received Log]')
                 print('\t' + str(kwargs))
@@ -223,19 +227,12 @@ class HiveAggregator:
                 self.train(kwargs)
             elif kwargs['type'] == 'graph':
                 print('[Received Graph Update]')
-                if kwargs['range_select'] == 'hour':
-                    self.query_samples(0, 1)
-                elif kwargs['range_select'] == 'day':
-                    self.query_samples(0, 24)
-                elif kwargs['range_select'] == 'week':
-                    self.query_samples(0, 168)
-                elif kwargs['range_select'] == 'month':
-                    self.query_samples(0, 744)
+                self.query_samples(int(kwargs['range_select']))
             elif kwargs['type'] == 'save':
                 print('[Dumping to CSV]')
-                self.dump_csv()
-        except Exception:
-            pass
+                self.dump_csv(int(kwargs['range_select']))
+        except Exception as err:
+            print str(err)
         return None
     
 # Main

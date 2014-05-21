@@ -69,6 +69,17 @@
                 });
 
             });
+            $('#save_submit').click(function() {
+                $.ajax({
+                    type: "POST",
+                    url: "save",
+                    data: {'type':'save', 'range_select':$("#range_select").val()},
+                    success: function(msg) {
+                        window.open("data/samples.csv");
+                    }
+                });
+
+            });
         });
     </script>
     <form id="graph_form" method="post">
@@ -79,6 +90,7 @@
             <option value="month">Last Month</option>
         </select><br />
         <input type="button" id="graph_submit" value="Update Graphs"/> 
+        <input type="button" id="save_submit" value="Save Graphs as CSV"/> 
     </form>
     <script>
     (function() {
@@ -86,7 +98,7 @@
         var zParam = "hive_id";
         var xLabel = "Time";
         var xParam = "time";
-        var timeFormat = "%Y-%m-%d-%H-%M-%S";
+        var timeFormat = "%Y-%m-%d %H:%M:%S";
         var yLabel = "External Temperature";
         var yParam = "ext_t";
         var margin = {top: 10, right: 40, bottom: 50, left: 40},
@@ -166,7 +178,7 @@
         var zParam = "hive_id";
         var xLabel = "Time";
         var xParam = "time";
-        var timeFormat = "%Y-%m-%d-%H-%M-%S";
+        var timeFormat = "%Y-%m-%d %H:%M:%S";
         var yLabel = "Internal Temperature";
         var yParam = "int_t";
         var margin = {top: 10, right: 40, bottom: 50, left: 40},
@@ -246,7 +258,7 @@
         var zParam = "hive_id";
         var xLabel = "Time";
         var xParam = "time";
-        var timeFormat = "%Y-%m-%d-%H-%M-%S";
+        var timeFormat = "%Y-%m-%d %H:%M:%S";
         var yLabel = "External Humidity";
         var yParam = "ext_h";
         var margin = {top: 10, right: 40, bottom: 50, left: 40},
@@ -326,7 +338,7 @@
         var zParam = "hive_id";
         var xLabel = "Time";
         var xParam = "time";
-        var timeFormat = "%Y-%m-%d-%H-%M-%S";
+        var timeFormat = "%Y-%m-%d %H:%M:%S";
         var yLabel = "Internal Humidity";
         var yParam = "int_h";
         var margin = {top: 10, right: 40, bottom: 50, left: 40},
@@ -406,7 +418,7 @@
         var zParam = "hive_id";
         var xLabel = "Time";
         var xParam = "time";
-        var timeFormat = "%Y-%m-%d-%H-%M-%S";
+        var timeFormat = "%Y-%m-%d %H:%M:%S";
         var yLabel = "Decibels (dB)";
         var yParam = "db";
         var margin = {top: 10, right: 40, bottom: 50, left: 40},
@@ -486,7 +498,7 @@
         var zParam = "hive_id";
         var xLabel = "Time";
         var xParam = "time";
-        var timeFormat = "%Y-%m-%d-%H-%M-%S";
+        var timeFormat = "%Y-%m-%d %H:%M:%S";
         var yLabel = "Frequency (Hz)";
         var yParam = "hz";
         var margin = {top: 10, right: 40, bottom: 50, left: 40},
@@ -566,7 +578,7 @@
         var zParam = "hive_id";
         var xLabel = "Time";
         var xParam = "time";
-        var timeFormat = "%Y-%m-%d-%H-%M-%S";
+        var timeFormat = "%Y-%m-%d %H:%M:%S";
         var yLabel = "Volts";
         var yParam = "volts";
         var margin = {top: 10, right: 40, bottom: 50, left: 40},
@@ -646,7 +658,7 @@
         var zParam = "hive_id";
         var xLabel = "Time";
         var xParam = "time";
-        var timeFormat = "%Y-%m-%d-%H-%M-%S";
+        var timeFormat = "%Y-%m-%d %H:%M:%S";
         var yLabel = "Amperage";
         var yParam = "amps";
         var margin = {top: 10, right: 40, bottom: 50, left: 40},

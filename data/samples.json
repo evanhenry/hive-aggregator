@@ -1,1292 +1,231 @@
 [
     {
         "hz": 0.0, 
-        "int_h": 41.0, 
-        "cycles": 299, 
-        "volts": 1.0, 
-        "int_t": 22.8, 
-        "db": 33.39117519612698, 
-        "ext_h": 38.8, 
-        "ext_t": 22.8, 
-        "time": "2014-05-04-20-01-38", 
-        "amps": 1.0, 
+        "db": 41.2, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:35:17", 
         "_id": {
-            "$oid": "5366d4e25936161a9d8e7aa4"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 46.8, 
-        "cycles": 298, 
-        "volts": 1.0, 
-        "int_t": 23.5, 
-        "db": 32.86260677312523, 
-        "ext_h": 45.0, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-01-40", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d4e45936161a9d8e7aa5"
+            "$oid": "537c2d05b4fb371bd96a4ddf"
         }, 
         "type": "sample", 
         "hive_id": "hive_1"
     }, 
     {
         "hz": 0.0, 
-        "int_h": 46.7, 
-        "cycles": 297, 
-        "volts": 1.0, 
-        "int_t": 23.4, 
-        "db": 31.85578557238228, 
-        "ext_h": 44.8, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-01-42", 
-        "amps": 1.0, 
+        "db": 39.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:35:46", 
         "_id": {
-            "$oid": "5366d4e65936161a9d8e7aa6"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 258.3984375, 
-        "int_h": 46.6, 
-        "cycles": 296, 
-        "volts": 1.0, 
-        "int_t": 23.4, 
-        "db": 31.682578841155756, 
-        "ext_h": 44.9, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-01-45", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d4e95936161a9d8e7aa7"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 46.6, 
-        "cycles": 295, 
-        "volts": 1.0, 
-        "int_t": 23.5, 
-        "db": 30.630994830723886, 
-        "ext_h": 44.4, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-01-47", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d4eb5936161a9d8e7aa8"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 86.1328125, 
-        "int_h": 46.5, 
-        "cycles": 294, 
-        "volts": 1.0, 
-        "int_t": 23.5, 
-        "db": 31.538469428231416, 
-        "ext_h": 43.9, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-01-49", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d4ed5936161a9d8e7aa9"
+            "$oid": "537c2d22b4fb371bd96a4de0"
         }, 
         "type": "sample", 
         "hive_id": "hive_1"
     }, 
     {
         "hz": 0.0, 
-        "int_h": 46.3, 
-        "cycles": 293, 
-        "volts": 1.0, 
-        "int_t": 23.5, 
-        "db": 32.882081686440266, 
-        "ext_h": 43.4, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-01-51", 
-        "amps": 1.0, 
+        "db": 38.8, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:07", 
         "_id": {
-            "$oid": "5366d4ef5936161a9d8e7aaa"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 46.1, 
-        "cycles": 292, 
-        "volts": 1.0, 
-        "int_t": 23.5, 
-        "db": 31.65328820183214, 
-        "ext_h": 43.0, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-01-53", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d4f15936161a9d8e7aab"
+            "$oid": "537c2d37b4fb371bd96a4de1"
         }, 
         "type": "sample", 
         "hive_id": "hive_1"
     }, 
     {
         "hz": 0.0, 
-        "int_h": 46.0, 
-        "cycles": 291, 
-        "volts": 1.0, 
-        "int_t": 23.5, 
-        "db": 32.13518244378393, 
-        "ext_h": 42.7, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-01-55", 
-        "amps": 1.0, 
+        "db": 39.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:08", 
         "_id": {
-            "$oid": "5366d4f35936161a9d8e7aac"
+            "$oid": "537c2d38b4fb371bd96a4de2"
         }, 
         "type": "sample", 
         "hive_id": "hive_1"
     }, 
     {
-        "hz": 43.06640625, 
-        "int_h": 45.9, 
-        "cycles": 290, 
-        "volts": 1.0, 
-        "int_t": 23.5, 
-        "db": 31.000042209197968, 
-        "ext_h": 42.4, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-01-57", 
-        "amps": 1.0, 
+        "hz": 215.3, 
+        "db": 38.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:09", 
         "_id": {
-            "$oid": "5366d4f55936161a9d8e7aad"
+            "$oid": "537c2d39b4fb371bd96a4de3"
         }, 
         "type": "sample", 
         "hive_id": "hive_1"
     }, 
     {
-        "hz": 86.1328125, 
-        "int_h": 45.8, 
-        "cycles": 289, 
-        "volts": 1.0, 
-        "int_t": 23.5, 
-        "db": 30.517662293398537, 
-        "ext_h": 42.4, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-00", 
-        "amps": 1.0, 
+        "hz": 129.2, 
+        "db": 39.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:10", 
         "_id": {
-            "$oid": "5366d4f85936161a9d8e7aae"
+            "$oid": "537c2d3ab4fb371bd96a4de4"
         }, 
         "type": "sample", 
         "hive_id": "hive_1"
     }, 
     {
-        "hz": 0.0, 
-        "int_h": 45.7, 
-        "cycles": 288, 
-        "volts": 1.0, 
-        "int_t": 23.5, 
-        "db": 31.63987138364846, 
-        "ext_h": 42.3, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-02", 
-        "amps": 1.0, 
+        "hz": 258.4, 
+        "db": 38.3, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:11", 
         "_id": {
-            "$oid": "5366d4fa5936161a9d8e7aaf"
+            "$oid": "537c2d3bb4fb371bd96a4de5"
         }, 
         "type": "sample", 
         "hive_id": "hive_1"
     }, 
     {
-        "hz": 43.06640625, 
-        "int_h": 45.6, 
-        "cycles": 287, 
-        "volts": 1.0, 
-        "int_t": 23.5, 
-        "db": 31.222639870203803, 
-        "ext_h": 42.1, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-04", 
-        "amps": 1.0, 
+        "hz": 129.2, 
+        "db": 38.7, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:12", 
         "_id": {
-            "$oid": "5366d4fc5936161a9d8e7ab0"
+            "$oid": "537c2d3cb4fb371bd96a4de6"
         }, 
         "type": "sample", 
         "hive_id": "hive_1"
     }, 
     {
-        "hz": 344.53125, 
-        "int_h": 45.5, 
-        "cycles": 286, 
-        "volts": 1.0, 
-        "int_t": 23.6, 
-        "db": 31.7878362774417, 
-        "ext_h": 41.9, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-06", 
-        "amps": 1.0, 
+        "hz": 172.3, 
+        "db": 38.7, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:13", 
         "_id": {
-            "$oid": "5366d4fe5936161a9d8e7ab1"
+            "$oid": "537c2d3db4fb371bd96a4de7"
         }, 
         "type": "sample", 
         "hive_id": "hive_1"
     }, 
     {
-        "hz": 86.1328125, 
-        "int_h": 45.4, 
-        "cycles": 285, 
-        "volts": 1.0, 
-        "int_t": 23.6, 
-        "db": 30.78829303101635, 
-        "ext_h": 41.8, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-08", 
-        "amps": 1.0, 
+        "hz": 43.1, 
+        "db": 39.7, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:14", 
         "_id": {
-            "$oid": "5366d5005936161a9d8e7ab2"
+            "$oid": "537c2d3eb4fb371bd96a4de8"
         }, 
         "type": "sample", 
         "hive_id": "hive_1"
     }, 
     {
-        "hz": 215.33203125, 
-        "int_h": 45.3, 
-        "cycles": 284, 
-        "volts": 1.0, 
-        "int_t": 23.6, 
-        "db": 32.00623048753774, 
-        "ext_h": 41.7, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-10", 
-        "amps": 1.0, 
+        "hz": 129.2, 
+        "db": 40.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:15", 
         "_id": {
-            "$oid": "5366d5025936161a9d8e7ab3"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 258.3984375, 
-        "int_h": 45.2, 
-        "cycles": 283, 
-        "volts": 1.0, 
-        "int_t": 23.6, 
-        "db": 30.2413639602296, 
-        "ext_h": 41.6, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-12", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5045936161a9d8e7ab4"
+            "$oid": "537c2d3fb4fb371bd96a4de9"
         }, 
         "type": "sample", 
         "hive_id": "hive_1"
     }, 
     {
         "hz": 0.0, 
-        "int_h": 45.1, 
-        "cycles": 282, 
-        "volts": 1.0, 
-        "int_t": 23.6, 
-        "db": 31.8182901949281, 
-        "ext_h": 41.6, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-15", 
-        "amps": 1.0, 
+        "db": 38.9, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:16", 
         "_id": {
-            "$oid": "5366d5075936161a9d8e7ab5"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 45.0, 
-        "cycles": 281, 
-        "volts": 1.0, 
-        "int_t": 23.6, 
-        "db": 30.270407710502806, 
-        "ext_h": 41.5, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-17", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5095936161a9d8e7ab6"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 301.46484375, 
-        "int_h": 44.9, 
-        "cycles": 280, 
-        "volts": 1.0, 
-        "int_t": 23.6, 
-        "db": 30.5590604642374, 
-        "ext_h": 41.5, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-19", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d50b5936161a9d8e7ab7"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 44.8, 
-        "cycles": 279, 
-        "volts": 1.0, 
-        "int_t": 23.6, 
-        "db": 31.584122283643175, 
-        "ext_h": 41.5, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-21", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d50d5936161a9d8e7ab8"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 86.1328125, 
-        "int_h": 44.7, 
-        "cycles": 278, 
-        "volts": 1.0, 
-        "int_t": 23.6, 
-        "db": 30.11091038711768, 
-        "ext_h": 41.4, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-23", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d50f5936161a9d8e7ab9"
+            "$oid": "537c2d40b4fb371bd96a4dea"
         }, 
         "type": "sample", 
         "hive_id": "hive_1"
     }, 
     {
         "hz": 0.0, 
-        "int_h": 44.6, 
-        "cycles": 277, 
-        "volts": 1.0, 
-        "int_t": 23.6, 
-        "db": 32.6066987417426, 
-        "ext_h": 41.4, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-25", 
-        "amps": 1.0, 
+        "db": 38.8, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:18", 
         "_id": {
-            "$oid": "5366d5115936161a9d8e7aba"
+            "$oid": "537c2d42b4fb371bd96a4deb"
         }, 
         "type": "sample", 
         "hive_id": "hive_1"
     }, 
     {
-        "hz": 43.06640625, 
-        "int_h": 44.6, 
-        "cycles": 276, 
-        "volts": 1.0, 
-        "int_t": 23.6, 
-        "db": 31.77461708694357, 
-        "ext_h": 41.3, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-27", 
-        "amps": 1.0, 
+        "hz": 129.2, 
+        "db": 39.5, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:19", 
         "_id": {
-            "$oid": "5366d5135936161a9d8e7abb"
+            "$oid": "537c2d43b4fb371bd96a4dec"
         }, 
         "type": "sample", 
         "hive_id": "hive_1"
     }, 
     {
         "hz": 0.0, 
-        "int_h": 44.5, 
-        "cycles": 275, 
-        "volts": 1.0, 
-        "int_t": 23.6, 
-        "db": 31.744171313342974, 
-        "ext_h": 41.2, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-30", 
-        "amps": 1.0, 
+        "db": 38.6, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:20", 
         "_id": {
-            "$oid": "5366d5165936161a9d8e7abc"
+            "$oid": "537c2d44b4fb371bd96a4ded"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 129.2, 
+        "db": 38.4, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:21", 
+        "_id": {
+            "$oid": "537c2d45b4fb371bd96a4dee"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 129.2, 
+        "db": 39.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:22", 
+        "_id": {
+            "$oid": "537c2d46b4fb371bd96a4def"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 129.2, 
+        "db": 38.3, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:23", 
+        "_id": {
+            "$oid": "537c2d47b4fb371bd96a4df0"
+        }, 
+        "type": "sample", 
+        "hive_id": "hive_1"
+    }, 
+    {
+        "hz": 129.2, 
+        "db": 38.8, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:24", 
+        "_id": {
+            "$oid": "537c2d48b4fb371bd96a4df1"
         }, 
         "type": "sample", 
         "hive_id": "hive_1"
     }, 
     {
         "hz": 0.0, 
-        "int_h": 44.4, 
-        "cycles": 274, 
-        "volts": 1.0, 
-        "int_t": 23.6, 
-        "db": 32.18164984653913, 
-        "ext_h": 41.2, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-02-32", 
-        "amps": 1.0, 
+        "db": 39.3, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:25", 
         "_id": {
-            "$oid": "5366d5185936161a9d8e7abd"
+            "$oid": "537c2d49b4fb371bd96a4df2"
         }, 
         "type": "sample", 
         "hive_id": "hive_1"
     }, 
     {
-        "hz": 0.0, 
-        "int_h": 44.5, 
-        "cycles": 273, 
-        "volts": 1.0, 
-        "int_t": 23.7, 
-        "db": 32.45801365209162, 
-        "ext_h": 41.2, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-34", 
-        "amps": 1.0, 
+        "hz": 129.2, 
+        "db": 39.1, 
+        "ard_error": "HiveNode instance has no attribute 'arduino'", 
+        "time": "2014-05-21 00:36:26", 
         "_id": {
-            "$oid": "5366d51a5936161a9d8e7abe"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 44.4, 
-        "cycles": 272, 
-        "volts": 1.0, 
-        "int_t": 23.6, 
-        "db": 31.555320812495225, 
-        "ext_h": 41.2, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-36", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d51c5936161a9d8e7ac0"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 129.19921875, 
-        "int_h": 44.4, 
-        "cycles": 271, 
-        "volts": 1.0, 
-        "int_t": 23.7, 
-        "db": 30.63392234551722, 
-        "ext_h": 41.2, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-38", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d51e5936161a9d8e7ac1"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 44.2, 
-        "cycles": 270, 
-        "volts": 1.0, 
-        "int_t": 23.6, 
-        "db": 31.471160204149665, 
-        "ext_h": 41.2, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-40", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5205936161a9d8e7ac2"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 44.3, 
-        "cycles": 269, 
-        "volts": 1.0, 
-        "int_t": 23.7, 
-        "db": 32.60153251824947, 
-        "ext_h": 41.1, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-44", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5245936161a9d8e7ac3"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 0.0, 
-        "int_h": 44.2, 
-        "cycles": 268, 
-        "volts": 1.0, 
-        "int_t": 23.7, 
-        "db": 31.218276503366678, 
-        "ext_h": 41.1, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-47", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5275936161a9d8e7ac4"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 430.6640625, 
-        "int_h": 44.2, 
-        "cycles": 267, 
-        "volts": 1.0, 
-        "int_t": 23.7, 
-        "db": 30.82642496472904, 
-        "ext_h": 41.1, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-49", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5295936161a9d8e7ac5"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 44.2, 
-        "cycles": 266, 
-        "volts": 1.0, 
-        "int_t": 23.7, 
-        "db": 31.526107458391262, 
-        "ext_h": 41.1, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-51", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d52b5936161a9d8e7ac6"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 0.0, 
-        "int_h": 44.1, 
-        "cycles": 265, 
-        "volts": 1.0, 
-        "int_t": 23.7, 
-        "db": 33.98836554255242, 
-        "ext_h": 41.1, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-02-53", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d52d5936161a9d8e7ac7"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 258.3984375, 
-        "int_h": 44.1, 
-        "cycles": 264, 
-        "volts": 1.0, 
-        "int_t": 23.7, 
-        "db": 32.026044301066136, 
-        "ext_h": 41.1, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-04-39", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5975936161ab79e7092"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 43.4, 
-        "cycles": 222, 
-        "volts": 1.0, 
-        "int_t": 23.8, 
-        "db": 31.57391139858253, 
-        "ext_h": 41.0, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-04-43", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d59b5936161ab79e7093"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 86.1328125, 
-        "int_h": 43.4, 
-        "cycles": 221, 
-        "volts": 1.0, 
-        "int_t": 23.8, 
-        "db": 31.075413221748896, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-04-46", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d59e5936161ab79e7094"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 43.4, 
-        "cycles": 220, 
-        "volts": 1.0, 
-        "int_t": 23.8, 
-        "db": 31.084959958455592, 
-        "ext_h": 41.1, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-04-48", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5a05936161ab79e7095"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 172.265625, 
-        "int_h": 43.5, 
-        "cycles": 219, 
-        "volts": 1.0, 
-        "int_t": 23.8, 
-        "db": 31.18028426801299, 
-        "ext_h": 41.2, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-04-51", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5a35936161ab79e7096"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 43.7, 
-        "cycles": 218, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.460823856437944, 
-        "ext_h": 41.2, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-04-54", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5a65936161ab79e7097"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 301.46484375, 
-        "int_h": 43.6, 
-        "cycles": 217, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.574578197079543, 
-        "ext_h": 41.2, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-04-56", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5a85936161ab79e7098"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 301.46484375, 
-        "int_h": 43.6, 
-        "cycles": 216, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.54185189119767, 
-        "ext_h": 41.1, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-04-58", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5aa5936161ab79e7099"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 258.3984375, 
-        "int_h": 43.5, 
-        "cycles": 215, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 32.75825924597196, 
-        "ext_h": 41.1, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-05-01", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5ad5936161ab79e709a"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 0.0, 
-        "int_h": 43.5, 
-        "cycles": 214, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 33.13623153364653, 
-        "ext_h": 41.1, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-05-04", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5b05936161ab79e709b"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 43.5, 
-        "cycles": 213, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.952667319275818, 
-        "ext_h": 41.0, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-05-07", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5b35936161ab79e709c"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 43.5, 
-        "cycles": 212, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.741707373359983, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-05-11", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5b75936161ab79e709d"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 215.33203125, 
-        "int_h": 43.5, 
-        "cycles": 211, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 32.13641922831833, 
-        "ext_h": 41.0, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-05-14", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5ba5936161ab79e709e"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 129.19921875, 
-        "int_h": 43.5, 
-        "cycles": 210, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.11233892936784, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-05-16", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5bc5936161ab79e709f"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 43.5, 
-        "cycles": 209, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 34.425308738320545, 
-        "ext_h": 41.0, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-05-18", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5be5936161ab79e70a0"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 0.0, 
-        "int_h": 43.5, 
-        "cycles": 208, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.8904343918325, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-05-21", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5c15936161ab79e70a1"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 43.5, 
-        "cycles": 207, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.51486725733075, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-05-25", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5c55936161ab79e70a2"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 0.0, 
-        "int_h": 43.6, 
-        "cycles": 206, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.844712871164234, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-05-29", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5c95936161ab79e70a3"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 0.0, 
-        "int_h": 43.6, 
-        "cycles": 205, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 32.65256855758723, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-05-34", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5ce5936161ab79e70a4"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 0.0, 
-        "int_h": 43.6, 
-        "cycles": 204, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 30.846392260275323, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-05-36", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5d05936161ab79e70a5"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 0.0, 
-        "int_h": 43.6, 
-        "cycles": 203, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.344855696205094, 
-        "ext_h": 41.0, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-05-41", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5d55936161ab79e70a6"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 43.6, 
-        "cycles": 202, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.826918521286956, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-05-43", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5d75936161ab79e70a7"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 0.0, 
-        "int_h": 43.6, 
-        "cycles": 201, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.29017251232643, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-05-48", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5dc5936161ab79e70a8"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 0.0, 
-        "int_h": 43.6, 
-        "cycles": 200, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.13599499303819, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-05-52", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5e05936161ab79e70a9"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 215.33203125, 
-        "int_h": 43.6, 
-        "cycles": 199, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 30.953399173764453, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-05-54", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5e25936161ab79e70aa"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 43.6, 
-        "cycles": 198, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.69654850516206, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-05-57", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5e55936161ab79e70ab"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 0.0, 
-        "int_h": 43.6, 
-        "cycles": 197, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.33916732199307, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-06-00", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5e85936161ab79e70ac"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 0.0, 
-        "int_h": 43.6, 
-        "cycles": 196, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.582719952233617, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-06-03", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5eb5936161ab79e70ad"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 0.0, 
-        "int_h": 43.6, 
-        "cycles": 195, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.949306425647073, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-06-06", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5ee5936161ab79e70ae"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 43.5, 
-        "cycles": 194, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.30866421148621, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-06-09", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5f15936161ab79e70af"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 129.19921875, 
-        "int_h": 43.5, 
-        "cycles": 193, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 30.788631337169395, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-06-13", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5f55936161ab79e70b0"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 129.19921875, 
-        "int_h": 43.5, 
-        "cycles": 192, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.50305240894388, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-06-16", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5f85936161ab79e70b1"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 43.5, 
-        "cycles": 191, 
-        "volts": 1.0, 
-        "int_t": 24.0, 
-        "db": 31.042178563618027, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-06-20", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d5fc5936161ab79e70b2"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 86.1328125, 
-        "int_h": 43.5, 
-        "cycles": 190, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 30.42415709001731, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-06-24", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d6005936161ab79e70b3"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 43.6, 
-        "cycles": 189, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 30.626954094650888, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-06-27", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d6035936161ab79e70b4"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 43.6, 
-        "cycles": 188, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 32.277039293413424, 
-        "ext_h": 41.0, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-06-30", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d6065936161ab79e70b5"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 43.06640625, 
-        "int_h": 43.8, 
-        "cycles": 187, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.559767952915795, 
-        "ext_h": 41.4, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-06-34", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d60a5936161ab79e70b6"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 0.0, 
-        "int_h": 43.9, 
-        "cycles": 186, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.7855340165743, 
-        "ext_h": 41.9, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-06-38", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d60e5936161ab79e70b7"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 86.1328125, 
-        "int_h": 43.9, 
-        "cycles": 185, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 31.397944641319192, 
-        "ext_h": 42.0, 
-        "ext_t": 23.3, 
-        "time": "2014-05-04-20-06-42", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d6125936161ab79e70b8"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 129.19921875, 
-        "int_h": 43.9, 
-        "cycles": 184, 
-        "volts": 1.0, 
-        "int_t": 23.9, 
-        "db": 30.276373576570727, 
-        "ext_h": 41.9, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-06-45", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d6155936161ab79e70b9"
-        }, 
-        "type": "sample", 
-        "hive_id": "hive_1"
-    }, 
-    {
-        "hz": 0.0, 
-        "int_h": 43.8, 
-        "cycles": 183, 
-        "volts": 1.0, 
-        "int_t": 24.0, 
-        "db": 31.241879837381816, 
-        "ext_h": 41.7, 
-        "ext_t": 23.4, 
-        "time": "2014-05-04-20-06-49", 
-        "amps": 1.0, 
-        "_id": {
-            "$oid": "5366d6195936161ab79e70ba"
+            "$oid": "537c2d4ab4fb371bd96a4df3"
         }, 
         "type": "sample", 
         "hive_id": "hive_1"

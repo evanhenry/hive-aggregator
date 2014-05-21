@@ -143,6 +143,26 @@ class HiveAggregator:
                         result.append(log)
             dump = json_util.dumps(result, indent=4)
             jsonfile.write(dump)
+    
+    ## Dump to CSV
+    def dump_csv(self):
+        with open('data/samples.csv', 'w') as csvfile:
+            for name in self.mongo_db.collection_names():
+                    if not name == 'system.indexes':
+                        for sample in self.mongo_db[name].find({'type':'sample'}):
+                            sample['time'] = datetime.strftime(sample['time'], self.TIME_FORMAT)
+                            sample_as_list = []
+                            for param in self.PARAMS:
+                                try:
+                                    sample_as_list.append(str(sample[param]))
+                                except Exception as err:
+                                    print str(err)
+                                    sample_as_list.append('NaN')
+                            sample_as_list.append('\n')
+                            try:
+                                csvfile.write(','.join(sample_as_list))
+                            except Exception as err:
+                                print str(err)
                 
     ## Store to Mongo
     def store(self, doc):
@@ -163,7 +183,7 @@ class HiveAggregator:
             packet = self.socket.recv()
             sample = json.loads(packet)
             print('\tHIVE: ' + str(sample['hive_id']))
-            print('\tCYCLES: ' + str(sample['cycles']))
+            print('\tCYCLES: ' + str(sample))
             return sample
         except Exception as error:
             print('\tERROR: ' + str(error))
@@ -212,6 +232,9 @@ class HiveAggregator:
                     self.query_samples(0, 168)
                 elif kwargs['range_select'] == 'month':
                     self.query_samples(0, 744)
+            elif kwargs['type'] == 'save':
+                print('[Dumping to CSV]')
+                self.dump_csv()
         except Exception:
             pass
         return None

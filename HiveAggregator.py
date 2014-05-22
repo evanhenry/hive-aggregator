@@ -160,6 +160,7 @@ class HiveAggregator:
         print('\tRange: ' + str(hours))
         time_range = datetime.now() - timedelta(hours = hours) # get datetime
         with open('data/samples.csv', 'w') as csvfile:
+            csvfile.write(','.join(self.PARAMS)) # Write headers
             for name in self.mongo_db.collection_names():
                     if not name == 'system.indexes':
                         for sample in self.mongo_db[name].find({'type':'sample', 'time':{'$gt': time_range, '$lt':datetime.now()}}):

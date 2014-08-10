@@ -55,18 +55,18 @@ class HiveAggregator:
     
     ## Initialize ZMQ
     def init_zmq(self):      
-        print('\t[Initializing ZMQ]' + datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        print('\n[Initializing ZMQ] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
             self.context = zmq.Context()
             self.socket = self.context.socket(zmq.REP)
             self.socket.bind(self.ZMQ_SERVER)
-            print('\t\tOKAY')
+            print('\tOKAY')
         except Exception as error:
-            print('\t\tERROR: ' + str(error))
+            print('\tERROR: ' + str(error))
     
     ## Initialize CherryPy
     def init_cherrypy(self):   
-        print('\n[Enabling Monitors]' + datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        print('\n[Enabling Monitors] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
             Monitor(cherrypy.engine, self.listen, frequency=self.CHERRYPY_INTERVAL).subscribe()
             print('\tOKAY')
@@ -75,7 +75,7 @@ class HiveAggregator:
     
     ## Initialize MongoDB
     def init_mongo(self):
-        print('\n[Initializing Mongo] ' + datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        print('\n[Initializing Mongo] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:    
             self.mongo_client = MongoClient(self.MONGO_ADDR, self.MONGO_PORT)
             self.mongo_db = self.mongo_client[self.MONGO_DB]
@@ -85,7 +85,7 @@ class HiveAggregator:
     
     ## Initialize SKlearn
     def init_sklearn(self):     
-        print('\n[Initializing SKlearn] ' + datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        print('\n[Initializing SKlearn] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
             self.svc_health = svm.SVC(kernel='rbf')
             print('\tOKAY')
@@ -94,7 +94,7 @@ class HiveAggregator:
     
     ## Train
     def train(self, log):
-        print('\n[Training SVM] ' + datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        print('\n[Training SVM] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
             logs = self.mongo_db[log['hive_id']].find({'type':'log'})
             data = []
@@ -111,22 +111,22 @@ class HiveAggregator:
             self.svc_health.fit(data, targets)
             print('\tOKAY')
         except Exception as error:
-            print('\tERROR: ' + str(error))
+            print('\tERROR: %s' % str(error))
     
     ## Classify
     def classify(self, sample):
-        print('\n[Classifying State] ' + datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        print('\n[Classifying State] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
             data = [sample['int_t'], sample['ext_t']]
             prediction = self.svc_health.predict(data)
-            print('\tCLASS: ' + str(int(prediction)))
+            print('\tCLASS: %s' % str(int(prediction)))
             return prediction
         except Exception as error:
-            print('\tERROR: ' + str(error))
+            print('\tERROR: %s' % str(error))
         
     ## Query Samples in Range to JSON-file
     def query_samples(self, hours):
-        print('\n[Querying Samples in Range] ' + datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        print('\n[Querying Samples in Range] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         print('\tRange: ' + str(hours))
         time_range = datetime.now() - timedelta(hours = hours) # get datetime
         with open('data/samples.json', 'w') as jsonfile:
@@ -141,7 +141,7 @@ class HiveAggregator:
             
     ## Query Logs in Range to JSON-file
     def query_logs(self, hours):
-        print('[Querying from Mongo]')
+        print('[Querying from Mongo] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         print('\tRange: ' + str(hours))
         time_range = datetime.now() - timedelta(hours = hours) # get datetime
         with open('data/logs.json', 'w') as jsonfile:
@@ -156,7 +156,7 @@ class HiveAggregator:
     
     ## Dump to CSV
     def dump_csv(self, hours):
-        print('\n[Dumping to CSV] '+ datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        print('\n[Dumping to CSV] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         print('\tRange: ' + str(hours))
         time_range = datetime.now() - timedelta(hours = hours) # get datetime
         with open('data/samples.csv', 'w') as csvfile:
@@ -180,7 +180,7 @@ class HiveAggregator:
                 
     ## Store to Mongo
     def store(self, doc):
-        print('\n[Storing to Mongo] ' + datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        print('\n[Storing to Mongo] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
             doc['time'] = datetime.now()
             hive = self.mongo_db[doc['hive_id']]
@@ -188,29 +188,29 @@ class HiveAggregator:
             print('\tDOC_ID: ' + str(doc_id))
             return doc_id
         except Exception as error:
-            print('\tERROR: ' + str(error))
+            print('\tERROR: %s' % str(error))
        
     ## Receive Sample
     def receive(self):
-        print('\n[Receiving Sample from Hive] ' + datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        print('\n[Receiving Sample from Hive] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
             packet = self.socket.recv()
             sample = json.loads(packet)
-            print('\tOKAY: ' + str(sample))
+            print('\tOKAY: %s' % str(sample))
             return sample
         except Exception as error:
-            print('\tERROR: ' + str(error))
+            print('\tERROR: %s' % str(error))
     
     ### Send Response
     def send(self):
-        print('\n[Sending Response to Hive] ' + datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        print('\n[Sending Response to Hive] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
             response = {'status':'okay'}
             dump = json.dumps(response)
             self.socket.send(dump)
-            print('\tRESPONSE: ' + str(response))
+            print('\tRESPONSE: %s' % str(response))
         except Exception as error:
-            print('\tERROR: ' + str(error))   
+            print('\tERROR: %s' % str(error))   
                        
     ## Listen for Next Sample
     def listen(self):
@@ -222,7 +222,7 @@ class HiveAggregator:
     ## Render Index
     @cherrypy.expose
     def index(self):
-        print('\n[Loading Index Page] ' + datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        print('\n[Loading Index Page] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         html = open('static/index.html').read()
         return html
     
@@ -231,7 +231,7 @@ class HiveAggregator:
     def default(self,*args,**kwargs):
         print('\n[Received POST Request] ' + datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
-            print('\t POST: ' + str(kwargs))
+            print('\t POST: %s' % str(kwargs))
             if kwargs['type'] == 'log':
                 self.store(kwargs)
                 self.train(kwargs)
@@ -240,7 +240,7 @@ class HiveAggregator:
             elif kwargs['type'] == 'save':
                 self.dump_csv(int(kwargs['range_select']))
         except Exception as err:
-            print('\tERROR: ' + str(err))
+            print('\tERROR: %s' % str(err))
         return None
     
 # Main

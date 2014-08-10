@@ -953,7 +953,7 @@
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain([87000, 185000]).nice();
+            y.domain([87000, 108500]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")

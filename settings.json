@@ -9,5 +9,5 @@
     "MONGO_PORT": 27017,
     "MONGO_DB": "HiveAggregator",
     "TIME_FORMAT": "%Y-%m-%d %H:%M:%S",
-    "PARAMS":["time", "int_t", "ext_t", "int_h","ext_h","hz","db","volts","amps"]
+    "PARAMS":["time","int_t","ext_t","int_h","ext_h","hz","db","volts","amps","pa"]
 }

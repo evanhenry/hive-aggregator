@@ -1,0 +1,3 @@
+#!/bin/sh
+cd /usr/share/hive-aggregator
+python hive_aggregator.py

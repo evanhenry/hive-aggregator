@@ -6,3 +6,5 @@ apt-get install mongodb -y
 apt-get install python-pip -y
 apt-get install python-cherrypy3 -y
 pip install pymongo
+
+

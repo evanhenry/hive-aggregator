@@ -101,6 +101,8 @@
         var timeFormat = "%Y-%m-%d %H:%M:%S";
         var yLabel = "External Temperature";
         var yParam = "ext_t";
+        var yMin = 0;
+        var yMax = 50;
         var margin = {top: 10, right: 40, bottom: 50, left: 40},
             width = $(window).width() - margin.left - margin.right,
             height = $(window).height() - margin.top - margin.bottom;
@@ -129,7 +131,7 @@
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain([0, 50]).nice();
+            y.domain([yMin, yMax]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
@@ -204,6 +206,8 @@
         var timeFormat = "%Y-%m-%d %H:%M:%S";
         var yLabel = "Internal Temperature";
         var yParam = "int_t";
+        var yMin = 0;
+        var yMax = 50;
         var margin = {top: 10, right: 40, bottom: 50, left: 40},
             width = $(window).width() - margin.left - margin.right,
             height = $(window).height() - margin.top - margin.bottom;
@@ -232,7 +236,7 @@
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain([0, 50]).nice();
+            y.domain([yMin, yMax]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
@@ -307,6 +311,8 @@
         var timeFormat = "%Y-%m-%d %H:%M:%S";
         var yLabel = "External Humidity";
         var yParam = "ext_h";
+        var yMin = 0;
+        var yMax = 100;
         var margin = {top: 10, right: 40, bottom: 50, left: 40},
             width = $(window).width() - margin.left - margin.right,
             height = $(window).height() - margin.top - margin.bottom;
@@ -335,7 +341,7 @@
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain([0, 100]).nice();
+            y.domain([yMin, yMax]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
@@ -410,6 +416,8 @@
         var timeFormat = "%Y-%m-%d %H:%M:%S";
         var yLabel = "Internal Humidity";
         var yParam = "int_h";
+        var yMin = 0;
+        var yMax = 100;
         var margin = {top: 10, right: 40, bottom: 50, left: 40},
             width = $(window).width() - margin.left - margin.right,
             height = $(window).height() - margin.top - margin.bottom;
@@ -438,7 +446,7 @@
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain([0, 100]).nice();
+            y.domain([yMin, yMax]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
@@ -513,6 +521,8 @@
         var timeFormat = "%Y-%m-%d %H:%M:%S";
         var yLabel = "Decibels (dB)";
         var yParam = "db";
+        var yMin = 0;
+        var yMax = 100;
         var margin = {top: 10, right: 40, bottom: 50, left: 40},
             width = $(window).width() - margin.left - margin.right,
             height = $(window).height() - margin.top - margin.bottom;
@@ -541,7 +551,7 @@
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain([0, 100]).nice();
+            y.domain([yMin, yMax]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
@@ -616,6 +626,8 @@
         var timeFormat = "%Y-%m-%d %H:%M:%S";
         var yLabel = "Frequency (Hz)";
         var yParam = "hz";
+        var yMin = 0;
+        var yMax = 1000;
         var margin = {top: 10, right: 40, bottom: 50, left: 40},
             width = $(window).width() - margin.left - margin.right,
             height = $(window).height() - margin.top - margin.bottom;
@@ -644,7 +656,7 @@
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain([0, 5000]).nice();
+            y.domain([yMin, yMax]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
@@ -719,6 +731,8 @@
         var timeFormat = "%Y-%m-%d %H:%M:%S";
         var yLabel = "Volts";
         var yParam = "volts";
+        var yMin = 0;
+        var yMax = 25;
         var margin = {top: 10, right: 40, bottom: 50, left: 40},
             width = $(window).width() - margin.left - margin.right,
             height = $(window).height() - margin.top - margin.bottom;
@@ -747,7 +761,7 @@
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain([0, 25]).nice();
+            y.domain([yMin, yMax]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
@@ -822,6 +836,8 @@
         var timeFormat = "%Y-%m-%d %H:%M:%S";
         var yLabel = "Amperage";
         var yParam = "amps";
+        var yMin = -30;
+        var yMax = 30;
         var margin = {top: 10, right: 40, bottom: 50, left: 40},
             width = $(window).width() - margin.left - margin.right,
             height = $(window).height() - margin.top - margin.bottom;
@@ -850,7 +866,7 @@
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain([-30, 30]).nice();
+            y.domain([yMin, yMax]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")
@@ -925,6 +941,8 @@
         var timeFormat = "%Y-%m-%d %H:%M:%S";
         var yLabel = "Pascals";
         var yParam = "pa";
+        var yMin = 87000;
+        var yMax = 108500;
         var margin = {top: 10, right: 40, bottom: 50, left: 40},
             width = $(window).width() - margin.left - margin.right,
             height = $(window).height() - margin.top - margin.bottom;
@@ -953,7 +971,7 @@
                 d.time = parseDate(d.time);
             });
             x.domain(d3.extent(data, function(d) { return d[xParam]; }));
-            y.domain([87000, 108500]).nice();
+            y.domain([yMin, yMax]).nice();
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + height + ")")

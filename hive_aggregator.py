@@ -66,7 +66,7 @@ class HiveAggregator:
     
     ## Initialize CherryPy
     def init_cherrypy(self):   
-        print('[Enabling Monitors] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        print('[Initializing Monitors] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
             Monitor(cherrypy.engine, self.listen, frequency=self.CHERRYPY_INTERVAL).subscribe()
             print('\tOKAY')
@@ -110,17 +110,6 @@ class HiveAggregator:
                     targets.append(state)
             self.svc_health.fit(data, targets)
             print('\tOKAY')
-        except Exception as error:
-            print('\tERROR: %s' % str(error))
-    
-    ## Classify
-    def classify(self, sample):
-        print('[Classifying State] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
-        try:
-            data = [sample['int_t'], sample['ext_t']]
-            prediction = self.svc_health.predict(data)
-            print('\tCLASS: %s' % str(int(prediction)))
-            return prediction
         except Exception as error:
             print('\tERROR: %s' % str(error))
         
@@ -169,26 +158,14 @@ class HiveAggregator:
                             for param in self.PARAMS:
                                 try:
                                     sample_as_list.append(str(sample[param]))
-                                except Exception as err:
-                                    print str(err)
+                                except Exception as error:
+                                    print('ERROR: %s' % str(error))
                                     sample_as_list.append('NaN')
                             sample_as_list.append('\n')
                             try:
                                 csvfile.write(','.join(sample_as_list))
-                            except Exception as err:
-                                print str(err)
-                
-    ## Store to Mongo
-    def store(self, doc):
-        print('[Storing to Mongo] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
-        try:
-            doc['time'] = datetime.now()
-            hive = self.mongo_db[doc['hive_id']]
-            doc_id = hive.insert(doc)
-            print('\tDOC_ID: ' + str(doc_id))
-            return doc_id
-        except Exception as error:
-            print('\tERROR: %s' % str(error))
+                            except Exception as error:
+                                print('ERROR: %s' % str(error))
        
     ## Receive Sample
     def receive(self):
@@ -200,15 +177,42 @@ class HiveAggregator:
             return sample
         except Exception as error:
             print('\tERROR: %s' % str(error))
-    
+            
+    ## Store to Mongo
+    def store(self, sample):
+        print('[Storing to Mongo] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        try:
+            sample['time'] = datetime.now()
+            hive = self.mongo_db[sample['hive_id']]
+            sample_id = hive.insert(sample)
+            print('\tOKAY: ' + str(sample_id))
+            return sample_id
+        except Exception as error:
+            print('\tERROR: %s' % str(error))
+                        
+    ## Classify
+    def classify(self, sample):
+        print('[Classifying State] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        try:
+            response = {
+                'status' : 'okay',
+                'time' : datetime.strftime(datetime.now(), self.TIME_FORMAT),
+                'type' : 'response'
+                }
+            data = [sample['int_t'], sample['ext_t']]
+            prediction = self.svc_health.predict(data)
+            print('\tCLASS: %s' % str(int(prediction)))
+        except Exception as error:
+            print('\tERROR: %s' % str(error))
+        return response
+            
     ### Send Response
-    def send(self):
+    def send(self, response):
         print('[Sending Response to Hive] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
-            response = {'status':'okay'}
             dump = json.dumps(response)
             self.socket.send(dump)
-            print('\tRESPONSE: %s' % str(response))
+            print('\tOKAY: %s' % str(response))
         except Exception as error:
             print('\tERROR: %s' % str(error))   
                        
@@ -216,7 +220,7 @@ class HiveAggregator:
     def listen(self):
         sample = self.receive()
         response = self.classify(sample)
-        self.send()
+        self.send(response)
         mongo_id = self.store(sample)
     
     ## Render Index

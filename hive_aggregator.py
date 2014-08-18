@@ -35,6 +35,7 @@ class HiveAggregator:
 
     ## Initialize
     def __init__(self, config_file):
+        print('\n----------- Initializing -----------')
         self.init_config(config_file)
         self.init_zmq()
         self.init_cherrypy()
@@ -62,7 +63,7 @@ class HiveAggregator:
             self.socket.bind(self.ZMQ_SERVER)
             print('\tOKAY')
         except Exception as error:
-            print('\tERROR: ' + str(error))
+            print('\tERROR: %s' % str(error))
     
     ## Initialize CherryPy
     def init_cherrypy(self):   
@@ -71,7 +72,7 @@ class HiveAggregator:
             Monitor(cherrypy.engine, self.listen, frequency=self.CHERRYPY_INTERVAL).subscribe()
             print('\tOKAY')
         except Exception as error:
-            print('\tERROR: ' + str(error))     
+            print('\tERROR: %s' % str(error))     
     
     ## Initialize MongoDB
     def init_mongo(self):
@@ -81,20 +82,23 @@ class HiveAggregator:
             self.mongo_db = self.mongo_client[self.MONGO_DB]
             print('\tOKAY')
         except Exception as error:
-            print('\tERROR: ' + str(error))
+            print('\tERROR: %s' % str(error))
     
     ## Initialize SKlearn
     def init_sklearn(self):     
         print('[Initializing SKlearn] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
+            ## Learning Estimators
             self.svc_health = svm.SVC(kernel='rbf')
+            self.svc_environment = svm.SVC(kernel='rbf')
+            self.svc_activity = svm.SVC(kernel='rbf')
             print('\tOKAY')
         except Exception as error:
-            print('\tERROR: ' + str(error))
+            print('\tERROR: %s' % str(error))
     
-    ## Train
-    def train(self, log):
-        print('[Training SVM] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+    ## Train Estimators
+    def train_estimators(self, log):
+        print('[Training Estimators] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
             logs = self.mongo_db[log['hive_id']].find({'type':'log'})
             data = []
@@ -118,10 +122,11 @@ class HiveAggregator:
         print('[Querying Samples in Range] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         print('\tRange: ' + str(hours))
         time_range = datetime.now() - timedelta(hours = hours) # get datetime
-        with open('data/samples.json', 'w') as jsonfile:
+        with open(self.DATA_PATH + 'samples.json', 'w') as jsonfile:
             result = []
             for name in self.mongo_db.collection_names():
                 if not name == 'system.indexes':
+                    # Add filters here to only include average values
                     for sample in self.mongo_db[name].find({'type':'sample', 'time':{'$gt': time_range, '$lt':datetime.now()}}):
                         sample['time'] = datetime.strftime(sample['time'], self.TIME_FORMAT)
                         result.append(sample)
@@ -131,9 +136,9 @@ class HiveAggregator:
     ## Query Logs in Range to JSON-file
     def query_logs(self, hours):
         print('[Querying from Mongo] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
-        print('\tRange: ' + str(hours))
+        print('\tTime Range: %s hours' % str(hours))
         time_range = datetime.now() - timedelta(hours = hours) # get datetime
-        with open('data/logs.json', 'w') as jsonfile:
+        with open(self.DATA_PATH + 'logs.json', 'w') as jsonfile:
             result = []
             for name in self.mongo_db.collection_names():
                 if not name == 'system.indexes':
@@ -146,21 +151,21 @@ class HiveAggregator:
     ## Dump to CSV
     def dump_csv(self, hours):
         print('\n[Dumping to CSV] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
-        print('\tRange: ' + str(hours))
+        print('\tRange: %s' % str(hours))
         time_range = datetime.now() - timedelta(hours = hours) # get datetime
-        with open('data/samples.csv', 'w') as csvfile:
-            csvfile.write(','.join(self.PARAMS)) # Write headers
+        with open(self.DATA_PATH + 'samples.csv', 'w') as csvfile:
+            csvfile.write(','.join(self.ALL_PARAMETERS)) # Write headers
             for name in self.mongo_db.collection_names():
                     if not name == 'system.indexes':
                         for sample in self.mongo_db[name].find({'type':'sample', 'time':{'$gt': time_range, '$lt':datetime.now()}}):
                             sample['time'] = datetime.strftime(sample['time'], self.TIME_FORMAT)
                             sample_as_list = []
-                            for param in self.PARAMS:
+                            for param in self.ALL_PARAMETERS:
                                 try:
                                     sample_as_list.append(str(sample[param]))
                                 except Exception as error:
                                     print('ERROR: %s' % str(error))
-                                    sample_as_list.append('NaN')
+                                    sample_as_list.append('NaN') # Not-a-Number if missing
                             sample_as_list.append('\n')
                             try:
                                 csvfile.write(','.join(sample_as_list))
@@ -168,7 +173,7 @@ class HiveAggregator:
                                 print('ERROR: %s' % str(error))
        
     ## Receive Sample
-    def receive(self):
+    def receive_sample(self):
         print('[Receiving Sample from Hive] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
             packet = self.socket.recv()
@@ -179,66 +184,89 @@ class HiveAggregator:
             print('\tERROR: %s' % str(error))
             
     ## Store to Mongo
-    def store(self, sample):
-        print('[Storing to Mongo] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+    def store_sample(self, sample):
+        print('[Storing Sample] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
             sample['time'] = datetime.now()
             hive = self.mongo_db[sample['hive_id']]
             sample_id = hive.insert(sample)
-            print('\tOKAY: ' + str(sample_id))
-            return sample_id
+            print('\tOKAY: %s' % str(sample_id))
+            return str(sample_id)
         except Exception as error:
             print('\tERROR: %s' % str(error))
                         
     ## Classify
-    def classify(self, sample):
-        print('[Classifying State] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+    def classify_sample(self, sample):
+        print('[Classifying Sample] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
-            response = {
-                'status' : 'okay',
-                'time' : datetime.strftime(datetime.now(), self.TIME_FORMAT),
-                'type' : 'response'
-                }
-            data = [sample['int_t'], sample['ext_t']]
-            prediction = self.svc_health.predict(data)
-            print('\tCLASS: %s' % str(int(prediction)))
+            health_data = [sample[v] for v in self.HEALTH_PARAMETERS]
+            activity_data = [sample[v] for v in self.ACTIVITY_PARAMETERS]
+            environment_data = [sample[v] for v in self.ENVIRONMENT_PARAMETERS]
+            health = self.svc_health.predict(health_data)
+            activity = self.svc_activity.predict(actvity_data)
+            environment = self.svc_environment.predict(environment_data)
+            estimators = {
+                'health' : health,
+                'environment' : environment,
+                'activity' : activity
+            }
+            print('\tOKAY: %s' % str(estimators))
         except Exception as error:
+            estimators = {}
             print('\tERROR: %s' % str(error))
-        return response
+        return estimators
             
     ### Send Response
-    def send(self, response):
+    def send_response(self, estimators, sample_id):
         print('[Sending Response to Hive] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
+            response = {
+                'id' : sample_id,
+                'type' : 'response',
+                'time' : datetime.strftime(datetime.now(), self.TIME_FORMAT),
+                'estimators' : estimators
+                }
             dump = json.dumps(response)
             self.socket.send(dump)
             print('\tOKAY: %s' % str(response))
         except Exception as error:
             print('\tERROR: %s' % str(error))   
-                       
+    
+    """
+    Periodic Functions
+    """
     ## Listen for Next Sample
     def listen(self):
-        sample = self.receive()
-        response = self.classify(sample)
-        self.send(response)
-        mongo_id = self.store(sample)
+        print('\n----------- Listening for Nodes -----------')
+        sample = self.receive_sample()
+        sample_id = self.store_sample(sample)
+        estimators = self.classify_sample(sample)
+        self.send_response(estimators, sample_id)
+        
+    ## Compute Periodic Class
+    def cluster(self):
+        print('\n----------- Clustering Data -----------')
+        
     
+    """
+    Handler Functions
+    """
     ## Render Index
     @cherrypy.expose
     def index(self):
-        print('[Loading Index Page] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        print('\n----------- Loading Index Page -----------')
         html = open('static/index.html').read()
         return html
     
     ## Handle Posts
     @cherrypy.expose
-    def default(self,*args,**kwargs):
-        print('[Received POST Request] ' + datetime.strftime(datetime.now(), self.TIME_FORMAT))
+    def default(self, *args, **kwargs):
+        print('\n----------- Received POST Request -----------')
         try:
-            print('\t POST: %s' % str(kwargs))
+            print('\tPOST: %s' % str(kwargs))
             if kwargs['type'] == 'log':
-                self.store(kwargs)
-                self.train(kwargs)
+                self.store_sample(kwargs)
+                self.train_estimators(kwargs)
             elif kwargs['type'] == 'graph':
                 self.query_samples(int(kwargs['range_select']))
             elif kwargs['type'] == 'save':

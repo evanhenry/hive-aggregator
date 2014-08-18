@@ -1,13 +1,17 @@
 {
-    "USER_ID": "trevstanhope",
-    "AGGREGATOR_ID": "MAA",
-    "ZMQ_SERVER": "tcp://*:1980",
-    "CHERRYPY_INTERVAL": 0.1,
-    "CHERRYPY_PORT": 8080,
-    "CHERRYPY_ADDR": "0.0.0.0",
-    "MONGO_ADDR": "127.0.0.1",
-    "MONGO_PORT": 27017,
-    "MONGO_DB": "HiveAggregator",
-    "TIME_FORMAT": "%Y-%m-%d %H:%M:%S",
-    "PARAMS":["time","int_t","ext_t","int_h","ext_h","hz","db","volts","amps","pa"]
+    "USER_ID" : "trevstanhope",
+    "AGGREGATOR_ID" : "MAA",
+    "ZMQ_SERVER" : "tcp://*:1980",
+    "CHERRYPY_INTERVAL" : 0.1,
+    "CHERRYPY_PORT" : 8080,
+    "CHERRYPY_ADDR" : "0.0.0.0",
+    "MONGO_ADDR" : "127.0.0.1",
+    "MONGO_PORT" : 27017,
+    "MONGO_DB" : "HiveAggregator",
+    "TIME_FORMAT" : "%Y-%m-%d %H:%M:%S",
+    "ENVIRONMENT_PARAMETERS" : ["ext_t", "ext_h", "pa"],
+    "HEALTH_PARAMETERS" : ["int_t", "int_h"],
+    "ACTIVITY_PARAMETERS" : ["db", "hz"],
+    "DATA_PATH" : "data/",
+    "ALL_PARAMETERS":["time","int_t","ext_t","int_h","ext_h","hz","db","volts","amps","pa"]
 }

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<head>
+    <title>HiveAggregator</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href='index.css'></link>
+    <link rel="shortcut icon" href='favicon.ico'></link>
+    <script src="d3.v3.js" charset="utf-8"></script>
+    <script src="jquery-1.10.2.min.js"></script>
+</head>
+<body>
+    <!-- Logs -->
+    <script>
+        $(document).ready(function() {
+            $('#log_submit').click(function() {
+                $.ajax({
+                    type: "POST",
+                    url: "log",
+                    data: {
+                        'type': 'log',
+                        'health': $("#log_form input[name=health]:checked").val(),
+                        'mites': $("#log_form input[name=mites]:checked").val(),
+                        'hive_id': $("#hive_select").val(),
+                        'swarm': $('#swarm').attr('checked')
+                    },
+                    success: function(msg) {
+                        alert("Log Submitted!");
+                    }
+                });
+
+            });
+        });
+    </script>
+    <form id="log_form" method="post">
+        <!-- Add dynamic list-->
+        <p>
+            <select id="hive_select">
+                <option value="hive_1">Hive 1</option>
+            </select>
+        </p>
+        <p>
+        Health:
+            <label for="good"> <input type="radio" name="health" value=1 id="good" /> Good</label>
+            <label for="neutral"> <input type="radio" name="health" value=2 id="neutral" /> Neutral</label>
+            <label for="bad"> <input type="radio" checked="checked" name="health" value=3 id="bad" /> Bad</label>           
+        </p>
+        Mites: 
+            <label for="bad"> <input type="radio" checked="checked" name="mites" value=1 id="none" /> None</label>
+            <label for="neutral"> <input type="radio" name="mites" value="few" id=2 /> Few</label>
+            <label for="good"> <input type="radio" name="mites" value="many" id=3 /> Many</label>
+        </p>
+        <p>
+            <input type="checkbox" id="swarm" value="true" alt="false">Swarm<br>
+        </p>
+        <input type="button" id="log_submit" value="Submit Log"/> 
+    </form>
+    
+</body>

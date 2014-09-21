@@ -1,6 +1,6 @@
 {
-    "USER_ID" : "trevstanhope",
-    "AGGREGATOR_ID" : "MAA",
+    "USER_ID" : "user",
+    "AGGREGATOR_ID" : "ID",
     "ZMQ_SERVER" : "tcp://*:1980",
     "CHERRYPY_LISTEN_INTERVAL" : 0.1,
     "CHERRYPY_BACKUP_INTERVAL" : 15,
@@ -9,7 +9,7 @@
     "CHERRYPY_ADDR" : "0.0.0.0",
     "MONGO_ADDR" : "127.0.0.1",
     "MONGO_PORT" : 27017,
-    "MONGO_DB" : "HiveAggregator",
+    "MONGO_DB" : "dev",
     "TIME_FORMAT" : "%Y-%m-%d %H:%M:%S",
     "DATA_PATH" : "data/",
     "LOGS_FILE" : "logs.json",

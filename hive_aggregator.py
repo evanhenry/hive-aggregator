@@ -15,7 +15,7 @@ import ast
 import cherrypy
 import os
 import sys
-import numpy
+import numpy as np
 from datetime import datetime, timedelta
 from cherrypy.process.plugins import Monitor
 from cherrypy import tools
@@ -28,7 +28,7 @@ from sklearn import svm
 try:
     CONFIG_FILE = sys.argv[1]
 except Exception as err:
-    CONFIG_FILE = 'settings.json'
+    CONFIG_FILE = 'default.json'
 
 # HiveAggregator CherryPy server
 class HiveAggregator:
@@ -66,10 +66,12 @@ class HiveAggregator:
             print('\tERROR: %s' % str(error))
     
     ## Initialize CherryPy
-    def init_cherrypy(self):   
+    def init_cherrypy(self):
         print('[Initializing Monitors] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
-            Monitor(cherrypy.engine, self.listen, frequency=self.CHERRYPY_INTERVAL).subscribe()
+            Monitor(cherrypy.engine, self.listen, frequency=self.CHERRYPY_LISTEN_INTERVAL).subscribe()
+            Monitor(cherrypy.engine, self.backup, frequency=self.CHERRYPY_BACKUP_INTERVAL).subscribe()
+            Monitor(cherrypy.engine, self.check, frequency=self.CHERRYPY_CHECK_INTERVAL).subscribe()
             print('\tOKAY')
         except Exception as error:
             print('\tERROR: %s' % str(error))     
@@ -119,15 +121,16 @@ class HiveAggregator:
         
     ## Query Samples in Range to JSON-file
     def query_samples(self, hours):
-        print('[Querying Samples in Range] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        print('[Querying Samples] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         print('\tRange: ' + str(hours))
         time_range = datetime.now() - timedelta(hours = hours) # get datetime
-        with open(self.DATA_PATH + 'samples.json', 'w') as jsonfile:
+        with open(self.DATA_PATH + self.SAMPLES_FILE, 'w') as jsonfile:
             result = []
             for name in self.mongo_db.collection_names():
                 if not name == 'system.indexes':
                     # Add filters here to only include average values
-                    for sample in self.mongo_db[name].find({'type':'sample', 'time':{'$gt': time_range, '$lt':datetime.now()}}):
+                    matches = self.mongo_db[name].find({'type':'sample', 'time':{'$gt': time_range, '$lt':datetime.now()}})
+                    for sample in matches:
                         sample['time'] = datetime.strftime(sample['time'], self.TIME_FORMAT)
                         result.append(sample)
             dump = json_util.dumps(result, indent=4)
@@ -135,26 +138,29 @@ class HiveAggregator:
             
     ## Query Logs in Range to JSON-file
     def query_logs(self, hours):
-        print('[Querying from Mongo] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        print('[Querying Logs] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         print('\tTime Range: %s hours' % str(hours))
         time_range = datetime.now() - timedelta(hours = hours) # get datetime
-        with open(self.DATA_PATH + 'logs.json', 'w') as jsonfile:
+        with open(self.DATA_PATH + self.LOGS_FILE, 'w') as jsonfile:
             result = []
             for name in self.mongo_db.collection_names():
                 if not name == 'system.indexes':
-                    for log in self.mongo_db[name].find({'type':'log', 'time':{'$gt': time_range, '$lt':datetime.now()}}):
+                    matches = self.mongo_db[name].find({'type':'log', 'time':{'$gt': time_range, '$lt':datetime.now()}})
+                    for log in matches:
                         log['time'] = datetime.strftime(log['time'], self.TIME_FORMAT)
                         result.append(log)
             dump = json_util.dumps(result, indent=4)
             jsonfile.write(dump)
     
     ## Dump to CSV
+    #! Needs rewrite for speed
     def dump_csv(self, hours):
         print('\n[Dumping to CSV] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         print('\tRange: %s' % str(hours))
+        filename = datetime.strftime(datetime.now(), self.CSV_FILE)
         time_range = datetime.now() - timedelta(hours = hours) # get datetime
-        with open(self.DATA_PATH + 'samples.csv', 'w') as csvfile:
-            csvfile.write(','.join(self.ALL_PARAMETERS)) # Write headers
+        with open(self.DATA_PATH + filename, 'w') as csvfile:
+            csvfile.write(','.join(self.ALL_PARAMETERS) + ',hive\n') # Write headers
             for name in self.mongo_db.collection_names():
                     if not name == 'system.indexes':
                         for sample in self.mongo_db[name].find({'type':'sample', 'time':{'$gt': time_range, '$lt':datetime.now()}}):
@@ -166,6 +172,7 @@ class HiveAggregator:
                                 except Exception as error:
                                     print('ERROR: %s' % str(error))
                                     sample_as_list.append('NaN') # Not-a-Number if missing
+                            sample.append(sample['hive_id'])
                             sample_as_list.append('\n')
                             try:
                                 csvfile.write(','.join(sample_as_list))
@@ -173,17 +180,17 @@ class HiveAggregator:
                                 print('ERROR: %s' % str(error))
        
     ## Receive Sample
-    def receive_sample(self):
-        print('[Receiving Sample from Hive] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+    def receive_message(self):
+        print('[Receiving Message] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
             packet = self.socket.recv()
-            sample = json.loads(packet)
-            print('\tOKAY: %s' % str(sample))
-            return sample
+            message = json.loads(packet)
+            print('\tOKAY: %s' % str(message))
+            return message
         except Exception as error:
             print('\tERROR: %s' % str(error))
             
-    ## Store to Mongo
+    ## Store Sample
     def store_sample(self, sample):
         print('[Storing Sample] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
@@ -195,6 +202,18 @@ class HiveAggregator:
         except Exception as error:
             print('\tERROR: %s' % str(error))
                         
+    ## Store Log
+    def store_log(self, log):
+        print('[Storing Log] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        try:
+            log['time'] = datetime.now()
+            hive = self.mongo_db[sample['hive_id']]
+            log_id = hive.insert(log)
+            print('\tOKAY: %s' % str(log_id))
+            return str(log_id)
+        except Exception as error:
+            print('\tERROR: %s' % str(error))
+            
     ## Classify
     def classify_sample(self, sample):
         print('[Classifying Sample] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
@@ -238,15 +257,19 @@ class HiveAggregator:
     ## Listen for Next Sample
     def listen(self):
         print('\n----------- Listening for Nodes -----------')
-        sample = self.receive_sample()
-        sample_id = self.store_sample(sample)
-        estimators = self.classify_sample(sample)
-        self.send_response(estimators, sample_id)
+        message = self.receive_message()
+        if message['type'] == 'sample':
+            sample_id = self.store_sample(message)
+            estimators = self.classify_sample(message)
+            self.send_response(estimators, sample_id)
         
-    ## Compute Periodic Class
-    def cluster(self):
-        print('\n----------- Clustering Data -----------')
-        
+    ## Backup
+    def backup(self):
+        print('\n----------- Backing Up Data -----------')
+    
+    ## Check Database
+    def check(self):
+        print('\n----------- Checking Database -----------')
     
     """
     Handler Functions

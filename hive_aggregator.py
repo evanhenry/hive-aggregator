@@ -218,18 +218,30 @@ class HiveAggregator:
     def classify_sample(self, sample):
         print('[Classifying Sample] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:
-            health_data = [sample[v] for v in self.HEALTH_PARAMETERS]
-            activity_data = [sample[v] for v in self.ACTIVITY_PARAMETERS]
-            environment_data = [sample[v] for v in self.ENVIRONMENT_PARAMETERS]
-            health = self.svc_health.predict(health_data)
-            activity = self.svc_activity.predict(actvity_data)
-            environment = self.svc_environment.predict(environment_data)
-            estimators = {
-                'health' : health,
-                'environment' : environment,
-                'activity' : activity
-            }
-            print('\tOKAY: %s' % str(estimators))
+			try:
+				health_data = [sample[v] for v in self.HEALTH_PARAMETERS]
+				health = self.svc_health.predict(health_data)
+			except Exception as error:
+				health = None
+				print('\tERROR: %s' % str(error))
+			try:
+				activity_data = [sample[v] for v in self.ACTIVITY_PARAMETERS]
+				activity = self.svc_activity.predict(actvity_data)
+			except Exception as error:
+				activity = None
+				print('\tERROR: %s' % str(error))
+			try:
+				environment_data = [sample[v] for v in self.ENVIRONMENT_PARAMETERS]
+				environment = self.svc_environment.predict(environment_data)
+			except Exception as error:
+				environment = None
+				print('\tERROR: %s' % str(error))
+			estimators = {
+				'health' : health,
+				'environment' : environment,
+				'activity' : activity
+			}
+			print('\tOKAY: %s' % str(estimators))
         except Exception as error:
             estimators = {}
             print('\tERROR: %s' % str(error))

@@ -28,22 +28,47 @@ from sklearn import svm
 try:
     CONFIG_FILE = sys.argv[1]
 except Exception as err:
-    CONFIG_FILE = 'default.json'
+    CONFIG_FILE = None
 
 # HiveAggregator CherryPy server
 class HiveAggregator:
 
     ## Initialize
-    def __init__(self, config_file):
-        print('\n----------- Initializing -----------')
-        self.init_config(config_file)
+    def __init__(self, config_path):
+        
+        # Configuration
+        if not config_path:
+            self.USER_ID = "trevstanhope"
+            self.AGGREGATOR_ID = "MAA"
+            self.ZMQ_SERVER = "tcp://*:1980"
+            self.CHERRYPY_LISTEN_INTERVAL = 0.1
+            self.CHERRYPY_BACKUP_INTERVAL = 1500
+            self.CHERRYPY_CHECK_INTERVAL = 1500
+            self.CHERRYPY_PORT = 8080
+            self.CHERRYPY_ADDR = "0.0.0.0"
+            self.MONGO_ADDR = "127.0.0.1"
+            self.MONGO_PORT = 27017
+            self.MONGO_DB = "%Y%m"
+            self.TIME_FORMAT = "%Y%m%d%H%M%S"
+            self.DATA_PATH = "data/"
+            self.LOGS_FILE = "logs.json"
+            self.SAMPLES_FILE = "samples.json"
+            self.CSV_FILE = "%Y-%m-%d %H:%M:%S "
+            self.ENVIRONMENT_PARAMETERS = ["ext_t", "ext_h", "pa"]
+            self.HEALTH_PARAMETERS = ["int_t", "int_h"]
+            self.ACTIVITY_PARAMETERS = ["db", "hz"]
+            self.ALL_PARAMETERS = ["time","int_t","ext_t","int_h","ext_h","hz","db","volts","amps","pa"]
+        else:
+            self.load_config(config_path)
+        
+        # Initializers
         self.init_zmq()
         self.init_cherrypy()
         self.init_mongo()
         self.init_sklearn()
     
     ## Load Configuration
-    def init_config(self, config_file):
+    def load_config(self, config_path):
         print('[Loading Config File]')
         with open(config_file) as config:
             settings = json.loads(config.read())
@@ -80,8 +105,9 @@ class HiveAggregator:
     def init_mongo(self):
         print('[Initializing Mongo] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         try:    
+            self.dbname = datetime.strftime(datetime.now(), self.MONGO_DB)            
             self.mongo_client = MongoClient(self.MONGO_ADDR, self.MONGO_PORT)
-            self.mongo_db = self.mongo_client[self.MONGO_DB]
+            self.mongo_db = self.mongo_client[self.dbname]
             print('\tOKAY')
         except Exception as error:
             print('\tERROR: %s' % str(error))
@@ -157,12 +183,14 @@ class HiveAggregator:
     def dump_csv(self, hours):
         print('\n[Dumping to CSV] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
         print('\tRange: %s' % str(hours))
-        filename = datetime.strftime(datetime.now(), self.CSV_FILE)
         time_range = datetime.now() - timedelta(hours = hours) # get datetime
-        with open(self.DATA_PATH + filename, 'w') as csvfile:
-            csvfile.write(','.join(self.ALL_PARAMETERS) + ',hive\n') # Write headers
+        try:
             for name in self.mongo_db.collection_names():
-                    if not name == 'system.indexes':
+                if not name == 'system.indexes':
+                    print('\tCollection: %s' % name)
+                    filename = datetime.strftime(datetime.now(), self.CSV_FILE) + name + '.csv'
+                    with open(self.DATA_PATH + filename, 'w') as csvfile:
+                        csvfile.write(','.join(self.ALL_PARAMETERS) + '\n') # Write headers
                         for sample in self.mongo_db[name].find({'type':'sample', 'time':{'$gt': time_range, '$lt':datetime.now()}}):
                             sample['time'] = datetime.strftime(sample['time'], self.TIME_FORMAT)
                             sample_as_list = []
@@ -170,14 +198,14 @@ class HiveAggregator:
                                 try:
                                     sample_as_list.append(str(sample[param]))
                                 except Exception as error:
-                                    print('ERROR: %s' % str(error))
                                     sample_as_list.append('NaN') # Not-a-Number if missing
-                            sample.append(sample['hive_id'])
                             sample_as_list.append('\n')
                             try:
                                 csvfile.write(','.join(sample_as_list))
                             except Exception as error:
                                 print('ERROR: %s' % str(error))
+        except Exception as error:
+            print str(error)
        
     ## Receive Sample
     def receive_message(self):

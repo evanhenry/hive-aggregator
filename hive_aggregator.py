@@ -30,9 +30,14 @@ try:
 except Exception as err:
     CONFIG_FILE = None
 
+## Pretty Print
+def pretty_print(task, msg):
+    date = datetime.strftime(datetime.now(), '%d/%b/%Y:%H:%M:%S')
+    print('[%s] %s %s' % (date, task, msg))
+
 # HiveAggregator CherryPy server
 class HiveAggregator:
-
+    
     ## Initialize
     def __init__(self, config_path):
         
@@ -63,13 +68,13 @@ class HiveAggregator:
         
         # Initializers
         self.init_zmq()
-        self.init_cherrypy()
+        self.init_tasks()
         self.init_mongo()
         self.init_sklearn()
     
     ## Load Configuration
     def load_config(self, config_path):
-        print('[Loading Config File]')
+        pretty_print('CONFIG', 'Loading Config File')
         with open(config_file) as config:
             settings = json.loads(config.read())
             for key in settings:
@@ -81,52 +86,47 @@ class HiveAggregator:
     
     ## Initialize ZMQ
     def init_zmq(self):      
-        print('[Initializing ZMQ] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        pretty_print('ZMQ', 'Initializing ZMQ')
         try:
             self.context = zmq.Context()
             self.socket = self.context.socket(zmq.REP)
             self.socket.bind(self.ZMQ_SERVER)
-            print('\tOKAY')
         except Exception as error:
-            print('\tERROR: %s' % str(error))
+            pretty_print('ERROR', str(error))
     
-    ## Initialize CherryPy
-    def init_cherrypy(self):
-        print('[Initializing Monitors] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+    ## Initialize Tasks
+    def init_tasks(self):
+        pretty_print('CHERRYPY', 'Initializing Monitors')
         try:
             Monitor(cherrypy.engine, self.listen, frequency=self.CHERRYPY_LISTEN_INTERVAL).subscribe()
             Monitor(cherrypy.engine, self.backup, frequency=self.CHERRYPY_BACKUP_INTERVAL).subscribe()
             Monitor(cherrypy.engine, self.check, frequency=self.CHERRYPY_CHECK_INTERVAL).subscribe()
-            print('\tOKAY')
         except Exception as error:
-            print('\tERROR: %s' % str(error))     
+            pretty_print('ERROR', str(error))
     
     ## Initialize MongoDB
     def init_mongo(self):
-        print('[Initializing Mongo] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        pretty_print('MONGO', 'Initializing Mongo')
         try:    
             self.dbname = datetime.strftime(datetime.now(), self.MONGO_DB)            
             self.mongo_client = MongoClient(self.MONGO_ADDR, self.MONGO_PORT)
-            self.mongo_db = self.mongo_client[self.dbname]
-            print('\tOKAY')
         except Exception as error:
-            print('\tERROR: %s' % str(error))
+            pretty_print('ERROR', str(error))
     
     ## Initialize SKlearn
     def init_sklearn(self):     
-        print('[Initializing SKlearn] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        pretty_print('SKLEARN', 'Initializing SKlearn')
         try:
             ## Learning Estimators
             self.svc_health = svm.SVC(kernel='rbf')
             self.svc_environment = svm.SVC(kernel='rbf')
             self.svc_activity = svm.SVC(kernel='rbf')
-            print('\tOKAY')
         except Exception as error:
-            print('\tERROR: %s' % str(error))
+            pretty_print('ERROR', str(error))
     
     ## Train Estimators
     def train_estimators(self, log):
-        print('[Training Estimators] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        pretty_print('SKLEARN', 'Training Estimators')
         try:
             logs = self.mongo_db[log['hive_id']].find({'type':'log'})
             data = []
@@ -141,14 +141,12 @@ class HiveAggregator:
                     data.append(params)
                     targets.append(state)
             self.svc_health.fit(data, targets)
-            print('\tOKAY')
         except Exception as error:
-            print('\tERROR: %s' % str(error))
+            pretty_print('ERROR', str(error))
         
     ## Query Samples in Range to JSON-file
     def query_samples(self, hours):
-        print('[Querying Samples] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
-        print('\tRange: ' + str(hours))
+        pretty_print('MONGO', 'Querying samples for last %s hrs' % str(hours))
         time_range = datetime.now() - timedelta(hours = hours) # get datetime
         with open(self.DATA_PATH + self.SAMPLES_FILE, 'w') as jsonfile:
             result = []
@@ -164,8 +162,7 @@ class HiveAggregator:
             
     ## Query Logs in Range to JSON-file
     def query_logs(self, hours):
-        print('[Querying Logs] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
-        print('\tTime Range: %s hours' % str(hours))
+        pretty_print('MONGO', 'Querying Logs for last %s hrs' % str(hours))
         time_range = datetime.now() - timedelta(hours = hours) # get datetime
         with open(self.DATA_PATH + self.LOGS_FILE, 'w') as jsonfile:
             result = []
@@ -181,13 +178,12 @@ class HiveAggregator:
     ## Dump to CSV
     #! Needs rewrite for speed
     def dump_csv(self, hours):
-        print('\n[Dumping to CSV] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
-        print('\tRange: %s' % str(hours))
+        pretty_print('MONGO', 'Dumping to CSV for last %s hrs' % str(hours))
         time_range = datetime.now() - timedelta(hours = hours) # get datetime
         try:
             for name in self.mongo_db.collection_names():
                 if not name == 'system.indexes':
-                    print('\tCollection: %s' % name)
+                    pretty_print('CSV', 'Collection: %s' % name)
                     filename = datetime.strftime(datetime.now(), self.CSV_FILE) + name + '.csv'
                     with open(self.DATA_PATH + filename, 'w') as csvfile:
                         csvfile.write(','.join(self.ALL_PARAMETERS) + '\n') # Write headers
@@ -203,81 +199,82 @@ class HiveAggregator:
                             try:
                                 csvfile.write(','.join(sample_as_list))
                             except Exception as error:
-                                print('ERROR: %s' % str(error))
+                                pretty_print('ERROR', str(error))
         except Exception as error:
-            print str(error)
+            pretty_print('ERROR', str(error))
        
     ## Receive Sample
     def receive_message(self):
-        print('[Receiving Message] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        pretty_print('ZMQ', 'Receiving Message')
         try:
             packet = self.socket.recv()
             message = json.loads(packet)
-            print('\tOKAY: %s' % str(message))
+            pretty_print('RECEIVE', 'OKAY: %s' % str(message))
             return message
         except Exception as error:
-            print('\tERROR: %s' % str(error))
+            pretty_print('ERROR', str(error))
             
     ## Store Sample
     def store_sample(self, sample):
-        print('[Storing Sample] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        pretty_print('MONGO', 'Storing Sample')
         try:
             sample['time'] = datetime.now()
-            hive = self.mongo_db[sample['hive_id']]
+            mongo_db = self.mongo_client[datetime.strftime(datetime.now(), self.MONGO_DB)]
+            hive = mongo_db[sample['hive_id']]
             sample_id = hive.insert(sample)
-            print('\tOKAY: %s' % str(sample_id))
+            pretty_print('MONGO', 'OKAY: %s' % str(sample_id))
             return str(sample_id)
         except Exception as error:
-            print('\tERROR: %s' % str(error))
+            pretty_print('ERROR', str(error))
                         
     ## Store Log
     def store_log(self, log):
-        print('[Storing Log] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        pretty_print('MONGO', 'Storing Log')
         try:
             log['time'] = datetime.now()
             hive = self.mongo_db[sample['hive_id']]
             log_id = hive.insert(log)
-            print('\tOKAY: %s' % str(log_id))
+            pretty_print('MONGO', 'OKAY: %s' % str(log_id))
             return str(log_id)
         except Exception as error:
-            print('\tERROR: %s' % str(error))
+            pretty_print('ERROR', str(error))
             
     ## Classify
     def classify_sample(self, sample):
-        print('[Classifying Sample] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        pretty_print('SKLEARN', 'Classifying Sample')
         try:
-			try:
-				health_data = [sample[v] for v in self.HEALTH_PARAMETERS]
-				health = self.svc_health.predict(health_data)
-			except Exception as error:
-				health = None
-				print('\tERROR: %s' % str(error))
-			try:
-				activity_data = [sample[v] for v in self.ACTIVITY_PARAMETERS]
-				activity = self.svc_activity.predict(actvity_data)
-			except Exception as error:
-				activity = None
-				print('\tERROR: %s' % str(error))
-			try:
-				environment_data = [sample[v] for v in self.ENVIRONMENT_PARAMETERS]
-				environment = self.svc_environment.predict(environment_data)
-			except Exception as error:
-				environment = None
-				print('\tERROR: %s' % str(error))
-			estimators = {
-				'health' : health,
-				'environment' : environment,
-				'activity' : activity
-			}
-			print('\tOKAY: %s' % str(estimators))
+            try:
+                health_data = [sample[v] for v in self.HEALTH_PARAMETERS]
+                health = self.svc_health.predict(health_data)
+            except Exception as error:
+                health = None
+                pretty_print('ERROR', str(error))
+            try:
+                activity_data = [sample[v] for v in self.ACTIVITY_PARAMETERS]
+                activity = self.svc_activity.predict(actvity_data)
+            except Exception as error:
+                activity = None
+                pretty_print('ERROR', str(error))
+            try:
+                environment_data = [sample[v] for v in self.ENVIRONMENT_PARAMETERS]
+                environment = self.svc_environment.predict(environment_data)
+            except Exception as error:
+                environment = None
+                pretty_print('ERROR', str(error))
+            estimators = {
+                'health' : health,
+                'environment' : environment,
+                'activity' : activity
+            }
+            pretty_print('SKLEARN', str(estimators))
         except Exception as error:
             estimators = {}
-            print('\tERROR: %s' % str(error))
+            pretty_print('ERROR', str(error))
         return estimators
             
     ### Send Response
     def send_response(self, estimators, sample_id):
-        print('[Sending Response to Hive] %s' % datetime.strftime(datetime.now(), self.TIME_FORMAT))
+        pretty_print('ZMQ', 'Sending Response to Hive')
         try:
             response = {
                 'id' : sample_id,
@@ -287,16 +284,16 @@ class HiveAggregator:
                 }
             dump = json.dumps(response)
             self.socket.send(dump)
-            print('\tOKAY: %s' % str(response))
+            pretty_print('ZMQ', str(response))
         except Exception as error:
-            print('\tERROR: %s' % str(error))   
+            pretty_print('ERROR', str(error))   
     
     """
     Periodic Functions
     """
     ## Listen for Next Sample
     def listen(self):
-        print('\n----------- Listening for Nodes -----------')
+        pretty_print('CHERRYPY', 'Listening for nodes')
         message = self.receive_message()
         if message['type'] == 'sample':
             sample_id = self.store_sample(message)
@@ -305,11 +302,11 @@ class HiveAggregator:
         
     ## Backup
     def backup(self):
-        print('\n----------- Backing Up Data -----------')
+        pretty_print('CHERRYPY', 'Backing up data')
     
     ## Check Database
     def check(self):
-        print('\n----------- Checking Database -----------')
+        pretty_print('CHERRYPY', 'Checking Database')
     
     """
     Handler Functions
@@ -317,14 +314,12 @@ class HiveAggregator:
     ## Render Index
     @cherrypy.expose
     def index(self):
-        print('\n----------- Loading Index Page -----------')
         html = open('static/index.html').read()
         return html
     
     ## Handle Posts
     @cherrypy.expose
     def default(self, *args, **kwargs):
-        print('\n----------- Received POST Request -----------')
         try:
             print('\tPOST: %s' % str(kwargs))
             if kwargs['type'] == 'log':
@@ -335,7 +330,7 @@ class HiveAggregator:
             elif kwargs['type'] == 'save':
                 self.dump_csv(int(kwargs['range_select']))
         except Exception as err:
-            print('\tERROR: %s' % str(err))
+            pretty_print('ERROR', str(err))
         return None
     
 # Main

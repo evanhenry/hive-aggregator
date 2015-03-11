@@ -134,13 +134,13 @@ class HiveAggregator:
                 mongo_db = self.mongo_client[db_name]
                 for name in mongo_db.collection_names():
                     if not name == 'system.indexes':
-                        # Add filters here to only include average values
                         matches = mongo_db[name].find({'type':'sample'})
                         for sample in matches:
                             sample['time'] = datetime.strftime(sample['time'], self.TIME_FORMAT)
                             result.append(sample)
             dump = json_util.dumps(result, indent=4)
             jsonfile.write(dump)
+        return result
             
     ## Query Logs in Range to JSON-file
     def query_logs(self, days):
@@ -159,32 +159,21 @@ class HiveAggregator:
                             result.append(log)
             dump = json_util.dumps(result, indent=4)
             jsonfile.write(dump)
+        return result
     
     ## Dump to CSV
     #! Needs rewrite for speed
     def dump_csv(self, days):
-        pretty_print('MONGO', 'Dumping to CSV for last %s hrs' % str(hours))
-        time_range = datetime.now() - timedelta(hours = hours) # get datetime
+        pretty_print('MONGO', 'Dumping to CSV for last %s days' % str(days))
+        results = self.query_samples(days)
         try:
-            for name in self.mongo_db.collection_names():
-                if not name == 'system.indexes':
-                    pretty_print('CSV', 'Collection: %s' % name)
-                    filename = datetime.strftime(datetime.now(), self.CSV_FILE) + name + '.csv'
-                    with open(self.DATA_PATH + filename, 'w') as csvfile:
-                        csvfile.write(','.join(self.ALL_PARAMETERS) + '\n') # Write headers
-                        for sample in self.mongo_db[name].find({'type':'sample', 'time':{'$gt': time_range, '$lt':datetime.now()}}):
-                            sample['time'] = datetime.strftime(sample['time'], self.TIME_FORMAT)
-                            sample_as_list = []
-                            for param in self.ALL_PARAMETERS:
-                                try:
-                                    sample_as_list.append(str(sample[param]))
-                                except Exception as error:
-                                    sample_as_list.append('NaN') # Not-a-Number if missing
-                            sample_as_list.append('\n')
-                            try:
-                                csvfile.write(','.join(sample_as_list))
-                            except Exception as error:
-                                pretty_print('ERROR', str(error))
+            with open(self.DATA_PATH + 'samples.csv', 'w') as csvfile:
+                for sample in results:
+                    del sample['_id']
+                    a = [i for i in sample.values()]
+                    a.append('\n')
+                    out = ','.join(a)
+                    csvfile.write(out)
         except Exception as error:
             pretty_print('ERROR', str(error))
        
@@ -277,7 +266,6 @@ class HiveAggregator:
     @cherrypy.expose
     def default(self, *args, **kwargs):
         try:
-            print('\tPOST: %s' % str(kwargs))
             if kwargs['type'] == 'log':
                 self.store_sample(kwargs)
                 self.train_estimators(kwargs)
@@ -285,6 +273,8 @@ class HiveAggregator:
                 self.query_samples(int(kwargs['range_select']))
             elif kwargs['type'] == 'save':
                 self.dump_csv(int(kwargs['range_select']))
+            else:
+                pass
         except Exception as err:
             pretty_print('ERROR', str(err))
         return None

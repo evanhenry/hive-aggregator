@@ -38,13 +38,10 @@
     </script>
     <form id="graph_form" method="post">
         <select id="range_select">
-            <option value="1">Hour</option>
-            <option value="12">Half Day</option>
-            <option value="24">Full Day</option>
-            <option value="72">Three Days</option>
-            <option value="168">Last Week</option>
-            <option value="744">Last Month</option>
-            <option value="1488">Last Two Months</option>
+            <option value="1">1 Day</option>
+            <option value="3">3 Day</option>
+            <option value="7">Week</option>
+            <option value="30">Month</option>
         </select>
         <input type="button" id="graph_submit" value="Update Graphs"/> 
         <input type="button" id="save_submit" value="Generate CSV"/> 
@@ -898,10 +895,10 @@
         var xLabel = "Time";
         var xParam = "time";
         var timeFormat = "%Y-%m-%d %H:%M:%S";
-        var yLabel = "Pascals";
+        var yLabel = "KPa";
         var yParam = "pa";
-        var yMin = 87000;
-        var yMax = 108500;
+        var yMin = 85;
+        var yMax = 110;
         var margin = {top: 10, right: 40, bottom: 50, left: 40},
             width = $(window).width() - margin.left - margin.right,
             height = $(window).height() - margin.top - margin.bottom;

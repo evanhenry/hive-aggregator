@@ -219,7 +219,8 @@ class HiveAggregator:
         pretty_print('MONGO', 'Storing Sample')
         try:
             sample['time'] = datetime.now()
-            mongo_db = self.mongo_client[datetime.strftime(datetime.now(), self.MONGO_DB)]
+            db_name = datetime.strftime(datetime.now(), self.MONGO_DB) # this is the mongo db it saves to
+            mongo_db = self.mongo_client[db_name]
             hive = mongo_db[sample['hive_id']]
             sample_id = hive.insert(sample)
             pretty_print('MONGO', 'OKAY: %s' % str(sample_id))

@@ -58,10 +58,7 @@ class HiveAggregator:
             self.DATA_PATH = "data/"
             self.LOGS_FILE = "logs.json"
             self.SAMPLES_FILE = "samples.json"
-            self.CSV_FILE = "%Y-%m-%d %H:%M:%S"
-            self.ENVIRONMENT_PARAMETERS = ["ext_t", "ext_h", "pa"]
-            self.HEALTH_PARAMETERS = ["int_t", "int_h"]
-            self.ACTIVITY_PARAMETERS = ["db", "hz"]
+            self.CSV_FILE = "samples.csv"
             self.ALL_PARAMETERS = ["time","int_t","ext_t","int_h","ext_h","hz","db","volts","amps","pa"]
         else:
             self.load_config(config_path)
@@ -124,50 +121,33 @@ class HiveAggregator:
             pretty_print('ERROR', str(error))
         
     ## Query Samples in Range to JSON-file
-    def query_samples(self, days):
+    def query_db(self, days, query_type):
         pretty_print('MONGO', 'Querying samples for last %s days' % str(days))
-        with open(self.DATA_PATH + self.SAMPLES_FILE, 'w') as jsonfile:
-            result = []
-            for d in range(days):
-                date = datetime.now() - timedelta(days = d)
-                db_name = datetime.strftime(date, self.MONGO_DB)
-                mongo_db = self.mongo_client[db_name]
-                for name in mongo_db.collection_names():
-                    if not name == 'system.indexes':
-                        matches = mongo_db[name].find({'type':'sample'})
-                        for sample in matches:
-                            sample['time'] = datetime.strftime(sample['time'], self.TIME_FORMAT)
-                            result.append(sample)
-            dump = json_util.dumps(result, indent=4)
-            jsonfile.write(dump)
+        result = []
+        for d in range(days):
+            date = datetime.now() - timedelta(days = d)
+            db_name = datetime.strftime(date, self.MONGO_DB)
+            mongo_db = self.mongo_client[db_name]
+            for name in mongo_db.collection_names():
+                if not name == 'system.indexes':
+                    matches = mongo_db[name].find({'type':query_type})
+                    for sample in matches:
+                        sample['time'] = datetime.strftime(sample['time'], self.TIME_FORMAT)
+                        result.append(sample)
         return result
-            
-    ## Query Logs in Range to JSON-file
-    def query_logs(self, days):
-        pretty_print('MONGO', 'Querying Logs for last %s days' % str(days))
-        with open(self.DATA_PATH + self.LOGS_FILE, 'w') as jsonfile:
-            result = []
-            for d in range(days):
-                date = datetime.now() - timedelta(days = d)
-                db_name = datetime.strftime(date, self.MONGO_DB)
-                mongo_db = self.mongo_client[db_name]
-                for name in self.mongo_db.collection_names():
-                    if not name == 'system.indexes':
-                        matches = mongo_db[name].find({'type':'log'})
-                        for log in matches:
-                            log['time'] = datetime.strftime(log['time'], self.TIME_FORMAT)
-                            result.append(log)
-            dump = json_util.dumps(result, indent=4)
+    
+    ## Dump tp JSON
+    def dump_json(self, results, filename):
+        with open(self.DATA_PATH + filename, 'w') as jsonfile:
+            dump = json_util.dumps(results, indent=4)
             jsonfile.write(dump)
-        return result
     
     ## Dump to CSV
     #! Needs rewrite for speed
-    def dump_csv(self, days):
+    def dump_csv(self, results, filename):
         pretty_print('MONGO', 'Dumping to CSV for last %s days' % str(days))
-        results = self.query_samples(days)
         try:
-            with open(self.DATA_PATH + 'samples.csv', 'w') as csvfile:
+            with open(self.DATA_PATH + filename, 'w') as csvfile:
                 for sample in results:
                     del sample['_id']
                     a = [i for i in sample.values()]
@@ -268,11 +248,12 @@ class HiveAggregator:
         try:
             if kwargs['type'] == 'log':
                 self.store_sample(kwargs)
-                self.train_estimators(kwargs)
             elif kwargs['type'] == 'graph':
-                return str(self.query_samples(int(kwargs['range_select'])))
+                results = self.query_db(int(kwargs['range_select']), 'sample')
+                self.dump_json(results, self.SAMPLES_FILE)
             elif kwargs['type'] == 'save':
-                self.dump_csv(int(kwargs['range_select']))
+                results = self.query_db(int(kwargs['range_select']), 'sample')
+                self.dump_csv(results, self.CSV_FILE)
             else:
                 pass
         except Exception as err:

@@ -270,7 +270,7 @@ class HiveAggregator:
                 self.store_sample(kwargs)
                 self.train_estimators(kwargs)
             elif kwargs['type'] == 'graph':
-                self.query_samples(int(kwargs['range_select']))
+                return self.query_samples(int(kwargs['range_select']))
             elif kwargs['type'] == 'save':
                 self.dump_csv(int(kwargs['range_select']))
             else:

@@ -243,9 +243,13 @@ class HiveAggregator:
         return html
     
     ## Handle Posts
+    """
+    This function is basically the API
+    """
     @cherrypy.expose
     def default(self, *args, **kwargs):
         try:
+            kwargs['type']
             if kwargs['type'] == 'log':
                 self.store_sample(kwargs)
             elif kwargs['type'] == 'graph':
@@ -259,7 +263,7 @@ class HiveAggregator:
         except Exception as err:
             pretty_print('ERROR', str(err))
         return None
-    
+
 # Main
 if __name__ == '__main__':
     aggregator = HiveAggregator(CONFIG_FILE)
